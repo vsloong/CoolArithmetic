@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#44cdfc</color>
+    <color name="colorPrimaryDark">#44cdfc</color>
+    <color name="colorAccent">#44cdfc</color>
+
+    <!-- TabLayout -->
+    <color name="white">#FFFFFF</color>
+    <color name="tab_indicator">#FFFFFF</color>
+    <color name="tab_text_normal">@color/text_default</color>
+    <color name="tab_text_selected">@color/colorPrimary</color>
+    <color name="tab_bg">#FFFFFF</color>
+
+    <color name="text_default">#858585</color>
+    <color name="text_selected">#44cdfc</color>
 </resources>
