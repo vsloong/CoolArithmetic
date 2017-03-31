@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.cooloongwu.coolarithmetic.MainActivity;
+import com.cooloongwu.coolarithmetic.activity.MainActivity;
 
 /**
  * TabLayout和ViewPager的适配器
