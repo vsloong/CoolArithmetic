@@ -7,6 +7,10 @@
     <color name="blue">#ff43daee</color>
     <color name="orange_light">#ffffb554</color>
 
+    <color name="color_main">#ff44cdfc</color>
+    <color name="color_black_10">#19000000</color>
+    <color name="color_profile_line_bg">#ffe6e6e6</color>
+
     <!-- TabLayout -->
     <color name="white">#FFFFFF</color>
     <color name="tab_indicator">#FFFFFF</color>
@@ -18,6 +22,10 @@
     <color name="text_default">#858585</color>
     <color name="text_selected">@color/colorPrimary</color>
     <color name="text_white">#ffffff</color>
+    <color name="text_yellow">#ffffd702</color>
+    <color name="text_orange">#fff96922</color>
+    <color name="text_black_light">#ff7d7d7d</color>
+    <color name="text_gray">#ffc1c1c1</color>
 
     <!-- Shape -->
     <color name="shape_orange">#fff9da46</color>

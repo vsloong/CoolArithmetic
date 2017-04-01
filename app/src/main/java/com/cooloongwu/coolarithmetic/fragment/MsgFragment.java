@@ -1,6 +1,7 @@
 package com.cooloongwu.coolarithmetic.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,14 @@ public class MsgFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_msg, container, false);
+        initToolBar(view);
         initViews(view);
         return view;
+    }
+
+    private void initToolBar(View view) {
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitle("聊天");
     }
 
     @Override

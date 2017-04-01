@@ -33,17 +33,20 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void initViews() {
-        ImageView img_back = (ImageView) findViewById(R.id.img_btn_back);
+        ImageView img_btn_back = (ImageView) findViewById(R.id.img_btn_back);
+
         RecyclerView view_recycler = (RecyclerView) findViewById(R.id.view_recycler);
         text_grade = (TextView) findViewById(R.id.text_grade);
         text_progress = (TextView) findViewById(R.id.text_progress);
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(AdvanceActivity.this);
+        layoutManager.setReverseLayout(true);//列表从底部开始加载，并自动定位到底部
+        view_recycler.setLayoutManager(layoutManager);
         adapter = new AdvanceAdapter(AdvanceActivity.this);
         view_recycler.setAdapter(adapter);
-        view_recycler.setLayoutManager(new LinearLayoutManager(AdvanceActivity.this));
 
+        img_btn_back.setOnClickListener(this);
 
-        img_back.setOnClickListener(this);
     }
 
     private void getIntentData() {

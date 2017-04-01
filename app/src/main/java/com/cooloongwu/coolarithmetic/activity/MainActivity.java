@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -34,13 +33,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initToolBar();
         initViews();
-    }
-
-    private void initToolBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
     }
 
     @Override
@@ -71,6 +64,7 @@ public class MainActivity extends BaseActivity {
 
             }
         });
+
     }
 
     private void setTabs(TabLayout layout_tab) {
@@ -92,5 +86,4 @@ public class MainActivity extends BaseActivity {
             layout_tab.addTab(tab);
         }
     }
-
 }

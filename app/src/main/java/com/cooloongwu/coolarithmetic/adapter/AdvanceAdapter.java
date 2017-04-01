@@ -1,6 +1,7 @@
 package com.cooloongwu.coolarithmetic.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,26 +30,65 @@ public class AdvanceAdapter extends RecyclerView.Adapter<AdvanceAdapter.ViewHold
             R.mipmap.img_advance_item_7,
             R.mipmap.img_advance_item_8,
             R.mipmap.img_advance_item_9,
-            R.mipmap.img_advance_item_10
+            R.mipmap.img_advance_item_10,
+            R.mipmap.img_advance_item_11,
+            R.mipmap.img_advance_item_12,
+            R.mipmap.img_advance_item_13,
+            R.mipmap.img_advance_item_14,
+            R.mipmap.img_advance_item_15,
+            R.mipmap.img_advance_item_16
     };
 
     public AdvanceAdapter(Context context) {
         this.context = context;
     }
 
+    private enum ITEM_LOCATION {
+        LEFT, CENTER, RIGHT
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        position++;
+        if (position % 2 == 0) {
+            return ITEM_LOCATION.CENTER.ordinal();
+        } else if ((position + 1) % 4 == 0) {
+            return ITEM_LOCATION.LEFT.ordinal();
+        } else {
+            //(position - 1) % 4 == 0
+            return ITEM_LOCATION.RIGHT.ordinal();
+        }
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_advance, parent, false);
+        View view;
+        if (viewType == ITEM_LOCATION.CENTER.ordinal()) {
+            view = LayoutInflater.from(context).inflate(R.layout.item_advance_center, parent, false);
+        } else if (viewType == ITEM_LOCATION.LEFT.ordinal()) {
+            view = LayoutInflater.from(context).inflate(R.layout.item_advance_left, parent, false);
+        } else {
+            view = LayoutInflater.from(context).inflate(R.layout.item_advance_right, parent, false);
+        }
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.img_advance_level.setImageResource(
-                position < 10 ?
+                position < 16 ?
                         ADVANCE_IMGS[position] :
-                        ADVANCE_IMGS[position - 10]);
+                        ADVANCE_IMGS[position - 16]);
+
+        if ((position + 1) % 2 == 0) {
+            holder.img_advance_line.setImageResource(
+                    (position + 1) % 4 == 0 ?
+                            R.mipmap.img_advance_line_center_4 :
+                            R.mipmap.img_advance_line_center_2);
+        }
+
         holder.text_advance_level.setText(String.valueOf(position + 1));
+        holder.text_advance_level.setBackground(ContextCompat.getDrawable(context, R.mipmap.icon_advance_btn_on));
 
         holder.text_advance_level.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,11 +108,13 @@ public class AdvanceAdapter extends RecyclerView.Adapter<AdvanceAdapter.ViewHold
     class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView img_advance_level;
+        ImageView img_advance_line;
         TextView text_advance_level;
 
         ViewHolder(View itemView) {
             super(itemView);
             img_advance_level = (ImageView) itemView.findViewById(R.id.img_advance_level);
+            img_advance_line = (ImageView) itemView.findViewById(R.id.img_advance_line);
             text_advance_level = (TextView) itemView.findViewById(R.id.text_advance_level);
         }
     }

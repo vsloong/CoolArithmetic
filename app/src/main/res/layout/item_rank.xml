@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/text_ranking"
+            android:layout_width="28dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="8dp"
+            android:background="@mipmap/icon_rank_medal_1"
+            android:gravity="center"
+            android:text="11"
+            android:textColor="@color/text_yellow"
+            android:textSize="20sp" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/img_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/img_fight_scholar"
+            app:riv_border_color="#00000000"
+            app:riv_border_width="0dip"
+            app:riv_corner_radius="8dip"
+            app:riv_mutate_background="true"
+            app:riv_oval="true"
+            app:riv_tile_mode="repeat" />
+
+        <TextView
+            android:id="@+id/text_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/text_black_light"
+            android:textSize="16sp"
+            tools:text="名字" />
+
+        <LinearLayout
+            android:id="@+id/view_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_black_light"
+                android:textSize="14sp"
+                tools:text="100%正确" />
+
+            <TextView
+                android:id="@+id/text_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_gray"
+                android:textSize="12sp"
+                tools:text="用时：00’00”00" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

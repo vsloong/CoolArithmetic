@@ -23,6 +23,9 @@
         <activity
             android:name=".activity.AdvanceActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.RankActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
