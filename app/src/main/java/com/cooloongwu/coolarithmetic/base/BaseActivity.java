@@ -14,6 +14,4 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void initData() {
     }
-
-
 }

@@ -2,4 +2,14 @@
     <string name="app_name">天天口算</string>
     <string name="action_settings">Settings</string>
 
+    <string-array name="grade_name">
+        <item>一年级</item>
+        <item>二年级</item>
+        <item>三年级</item>
+        <item>四年级</item>
+        <item>五年级</item>
+        <item>六年级</item>
+    </string-array>
+
+    <string name="advance_num">/20</string>
 </resources>

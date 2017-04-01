@@ -10,8 +10,10 @@
         android:layout_height="fill_parent">
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/view_recycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp" />
 
         <ImageView
             android:id="@+id/img_btn_back"
@@ -44,9 +46,9 @@
                     android:layout_centerInParent="true"
                     android:ems="1"
                     android:gravity="center"
-                    tools:text="一年级"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:text="一年级" />
             </RelativeLayout>
 
             <TextView
@@ -58,9 +60,9 @@
                 android:layout_margin="10dp"
                 android:background="@drawable/shape_advance_progress"
                 android:gravity="center"
-                tools:text="0/0"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:text="0/0" />
         </RelativeLayout>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

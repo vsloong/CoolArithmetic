@@ -30,11 +30,6 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder> 
             R.mipmap.icon_grade_6
     };
 
-    private String[] GRADE_TITLES = {
-            "一年级", "二年级", "三年级", "四年级", "五年级", "六年级"
-    };
-
-
     public GradeAdapter(Context context) {
         this.context = context;
     }
@@ -48,7 +43,7 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.img_grade.setImageResource(GRADE_IMGS[position]);
-        holder.text_grade.setText(GRADE_TITLES[position]);
+        holder.text_grade.setText(context.getResources().getStringArray(R.array.grade_name)[position]);
         holder.text_progress.setText(position < 4 ? "1/32" : "未解锁");
         holder.itemView.setBackground(
                 position < 4 ?
