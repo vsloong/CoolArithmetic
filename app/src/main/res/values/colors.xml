@@ -26,6 +26,7 @@
     <color name="text_orange">#fff96922</color>
     <color name="text_black_light">#ff7d7d7d</color>
     <color name="text_gray">#ffc1c1c1</color>
+    <color name="text_edit_hint">#787878</color>
 
     <!-- Shape -->
     <color name="shape_orange">#fff9da46</color>
