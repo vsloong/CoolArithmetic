@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cooloongwu.coolarithmetic.R;
+import com.cooloongwu.coolarithmetic.activity.AdvanceActivity;
+import com.cooloongwu.coolarithmetic.utils.StartActivityUtils;
 
 /**
  * 年级的适配器
@@ -93,7 +95,7 @@ public class AdvanceAdapter extends RecyclerView.Adapter<AdvanceAdapter.ViewHold
         holder.text_advance_level.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //StartActivityUtils.startAdvanceActivity((MainActivity) context, position + 1);
+                StartActivityUtils.startPlayActivity((AdvanceActivity) context);
                 Toast.makeText(context, "点击了", Toast.LENGTH_SHORT).show();
             }
         });

@@ -13,6 +13,7 @@
 
     <!-- TabLayout -->
     <color name="white">#FFFFFF</color>
+    <color name="purple">#ff9f6fd7</color>
     <color name="tab_indicator">#FFFFFF</color>
     <color name="tab_text_normal">@color/text_default</color>
     <color name="tab_text_selected">@color/colorPrimary</color>
@@ -27,6 +28,8 @@
     <color name="text_black_light">#ff7d7d7d</color>
     <color name="text_gray">#ffc1c1c1</color>
     <color name="text_edit_hint">#787878</color>
+    <color name="text_exam_submit">#ff333333</color>
+    <color name="text_exam_detail">#ff787878</color>
 
     <!-- Shape -->
     <color name="shape_orange">#fff9da46</color>

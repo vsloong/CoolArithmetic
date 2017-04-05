@@ -13,6 +13,10 @@ import android.widget.TextView;
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.base.BaseActivity;
 import com.cooloongwu.coolarithmetic.utils.StartActivityUtils;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.auth.AuthService;
+import com.netease.nimlib.sdk.auth.LoginInfo;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
@@ -101,6 +105,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.btn_login:
                 Log.e("登录按钮", "点击事件");
+                login();
                 StartActivityUtils.startMainActivity(LoginActivity.this);
                 finish();
                 break;
@@ -113,5 +118,32 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             default:
                 break;
         }
+    }
+
+    private void login() {
+        LoginInfo info = new LoginInfo(edit_phone.getText().toString().toLowerCase(), edit_password.toString().toLowerCase()); // config...
+        RequestCallback<LoginInfo> callback =
+                new RequestCallback<LoginInfo>() {
+                    @Override
+                    public void onSuccess(LoginInfo param) {
+                        Log.e("登录", "成功");
+
+                    }
+
+                    @Override
+                    public void onFailed(int code) {
+                        Log.e("登录", "失败" + code);
+                    }
+
+                    @Override
+                    public void onException(Throwable exception) {
+                        Log.e("登录", "出错" + exception.toString());
+                    }
+                    // 可以在此保存LoginInfo到本地，下次启动APP做自动登录用
+                };
+        NIMClient.getService(AuthService.class).login(info)
+                .setCallback(callback);
+
+
     }
 }

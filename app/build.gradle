@@ -29,18 +29,18 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+    // 添加依赖。注意，版本号必须一致。
+    // 基础功能 (必需)
+    // 聊天室需要
+    // 实时会话服务需要
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.android.support:design:25.2.0'
     compile 'com.android.support:support-v4:25.2.0'
     compile 'com.makeramen:roundedimageview:2.3.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
-
-    // 添加依赖。注意，版本号必须一致。
-    // 基础功能 (必需)
     compile 'com.netease.nimlib:basesdk:3.5.5'
-    // 聊天室需要
     compile 'com.netease.nimlib:chatroom:3.5.5'
-    // 实时会话服务需要
     compile 'com.netease.nimlib:rts:3.5.5'
+    testCompile 'junit:junit:4.12'
 }

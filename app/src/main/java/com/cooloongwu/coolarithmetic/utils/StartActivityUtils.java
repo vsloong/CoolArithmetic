@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.cooloongwu.coolarithmetic.activity.AdvanceActivity;
 import com.cooloongwu.coolarithmetic.activity.LoginActivity;
 import com.cooloongwu.coolarithmetic.activity.MainActivity;
+import com.cooloongwu.coolarithmetic.activity.PlayActivity;
 import com.cooloongwu.coolarithmetic.activity.RankActivity;
 
 /**
@@ -35,5 +36,11 @@ public class StartActivityUtils {
         Intent intent = new Intent(activity, MainActivity.class);
         activity.startActivity(intent);
     }
+
+    public static void startPlayActivity(Activity activity) {
+        Intent intent = new Intent(activity, PlayActivity.class);
+        activity.startActivity(intent);
+    }
+
 
 }
