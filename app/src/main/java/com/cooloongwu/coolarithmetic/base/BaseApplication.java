@@ -7,6 +7,8 @@ import android.os.Environment;
 
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.activity.LauncherActivity;
+import com.cooloongwu.coolarithmetic.utils.AsyncHttpClientUtils;
+import com.loopj.android.http.AsyncHttpClient;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
@@ -24,6 +26,8 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         NIMClient.init(this, null, options());
+
+        AsyncHttpClientUtils.setClientGeneral(new AsyncHttpClient());
     }
 
     // 如果返回值为 null，则全部使用默认参数。

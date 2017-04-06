@@ -74,7 +74,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         public void afterTextChanged(Editable s) {
             img_clear_phone.setVisibility(s.length() > 0 ? View.VISIBLE : View.INVISIBLE);
 
-            if (s.length() == 11 && edit_password.getText().toString().trim().length() > 0) {
+            if (s.length() > 0 && edit_password.getText().toString().trim().length() > 0) {
                 btn_login.setEnabled(true);
             }
         }
@@ -94,7 +94,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         @Override
         public void afterTextChanged(Editable s) {
             img_clear_password.setVisibility(s.length() > 0 ? View.VISIBLE : View.INVISIBLE);
-            if (s.length() > 0 && edit_phone.getText().toString().trim().length() == 11) {
+            if (s.length() > 0 && edit_phone.getText().toString().trim().length() > 0) {
                 btn_login.setEnabled(true);
             }
         }
@@ -106,8 +106,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             case R.id.btn_login:
                 Log.e("登录按钮", "点击事件");
                 login();
-                StartActivityUtils.startMainActivity(LoginActivity.this);
-                finish();
+
                 break;
             case R.id.img_clear_phone:
                 edit_phone.setText("");
@@ -121,13 +120,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void login() {
-        LoginInfo info = new LoginInfo(edit_phone.getText().toString().toLowerCase(), edit_password.toString().toLowerCase()); // config...
+        LoginInfo info = new LoginInfo("15757126425", "1e28a8ba44a8989efce5595ee3c0ee36");
         RequestCallback<LoginInfo> callback =
                 new RequestCallback<LoginInfo>() {
                     @Override
                     public void onSuccess(LoginInfo param) {
                         Log.e("登录", "成功");
-
+                        StartActivityUtils.startMainActivity(LoginActivity.this);
+                        finish();
                     }
 
                     @Override

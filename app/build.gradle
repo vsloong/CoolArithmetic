@@ -29,7 +29,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     // 添加依赖。注意，版本号必须一致。
     // 基础功能 (必需)
     // 聊天室需要
@@ -43,4 +42,5 @@ dependencies {
     compile 'com.netease.nimlib:chatroom:3.5.5'
     compile 'com.netease.nimlib:rts:3.5.5'
     testCompile 'junit:junit:4.12'
+    compile 'com.loopj.android:android-async-http:1.4.9'
 }
