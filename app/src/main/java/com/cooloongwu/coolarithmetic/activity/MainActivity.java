@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,6 +17,18 @@ import com.cooloongwu.coolarithmetic.fragment.FightFragment;
 import com.cooloongwu.coolarithmetic.fragment.MeFragment;
 import com.cooloongwu.coolarithmetic.fragment.MsgFragment;
 import com.cooloongwu.coolarithmetic.fragment.PKFragment;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.friend.FriendServiceObserve;
+import com.netease.nimlib.sdk.friend.model.FriendChangedNotify;
+import com.netease.nimlib.sdk.msg.MsgServiceObserve;
+import com.netease.nimlib.sdk.msg.model.CustomNotification;
+import com.netease.nimlib.sdk.msg.model.IMMessage;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
@@ -28,12 +41,48 @@ public class MainActivity extends BaseActivity {
     //Tab 数目
     public static int TAB_COUNT = TAB_TITLES.length;
 
+    private Observer<List<IMMessage>> incomingMessageObserver = new Observer<List<IMMessage>>() {
+        @Override
+        public void onEvent(List<IMMessage> messages) {
+            // 处理新收到的消息，为了上传处理方便，SDK 保证参数 messages 全部来自同一个聊天对象。
+            Log.e("接收到的消息", messages.get(0).getContent());
+        }
+    };
+
+    private Observer<CustomNotification> customNotificationObserver = new Observer<CustomNotification>() {
+        @Override
+        public void onEvent(CustomNotification message) {
+            // 在这里处理自定义通知。
+            Log.e("自定义的通知消息", message.getContent());
+            try {
+                JSONObject jsonObject = new JSONObject(message.getContent());
+                jsonObject.getString("type");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private Observer<FriendChangedNotify> friendChangedNotifyObserver = new Observer<FriendChangedNotify>() {
+        @Override
+        public void onEvent(FriendChangedNotify friendChangedNotify) {
+            Log.e("好友", friendChangedNotify.getAddedOrUpdatedFriends().toString());
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         initViews();
+
+        NIMClient.getService(MsgServiceObserve.class).observeReceiveMessage(incomingMessageObserver, true);
+        // 如果有自定义通知是作用于全局的，不依赖某个特定的 Activity，那么这段代码应该在 Application 的 onCreate 中就调用
+        NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotificationObserver, true);
+
+        NIMClient.getService(FriendServiceObserve.class).observeFriendChangedNotify(friendChangedNotifyObserver, true);
     }
 
     @Override
@@ -85,5 +134,14 @@ public class MainActivity extends BaseActivity {
 
             layout_tab.addTab(tab);
         }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        NIMClient.getService(MsgServiceObserve.class).observeReceiveMessage(incomingMessageObserver, false);
+        NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotificationObserver, false);
+        NIMClient.getService(FriendServiceObserve.class).observeFriendChangedNotify(friendChangedNotifyObserver, false);
     }
 }

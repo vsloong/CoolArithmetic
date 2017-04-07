@@ -8,6 +8,7 @@ import com.cooloongwu.coolarithmetic.activity.LoginActivity;
 import com.cooloongwu.coolarithmetic.activity.MainActivity;
 import com.cooloongwu.coolarithmetic.activity.PlayActivity;
 import com.cooloongwu.coolarithmetic.activity.RankActivity;
+import com.cooloongwu.coolarithmetic.activity.RegisterActivity;
 
 /**
  * 跳转逻辑工具
@@ -29,6 +30,11 @@ public class StartActivityUtils {
 
     public static void startLoginActivity(Activity activity) {
         Intent intent = new Intent(activity, LoginActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public static void startRegisterActivity(Activity activity) {
+        Intent intent = new Intent(activity, RegisterActivity.class);
         activity.startActivity(intent);
     }
 

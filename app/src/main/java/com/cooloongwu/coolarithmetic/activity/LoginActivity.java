@@ -9,9 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.base.BaseActivity;
+import com.cooloongwu.coolarithmetic.utils.MD5Utils;
 import com.cooloongwu.coolarithmetic.utils.StartActivityUtils;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
@@ -48,12 +50,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         btn_login = (Button) findViewById(R.id.btn_login);
 
         TextView text_forget_password = (TextView) findViewById(R.id.text_forget_password);
+        TextView text_register = (TextView) findViewById(R.id.text_register);
 
         edit_phone.addTextChangedListener(new PhoneTextWatcher());
         edit_password.addTextChangedListener(new PasswordTextWatcher());
 
         btn_login.setOnClickListener(this);
         text_forget_password.setOnClickListener(this);
+        text_register.setOnClickListener(this);
         img_eye_password.setOnClickListener(this);
         img_clear_phone.setOnClickListener(this);
         img_clear_password.setOnClickListener(this);
@@ -114,13 +118,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             case R.id.img_clear_password:
                 edit_password.setText("");
                 break;
+            case R.id.text_register:
+                StartActivityUtils.startRegisterActivity(LoginActivity.this);
+                break;
             default:
                 break;
         }
     }
 
     private void login() {
-        LoginInfo info = new LoginInfo("15757126425", "1e28a8ba44a8989efce5595ee3c0ee36");
+        String accid = edit_phone.getText().toString().trim();
+        String password = edit_password.getText().toString().trim();
+        LoginInfo info = new LoginInfo(accid, MD5Utils.getMD5(password));
         RequestCallback<LoginInfo> callback =
                 new RequestCallback<LoginInfo>() {
                     @Override
@@ -132,6 +141,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                     @Override
                     public void onFailed(int code) {
+                        Toast.makeText(LoginActivity.this, "账号或密码错误", Toast.LENGTH_SHORT).show();
                         Log.e("登录", "失败" + code);
                     }
 

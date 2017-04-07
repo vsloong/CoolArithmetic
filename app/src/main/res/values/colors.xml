@@ -10,6 +10,10 @@
     <color name="color_main">#ff44cdfc</color>
     <color name="color_black_10">#19000000</color>
     <color name="color_profile_line_bg">#ffe6e6e6</color>
+    <color name="color_dedede">#ffdedede</color>
+    <color name="color_black_333333">#ff333333</color>
+    <color name="color_black_c1c1c1">#ffc1c1c1</color>
+    <color name="color_90969e">#ff90969e</color>
 
     <!-- TabLayout -->
     <color name="white">#FFFFFF</color>

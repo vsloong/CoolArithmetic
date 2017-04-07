@@ -103,7 +103,7 @@
             android:name="com.netease.cosine.target.receiver"
             android:value="com.netease.nimlib.service.NimReceiver" />
 
-
+        <activity android:name=".activity.RegisterActivity"></activity>
     </application>
 
 </manifest>

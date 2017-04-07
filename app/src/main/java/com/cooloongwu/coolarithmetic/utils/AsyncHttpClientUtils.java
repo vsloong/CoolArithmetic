@@ -2,6 +2,7 @@ package com.cooloongwu.coolarithmetic.utils;
 
 import android.content.Context;
 
+import com.cooloongwu.coolarithmetic.base.AppConfig;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.FileAsyncHttpResponseHandler;
@@ -21,7 +22,7 @@ public class AsyncHttpClientUtils {
     private static final int RESPONSE_TIME = 10 * 1000;
 
 
-    private static final String SERVER_HTTP = "/create.action";
+    private static final String SERVER_HTTP = "https://api.netease.im/nimserver/user/";
 
     /**
      * 设置静态Client
@@ -54,16 +55,12 @@ public class AsyncHttpClientUtils {
      * @param handler 处理
      */
     public static void post(Context context, String url, RequestParams params, AsyncHttpResponseHandler handler) {
-
-        String appKey = "2db673f68e572a2e14cc780871103773";
-        String appSecret = "85aac77482c1";
-        String nonce = "0123456789";
         String curTime = String.valueOf((new Date()).getTime() / 1000L);
-        String checkSum = CheckSumBuilder.getCheckSum(appSecret, nonce, curTime);
+        String checkSum = CheckSumBuilder.getCheckSum(AppConfig.appSecret, AppConfig.nonce, curTime);
 
         clientGeneral.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-        clientGeneral.addHeader("AppKey", appKey);
-        clientGeneral.addHeader("Nonce", nonce);
+        clientGeneral.addHeader("AppKey", AppConfig.appKey);
+        clientGeneral.addHeader("Nonce", AppConfig.nonce);
         clientGeneral.addHeader("CurTime", curTime);
         clientGeneral.addHeader("CheckSum", checkSum);
 

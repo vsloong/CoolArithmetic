@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cooloongwu.coolarithmetic.activity.LoginActivity">
+    tools:context="com.cooloongwu.coolarithmetic.activity.RegisterActivity">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -40,6 +40,68 @@
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="44dp"
+                    android:background="@drawable/shape_login_input">
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent">
+
+                        <ImageView
+                            android:id="@+id/img_name"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="10dp"
+                            android:scaleType="centerInside"
+                            android:src="@mipmap/icon_name_normal" />
+
+                        <LinearLayout
+                            android:id="@+id/layout_name_function"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginRight="6dp">
+
+                            <ImageView
+                                android:id="@+id/img_clear_name"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:scaleType="centerInside"
+                                android:src="@mipmap/icon_edit_clear"
+                                android:visibility="invisible" />
+
+                        </LinearLayout>
+
+                        <EditText
+                            android:id="@+id/edit_name"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_toEndOf="@+id/img_name"
+                            android:layout_toLeftOf="@+id/layout_name_function"
+                            android:layout_toRightOf="@+id/img_name"
+                            android:layout_toStartOf="@+id/layout_name_function"
+                            android:background="@null"
+                            android:hint="请输入昵称"
+                            android:lines="1"
+                            android:textColor="@color/text_edit_hint"
+                            android:textColorHint="#ffdadada"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/shape_login_input">
 
                     <RelativeLayout
@@ -86,12 +148,12 @@
                             android:layout_marginLeft="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_toEndOf="@+id/img_phone"
+                            android:layout_toLeftOf="@+id/layout_phone_function"
                             android:layout_toRightOf="@+id/img_phone"
                             android:layout_toStartOf="@+id/layout_phone_function"
-                            android:layout_toLeftOf="@+id/layout_phone_function"
                             android:background="@null"
+                            android:hint="请输入账号（作为登录账号）"
                             android:inputType="phone"
-                            android:hint="请输入账号"
                             android:lines="1"
                             android:textColor="@color/text_edit_hint"
                             android:textColorHint="#ffdadada"
@@ -155,8 +217,8 @@
                             android:layout_marginLeft="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_toEndOf="@+id/img_password"
-                            android:layout_toRightOf="@+id/img_password"
                             android:layout_toLeftOf="@+id/layout_password_function"
+                            android:layout_toRightOf="@+id/img_password"
                             android:layout_toStartOf="@+id/layout_password_function"
                             android:background="@null"
                             android:hint="请输入密码"
@@ -170,36 +232,17 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/btn_login"
+                android:id="@+id/btn_register"
                 android:layout_width="fill_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/selector_login_btn"
                 android:enabled="false"
                 android:gravity="center"
-                android:text="登       录"
+                android:text="注       册"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/text_forget_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:text="忘记密码？"
-                android:textColor="#ffc1c1c1"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/text_register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:text="去注册"
-                android:textColor="#ffc1c1c1"
-                android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

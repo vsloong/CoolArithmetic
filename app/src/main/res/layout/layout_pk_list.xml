@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffc5e5e9">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/freedom_bg2" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:paddingBottom="30.0dip"
+        android:src="@mipmap/freedom_bg1" />
+
+    <RelativeLayout
+        android:id="@+id/rl_freedom_top"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20.0dip">
+
+        <ImageView
+            android:id="@+id/iv_freedom_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20.0dip"
+            android:src="@mipmap/freedom_back" />
+
+        <TextView
+            android:id="@+id/tv_freedom_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/ll_freedom_power"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20.0dip"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/era_power_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="3.0dip"
+                android:layout_marginRight="-4.0dip"
+                android:background="@drawable/freedom_power_bg"
+                android:gravity="center|right"
+                android:text="100/100"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/freedom_power_icon" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/pk_list_header"
+        layout="@layout/layout_freedom_rank_header"
+        android:layout_width="fill_parent"
+        android:layout_height="52.0dip"
+        android:layout_below="@+id/rl_freedom_top"
+        android:layout_marginLeft="15.0dip"
+        android:layout_marginRight="15.0dip"
+        android:layout_marginTop="20.0dip" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/pk_list_header"
+        android:layout_marginLeft="15.0dip"
+        android:layout_marginRight="15.0dip"
+        android:layout_marginTop="10.0dip">
+
+        <RelativeLayout
+            android:id="@+id/pklist_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="visible">
+
+            <ListView
+                android:id="@+id/pk_list"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_above="@+id/pk_list_others"
+                android:layout_marginBottom="15.0dip"
+                android:background="@drawable/bg_corner_21_white"
+                android:divider="@null"
+                android:fadingEdge="none"
+                android:listSelector="@android:color/transparent" />
+
+            <TextView
+                android:id="@+id/pk_list_others"
+                android:layout_width="fill_parent"
+                android:layout_height="45.0dip"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="50.0dip"
+                android:background="@drawable/freedom_btn_blue_large_selector"
+                android:gravity="center"
+                android:text="换一批"
+                android:textColor="@color/white"
+                android:textSize="15.0dip" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/champion_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <FrameLayout
+                android:layout_width="220.0dip"
+                android:layout_height="220.0dip">
+
+                <ImageView
+                    android:id="@+id/sunshine_bg"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/pk_result_light" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:scaleType="center"
+                    android:src="@mipmap/hand_with_prote" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20.0dip"
+                android:gravity="center"
+                android:text="暂时没有对手了"
+                android:textColor="#ff5e5e5e"
+                android:textSize="17.0dip" />
+        </LinearLayout>
+    </FrameLayout>
+</RelativeLayout>
