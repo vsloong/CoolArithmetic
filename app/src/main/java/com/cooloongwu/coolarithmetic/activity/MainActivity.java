@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.adapter.TabViewPagerAdapter;
+import com.cooloongwu.coolarithmetic.base.AppConfig;
 import com.cooloongwu.coolarithmetic.base.BaseActivity;
 import com.cooloongwu.coolarithmetic.fragment.FightFragment;
 import com.cooloongwu.coolarithmetic.fragment.MeFragment;
@@ -19,15 +20,19 @@ import com.cooloongwu.coolarithmetic.fragment.MsgFragment;
 import com.cooloongwu.coolarithmetic.fragment.PKFragment;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.friend.FriendServiceObserve;
 import com.netease.nimlib.sdk.friend.model.FriendChangedNotify;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
+import com.netease.nimlib.sdk.uinfo.UserService;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
@@ -45,7 +50,7 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onEvent(List<IMMessage> messages) {
             // 处理新收到的消息，为了上传处理方便，SDK 保证参数 messages 全部来自同一个聊天对象。
-            Log.e("接收到的消息", messages.get(0).getContent());
+            Log.e("接收到的文字消息", messages.get(0).getContent());
         }
     };
 
@@ -53,7 +58,7 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onEvent(CustomNotification message) {
             // 在这里处理自定义通知。
-            Log.e("自定义的通知消息", message.getContent());
+            Log.e("接收到的自定义消息", message.getContent());
             try {
                 JSONObject jsonObject = new JSONObject(message.getContent());
                 jsonObject.getString("type");
@@ -83,6 +88,7 @@ public class MainActivity extends BaseActivity {
         NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotificationObserver, true);
 
         NIMClient.getService(FriendServiceObserve.class).observeFriendChangedNotify(friendChangedNotifyObserver, true);
+        getUserInfo();
     }
 
     @Override
@@ -143,5 +149,37 @@ public class MainActivity extends BaseActivity {
         NIMClient.getService(MsgServiceObserve.class).observeReceiveMessage(incomingMessageObserver, false);
         NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotificationObserver, false);
         NIMClient.getService(FriendServiceObserve.class).observeFriendChangedNotify(friendChangedNotifyObserver, false);
+    }
+
+    private void getUserInfo() {
+        List<String> friends = new ArrayList<>();
+        friends.add(AppConfig.getUserAccid(MainActivity.this));
+        List<NimUserInfo> users = NIMClient.getService(UserService.class).getUserInfoList(friends);
+
+        for (NimUserInfo userInfo : users) {
+            Log.e("本地获取：用户名", userInfo.getName());
+        }
+
+        friends.add("2013329700040");
+        NIMClient.getService(UserService.class)
+                .fetchUserInfo(friends)
+                .setCallback(new RequestCallback<List<NimUserInfo>>() {
+                    @Override
+                    public void onSuccess(List<NimUserInfo> param) {
+                        for (NimUserInfo userInfo : param) {
+                            Log.e("网络获取用户名", userInfo.getName());
+                        }
+                    }
+
+                    @Override
+                    public void onFailed(int code) {
+
+                    }
+
+                    @Override
+                    public void onException(Throwable exception) {
+
+                    }
+                });
     }
 }

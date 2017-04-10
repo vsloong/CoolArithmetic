@@ -23,7 +23,8 @@ public class LauncherActivity extends BaseActivity {
         if (TextUtils.isEmpty(AppConfig.getUserToken(LauncherActivity.this))) {
             goLogin();
         } else {
-            goMain();
+//            goMain();
+            goLogin();
         }
 
     }
