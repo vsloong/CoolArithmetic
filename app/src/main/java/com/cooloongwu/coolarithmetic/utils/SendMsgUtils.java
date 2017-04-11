@@ -5,6 +5,9 @@ import android.util.Log;
 import com.cooloongwu.coolarithmetic.entity.MsgTypeEnum;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.friend.FriendService;
+import com.netease.nimlib.sdk.friend.constant.VerifyType;
+import com.netease.nimlib.sdk.friend.model.AddFriendData;
 import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
@@ -80,6 +83,43 @@ public class SendMsgUtils {
                 Log.e("文字消息发送", "onException");
             }
         });
+    }
 
+    /**
+     * 添加好友请求
+     *
+     * @param accid 账户
+     * @param msg   认证消息
+     */
+    public static void sendAddFriendMsg(String accid, String msg) {
+        final VerifyType verifyType = VerifyType.VERIFY_REQUEST; // 发起好友验证请求
+        NIMClient.getService(FriendService.class).addFriend(new AddFriendData(accid, verifyType, msg))
+                .setCallback(new RequestCallback<Void>() {
+
+                    @Override
+                    public void onSuccess(Void param) {
+                        Log.e("添加好友消息发送", "onSuccess");
+                    }
+
+                    @Override
+                    public void onFailed(int code) {
+                        Log.e("添加好友消息发送", "onFailed");
+                    }
+
+                    @Override
+                    public void onException(Throwable exception) {
+                        Log.e("添加好友消息发送", "onException");
+                    }
+                });
+    }
+
+    /**
+     * 应答添加好友的请求
+     *
+     * @param accid 账户
+     * @param ack   true表示同意，false表示拒绝
+     */
+    public static void sendAckAddFriendMsg(String accid, boolean ack) {
+        NIMClient.getService(FriendService.class).ackAddFriendRequest(accid, ack);
     }
 }

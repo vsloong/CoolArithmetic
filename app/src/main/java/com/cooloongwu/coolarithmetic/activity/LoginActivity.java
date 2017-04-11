@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cooloongwu.coolarithmetic.R;
+import com.cooloongwu.coolarithmetic.base.AppConfig;
 import com.cooloongwu.coolarithmetic.base.BaseActivity;
 import com.cooloongwu.coolarithmetic.utils.MD5Utils;
 import com.cooloongwu.coolarithmetic.utils.StartActivityUtils;
@@ -128,13 +129,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void login() {
         String accid = edit_phone.getText().toString().trim();
-        String password = edit_password.getText().toString().trim();
+        final String password = edit_password.getText().toString().trim();
         LoginInfo info = new LoginInfo(accid, MD5Utils.getMD5(password));
-        RequestCallback<LoginInfo> callback =
-                new RequestCallback<LoginInfo>() {
+        NIMClient.getService(AuthService.class).login(info).setCallback(new RequestCallback<LoginInfo>() {
                     @Override
                     public void onSuccess(LoginInfo param) {
                         Log.e("登录", "成功");
+                        AppConfig.setUserToken(LoginActivity.this, MD5Utils.getMD5(password));
                         StartActivityUtils.startMainActivity(LoginActivity.this);
                         finish();
                     }
@@ -150,9 +151,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         Log.e("登录", "出错" + exception.toString());
                     }
                     // 可以在此保存LoginInfo到本地，下次启动APP做自动登录用
-                };
-        NIMClient.getService(AuthService.class).login(info)
-                .setCallback(callback);
+        });
 
 
     }

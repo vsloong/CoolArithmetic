@@ -159,6 +159,7 @@
                             android:layout_toLeftOf="@+id/layout_password_function"
                             android:layout_toStartOf="@+id/layout_password_function"
                             android:background="@null"
+                            android:text="123456"
                             android:hint="请输入密码"
                             android:inputType="textPassword"
                             android:lines="1"

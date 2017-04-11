@@ -4,35 +4,35 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.adapter.TabViewPagerAdapter;
-import com.cooloongwu.coolarithmetic.base.AppConfig;
 import com.cooloongwu.coolarithmetic.base.BaseActivity;
+import com.cooloongwu.coolarithmetic.entity.MsgTypeEnum;
 import com.cooloongwu.coolarithmetic.fragment.FightFragment;
 import com.cooloongwu.coolarithmetic.fragment.MeFragment;
 import com.cooloongwu.coolarithmetic.fragment.MsgFragment;
 import com.cooloongwu.coolarithmetic.fragment.PKFragment;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
-import com.netease.nimlib.sdk.RequestCallback;
-import com.netease.nimlib.sdk.friend.FriendServiceObserve;
-import com.netease.nimlib.sdk.friend.model.FriendChangedNotify;
+import com.netease.nimlib.sdk.friend.model.AddFriendNotify;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
+import com.netease.nimlib.sdk.msg.SystemMessageObserver;
+import com.netease.nimlib.sdk.msg.constant.SystemMessageType;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
-import com.netease.nimlib.sdk.uinfo.UserService;
-import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
+import com.netease.nimlib.sdk.msg.model.SystemMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
@@ -61,7 +61,16 @@ public class MainActivity extends BaseActivity {
             Log.e("接收到的自定义消息", message.getContent());
             try {
                 JSONObject jsonObject = new JSONObject(message.getContent());
-                jsonObject.getString("type");
+                String fromAccid = message.getFromAccount();
+                MsgTypeEnum typeEnum = MsgTypeEnum.valueOf(jsonObject.getString("type"));
+                switch (typeEnum) {
+                    case PK:
+                        showPKDialog();
+                        break;
+                    default:
+                        showPKDialog();
+                        break;
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -69,10 +78,30 @@ public class MainActivity extends BaseActivity {
         }
     };
 
-    private Observer<FriendChangedNotify> friendChangedNotifyObserver = new Observer<FriendChangedNotify>() {
+    private Observer<SystemMessage> systemMessageObserver = new Observer<SystemMessage>() {
         @Override
-        public void onEvent(FriendChangedNotify friendChangedNotify) {
-            Log.e("好友", friendChangedNotify.getAddedOrUpdatedFriends().toString());
+        public void onEvent(SystemMessage systemMessage) {
+            Log.e("接收到的添加好友消息", systemMessage.getContent());
+            if (systemMessage.getType() == SystemMessageType.AddFriend) {
+                AddFriendNotify attachData = (AddFriendNotify) systemMessage.getAttachObject();
+                // 针对不同的事件做处理
+                if (attachData != null) {
+                    if (attachData.getEvent() == AddFriendNotify.Event.RECV_ADD_FRIEND_DIRECT) {
+                        // 对方直接添加你为好友
+                        Log.e("接收到的添加好友消息", "对方直接添加你为好友");
+                    } else if (attachData.getEvent() == AddFriendNotify.Event.RECV_AGREE_ADD_FRIEND) {
+                        // 对方通过了你的好友验证请求
+                        Log.e("接收到的添加好友消息", "对方通过了你的好友验证请求");
+                    } else if (attachData.getEvent() == AddFriendNotify.Event.RECV_REJECT_ADD_FRIEND) {
+                        // 对方拒绝了你的好友验证请求
+                        Log.e("接收到的添加好友消息", "对方拒绝了你的好友验证请求");
+                    } else if (attachData.getEvent() == AddFriendNotify.Event.RECV_ADD_FRIEND_VERIFY_REQUEST) {
+                        // 对方请求添加好友，一般场景会让用户选择同意或拒绝对方的好友请求。
+                        // 通过message.getContent()获取好友验证请求的附言
+                        Log.e("接收到的添加好友消息", "对方请求添加好友");
+                    }
+                }
+            }
         }
     };
 
@@ -84,11 +113,8 @@ public class MainActivity extends BaseActivity {
         initViews();
 
         NIMClient.getService(MsgServiceObserve.class).observeReceiveMessage(incomingMessageObserver, true);
-        // 如果有自定义通知是作用于全局的，不依赖某个特定的 Activity，那么这段代码应该在 Application 的 onCreate 中就调用
         NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotificationObserver, true);
-
-        NIMClient.getService(FriendServiceObserve.class).observeFriendChangedNotify(friendChangedNotifyObserver, true);
-        getUserInfo();
+        NIMClient.getService(SystemMessageObserver.class).observeReceiveSystemMsg(systemMessageObserver, true);
     }
 
     @Override
@@ -148,38 +174,15 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
         NIMClient.getService(MsgServiceObserve.class).observeReceiveMessage(incomingMessageObserver, false);
         NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotificationObserver, false);
-        NIMClient.getService(FriendServiceObserve.class).observeFriendChangedNotify(friendChangedNotifyObserver, false);
+        NIMClient.getService(SystemMessageObserver.class).observeReceiveSystemMsg(systemMessageObserver, false);
     }
 
-    private void getUserInfo() {
-        List<String> friends = new ArrayList<>();
-        friends.add(AppConfig.getUserAccid(MainActivity.this));
-        List<NimUserInfo> users = NIMClient.getService(UserService.class).getUserInfoList(friends);
 
-        for (NimUserInfo userInfo : users) {
-            Log.e("本地获取：用户名", userInfo.getName());
-        }
-
-        friends.add("2013329700040");
-        NIMClient.getService(UserService.class)
-                .fetchUserInfo(friends)
-                .setCallback(new RequestCallback<List<NimUserInfo>>() {
-                    @Override
-                    public void onSuccess(List<NimUserInfo> param) {
-                        for (NimUserInfo userInfo : param) {
-                            Log.e("网络获取用户名", userInfo.getName());
-                        }
-                    }
-
-                    @Override
-                    public void onFailed(int code) {
-
-                    }
-
-                    @Override
-                    public void onException(Throwable exception) {
-
-                    }
-                });
+    private void showPKDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        dialog.show();
+        Window window = dialog.getWindow();
+        window.setContentView(R.layout.dialog_receive_pk);
     }
+
 }

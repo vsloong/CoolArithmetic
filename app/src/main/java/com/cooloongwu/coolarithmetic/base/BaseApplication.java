@@ -4,14 +4,17 @@ import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Environment;
+import android.util.Log;
 
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.activity.LauncherActivity;
 import com.cooloongwu.coolarithmetic.utils.AsyncHttpClientUtils;
 import com.loopj.android.http.AsyncHttpClient;
 import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
+import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
@@ -95,7 +98,7 @@ public class BaseApplication extends Application {
 
     // 如果已经存在用户登录信息，返回LoginInfo，否则返回null即可
     private LoginInfo loginInfo() {
-        LoginInfo info = new LoginInfo(AppConfig.getUserAccid(getApplicationContext()), AppConfig.getUserToken(getApplicationContext()));
-        return info;
+
+        return new LoginInfo(AppConfig.getUserAccid(getApplicationContext()), AppConfig.getUserToken(getApplicationContext()));
     }
 }
