@@ -62,13 +62,15 @@ public class MainActivity extends BaseActivity {
             try {
                 JSONObject jsonObject = new JSONObject(message.getContent());
                 String fromAccid = message.getFromAccount();
+
                 MsgTypeEnum typeEnum = MsgTypeEnum.valueOf(jsonObject.getString("type"));
                 switch (typeEnum) {
                     case PK:
-                        showPKDialog();
+
+                        showPKDialog(fromAccid);
                         break;
                     default:
-                        showPKDialog();
+                        showPKDialog(fromAccid);
                         break;
                 }
 
@@ -178,11 +180,16 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    private void showPKDialog() {
+    private void showPKDialog(String fromAccid) {
         AlertDialog dialog = new AlertDialog.Builder(this).create();
         dialog.show();
         Window window = dialog.getWindow();
         window.setContentView(R.layout.dialog_receive_pk);
+
+        TextView text_challenger_name = (TextView) window.findViewById(R.id.text_challenger_name);
+        TextView text_challenger_declaration = (TextView) window.findViewById(R.id.text_challenger_declaration);
+
+
     }
 
 }

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cooloongwu.coolarithmetic.fragment.FightFragment">
+    tools:context="com.cooloongwu.coolarithmetic.fragment.MsgFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,37 +23,21 @@
                 android:background="?attr/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        </android.support.design.widget.AppBarLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
             <android.support.design.widget.TabLayout
                 android:id="@+id/layout_tab"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                app:tabBackground="@color/white"
-                app:tabIndicatorHeight="0dp"
-                app:tabSelectedTextColor="@color/text_selected"
-                app:tabTextAppearance="@style/TabLayoutTextStyle"
-                app:tabTextColor="@color/text_default" />
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                app:tabIndicatorColor="@color/white"
+                app:tabSelectedTextColor="#e6e6e6"
+                app:tabTextColor="@color/white" />
+        </android.support.design.widget.AppBarLayout>
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@id/layout_tab" />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-        </RelativeLayout>
     </LinearLayout>
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="还没做，别急"
-        android:textSize="56sp" />
 
 </FrameLayout>

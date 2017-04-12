@@ -14,6 +14,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
             android:background="#fff9f7ea">
 
             <RelativeLayout
@@ -68,20 +69,20 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxWidth="200dp"
+                        android:text="名字啊"
                         android:textColor="@color/white"
-                        android:textSize="15sp"
-                        android:text="名字啊" />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/profile_school"
+                    android:id="@+id/text_profile_school"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:textColor="@color/white"
                     android:layout_marginTop="4dp"
-                    android:textSize="10sp"
-                    android:text="这是你学校的名字" />
+                    android:text="这是你学校的名字"
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
 
                 <RelativeLayout
                     android:layout_width="fill_parent"
@@ -227,6 +228,16 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="16dp"
+                android:background="@drawable/selector_login_btn"
+                android:text="注销"
+                android:textColor="@color/white" />
         </RelativeLayout>
     </LinearLayout>
 

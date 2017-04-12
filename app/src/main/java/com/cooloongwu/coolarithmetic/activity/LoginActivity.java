@@ -128,7 +128,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void login() {
-        String accid = edit_phone.getText().toString().trim();
+        final String accid = edit_phone.getText().toString().trim();
         final String password = edit_password.getText().toString().trim();
         LoginInfo info = new LoginInfo(accid, MD5Utils.getMD5(password));
         NIMClient.getService(AuthService.class).login(info).setCallback(new RequestCallback<LoginInfo>() {
@@ -136,6 +136,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     public void onSuccess(LoginInfo param) {
                         Log.e("登录", "成功");
                         AppConfig.setUserToken(LoginActivity.this, MD5Utils.getMD5(password));
+                        AppConfig.setUserAccid(LoginActivity.this, accid);
                         StartActivityUtils.startMainActivity(LoginActivity.this);
                         finish();
                     }

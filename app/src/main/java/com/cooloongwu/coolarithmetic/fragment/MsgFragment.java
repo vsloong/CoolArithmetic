@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.adapter.MsgTabViewPagerAdapter;
@@ -17,7 +16,7 @@ import com.cooloongwu.coolarithmetic.base.BaseFragment;
 public class MsgFragment extends BaseFragment {
 
     //Tab 文字
-    public static final String[] TAB_TITLES = new String[]{"闯关", "PK"};
+    public static final String[] TAB_TITLES = new String[]{"消息", "好友"};
     //Fragment 数组
     public static final Fragment[] TAB_FRAGMENTS = new Fragment[]{new MsgConversationFragment(), new MsgContactsFragment()};
 
@@ -43,7 +42,8 @@ public class MsgFragment extends BaseFragment {
     @Override
     protected void initViews(View view) {
         TabLayout layout_tab = (TabLayout) view.findViewById(R.id.layout_tab);
-        setTabs(layout_tab);
+        layout_tab.addTab(layout_tab.newTab().setText("消息"));
+        layout_tab.addTab(layout_tab.newTab().setText("好友"));
         final ViewPager view_pager = (ViewPager) view.findViewById(R.id.view_pager);
 
         MsgTabViewPagerAdapter adapter = new MsgTabViewPagerAdapter(getChildFragmentManager());
@@ -67,24 +67,5 @@ public class MsgFragment extends BaseFragment {
 
             }
         });
-    }
-
-
-    private void setTabs(TabLayout layout_tab) {
-        for (int i = 0; i < TAB_FRAGMENTS.length; i++) {
-
-            TabLayout.Tab tab = layout_tab.newTab();
-            //方法一，简单但是不能自定义
-//            tab.setIcon(TAB_IMGS[i]);
-//            tab.setText(TAB_TITLES[i]);
-
-            //方法二，可以自定义
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.item_main_tab, null);
-            tab.setCustomView(view);
-            TextView text_tab = (TextView) view.findViewById(R.id.text_tab);
-            text_tab.setText(TAB_TITLES[i]);
-
-            layout_tab.addTab(tab);
-        }
     }
 }

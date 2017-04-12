@@ -43,4 +43,6 @@ dependencies {
     compile 'com.netease.nimlib:rts:3.5.5'
     compile 'com.loopj.android:android-async-http:1.4.9'
     testCompile 'junit:junit:4.12'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
 }
