@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,12 +31,14 @@ import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.SystemMessage;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     //Tab 文字
     public static final String[] TAB_TITLES = new String[]{"闯关", "PK", "聊天", "我"};
@@ -45,6 +48,10 @@ public class MainActivity extends BaseActivity {
     public static final Fragment[] TAB_FRAGMENTS = new Fragment[]{new FightFragment(), new PKFragment(), new MsgFragment(), new MeFragment()};
     //Tab 数目
     public static int TAB_COUNT = TAB_TITLES.length;
+
+    private AlertDialog pkRequestDialog;
+    private AlertDialog pkReceiveDialog;
+    TextView text_request_msg;
 
     private Observer<List<IMMessage>> incomingMessageObserver = new Observer<List<IMMessage>>() {
         @Override
@@ -66,11 +73,22 @@ public class MainActivity extends BaseActivity {
                 MsgTypeEnum typeEnum = MsgTypeEnum.valueOf(jsonObject.getString("type"));
                 switch (typeEnum) {
                     case PK:
-
+                        MsgTypeEnum subtypeEnum = MsgTypeEnum.valueOf(jsonObject.getString("subtype"));
+                        switch (subtypeEnum) {
+                            case PK_REQUEST:
+                                break;
+                            case PK_AGREE:
+                                text_request_msg.setText("对方接受了请求");
+                                break;
+                            case PK_REJECT:
+                                text_request_msg.setText("对方拒绝了请求");
+                                break;
+                            default:
+                                break;
+                        }
                         showPKDialog(fromAccid);
                         break;
                     default:
-                        showPKDialog(fromAccid);
                         break;
                 }
 
@@ -111,9 +129,9 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        EventBus.getDefault().register(this);
 
         initViews();
-
         NIMClient.getService(MsgServiceObserve.class).observeReceiveMessage(incomingMessageObserver, true);
         NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotificationObserver, true);
         NIMClient.getService(SystemMessageObserver.class).observeReceiveSystemMsg(systemMessageObserver, true);
@@ -174,22 +192,56 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         NIMClient.getService(MsgServiceObserve.class).observeReceiveMessage(incomingMessageObserver, false);
         NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotificationObserver, false);
         NIMClient.getService(SystemMessageObserver.class).observeReceiveSystemMsg(systemMessageObserver, false);
     }
 
+    @Subscribe
+    public void onEventMainThread(MsgTypeEnum msgTypeEnum) {
+        if (msgTypeEnum == MsgTypeEnum.PK_REQUEST) {
+            showPKRequestDialog();
+        }
+    }
 
     private void showPKDialog(String fromAccid) {
-        AlertDialog dialog = new AlertDialog.Builder(this).create();
-        dialog.show();
-        Window window = dialog.getWindow();
-        window.setContentView(R.layout.dialog_receive_pk);
+        pkReceiveDialog = new AlertDialog.Builder(this).create();
+        pkReceiveDialog.show();
+        Window window = pkReceiveDialog.getWindow();
+        window.setContentView(R.layout.dialog_pk_receive);
 
         TextView text_challenger_name = (TextView) window.findViewById(R.id.text_challenger_name);
         TextView text_challenger_declaration = (TextView) window.findViewById(R.id.text_challenger_declaration);
-
-
+        Button btn_reject = (Button) window.findViewById(R.id.btn_reject);
+        Button btn_agree = (Button) window.findViewById(R.id.btn_agree);
+        btn_agree.setOnClickListener(this);
+        btn_reject.setOnClickListener(this);
     }
 
+    public void showPKRequestDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = View.inflate(this, R.layout.dialog_pk_request, null);
+        text_request_msg = (TextView) view.findViewById(R.id.text_request_msg);
+        builder.setView(view);
+        builder.setCancelable(true);
+        //取消或确定按钮监听事件处理
+        pkRequestDialog = builder.create();
+        pkRequestDialog.show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_agree:
+                //SendMsgUtils.sendCustomMsg("", MsgTypeEnum.PK, MsgTypeEnum.PK_AGREE);
+                break;
+            case R.id.btn_reject:
+                //SendMsgUtils.sendCustomMsg("", MsgTypeEnum.PK, MsgTypeEnum.PK_REJECT);
+                break;
+
+            default:
+                break;
+        }
+    }
 }

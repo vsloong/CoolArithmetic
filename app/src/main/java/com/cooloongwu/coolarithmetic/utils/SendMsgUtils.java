@@ -24,7 +24,7 @@ import org.json.JSONObject;
 
 public class SendMsgUtils {
 
-    public static void sendCustomMsg(String accid, MsgTypeEnum type) {
+    public static void sendCustomMsg(String accid, MsgTypeEnum type, MsgTypeEnum subtype) {
         //只有接收方当前在线才会收到，如果发送方发送时，指定的接收者不在线，这条通知将会被丢弃。
         // 构造自定义通知，指定接收者
         CustomNotification notification = new CustomNotification();
@@ -35,6 +35,7 @@ public class SendMsgUtils {
         JSONObject json = new JSONObject();
         try {
             json.put("type", type);
+            json.put("subtype", subtype);
         } catch (JSONException e) {
             e.printStackTrace();
         }

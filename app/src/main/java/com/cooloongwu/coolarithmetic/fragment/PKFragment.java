@@ -14,6 +14,8 @@ import com.cooloongwu.coolarithmetic.utils.SendMsgUtils;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.friend.FriendService;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 public class PKFragment extends BaseFragment implements View.OnClickListener {
@@ -46,6 +48,7 @@ public class PKFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_pk_friend:
+                EventBus.getDefault().post(MsgTypeEnum.PK_REQUEST);
                 searchFriendToPK();
                 break;
             default:
@@ -55,6 +58,6 @@ public class PKFragment extends BaseFragment implements View.OnClickListener {
 
     private void searchFriendToPK() {
         List<String> friends = NIMClient.getService(FriendService.class).getFriendAccounts();
-        SendMsgUtils.sendCustomMsg(friends.get(0), MsgTypeEnum.PK);
+        SendMsgUtils.sendCustomMsg(friends.get(0), MsgTypeEnum.PK, MsgTypeEnum.PK_REQUEST);
     }
 }
