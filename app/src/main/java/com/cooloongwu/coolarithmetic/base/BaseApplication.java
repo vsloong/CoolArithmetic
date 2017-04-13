@@ -20,7 +20,7 @@ import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 
 /**
- * Application的基类
+ * Application的基类，用来初始化网易云信，AsyncHttpClient等SDK
  * Created by CooLoongWu on 2017-3-31 14:32.
  */
 
@@ -55,8 +55,7 @@ public class BaseApplication extends Application {
         // 如果 options 中没有设置这个值，SDK 会使用下面代码示例中的位置作为 SDK 的数据目录。
         // 该目录目前包含 log, file, image, audio, video, thumb 这6个目录。
         // 如果第三方 APP 需要缓存清理功能， 清理这个目录下面个子目录的内容即可。
-        String sdkPath = Environment.getExternalStorageDirectory() + "/" + getPackageName() + "/nim";
-        options.sdkStorageRootPath = sdkPath;
+        options.sdkStorageRootPath = Environment.getExternalStorageDirectory() + "/" + getPackageName() + "/nim";
 
         // 配置是否需要预下载附件缩略图，默认为 true
         options.preloadAttach = true;
@@ -96,9 +95,4 @@ public class BaseApplication extends Application {
         return options;
     }
 
-    // 如果已经存在用户登录信息，返回LoginInfo，否则返回null即可
-    private LoginInfo loginInfo() {
-
-        return new LoginInfo(AppConfig.getUserAccid(getApplicationContext()), AppConfig.getUserToken(getApplicationContext()));
-    }
 }

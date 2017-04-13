@@ -1,7 +1,7 @@
 package com.cooloongwu.coolarithmetic.entity;
 
 /**
- * 枚举类
+ * 消息类型的枚举类
  * Created by CooLoongWu on 2017-4-10 17:26.
  */
 

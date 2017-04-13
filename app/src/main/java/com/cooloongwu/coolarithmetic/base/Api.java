@@ -8,7 +8,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 /**
- * App的Api
+ * App的接口类，用来提供用户登录注册等的接口
  * Created by CooLoongWu on 2017-4-7 09:53.
  */
 

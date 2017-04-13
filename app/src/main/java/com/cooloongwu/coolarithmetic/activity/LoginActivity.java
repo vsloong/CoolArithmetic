@@ -64,6 +64,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         img_clear_password.setOnClickListener(this);
     }
 
+    /**
+     * 电话输入框的监听事件，长度大于零密码才能点击
+     */
     private class PhoneTextWatcher implements TextWatcher {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -85,6 +88,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
+    /**
+     * 密码输入框的监听事件，长度大于零密码才能点击
+     */
     private class PasswordTextWatcher implements TextWatcher {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -120,6 +126,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 edit_password.setText("");
                 break;
             case R.id.text_register:
+                //去注册页面
                 StartActivityUtils.startRegisterActivity(LoginActivity.this);
                 break;
             default:

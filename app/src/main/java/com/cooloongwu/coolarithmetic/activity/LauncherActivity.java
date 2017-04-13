@@ -23,16 +23,20 @@ public class LauncherActivity extends BaseActivity {
         goNext();
     }
 
+    /**
+     * 根据本地是否存储了用户的Token来判断是自动登录还是去注册或者手动登录
+     */
     private void goNext() {
-
         if (TextUtils.isEmpty(AppConfig.getUserToken(LauncherActivity.this))) {
             goLogin();
         } else {
             goMain();
         }
-
     }
 
+    /**
+     * 延迟1.5秒后，去登录页面手动登录
+     */
     private void goLogin() {
         Runnable runnable = new Runnable() {
             @Override
@@ -45,6 +49,9 @@ public class LauncherActivity extends BaseActivity {
         handler.postDelayed(runnable, 1500);
     }
 
+    /**
+     * 自动登录，直接跳转到主页面
+     */
     private void goMain() {
         LoginInfo info = new LoginInfo(AppConfig.getUserAccid(LauncherActivity.this), AppConfig.getUserToken(LauncherActivity.this));
         NIMClient.getService(AuthService.class).login(info).setCallback(new RequestCallback<LoginInfo>() {
