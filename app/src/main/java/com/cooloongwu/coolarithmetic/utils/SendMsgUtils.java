@@ -24,18 +24,20 @@ import org.json.JSONObject;
 
 public class SendMsgUtils {
 
-    public static void sendCustomMsg(String accid, MsgTypeEnum type, MsgTypeEnum subtype) {
+    public static void sendPKMsg(String toAccid, String fromName, String msg, MsgTypeEnum subtype) {
         //只有接收方当前在线才会收到，如果发送方发送时，指定的接收者不在线，这条通知将会被丢弃。
         // 构造自定义通知，指定接收者
         CustomNotification notification = new CustomNotification();
-        notification.setSessionId(accid);
+        notification.setSessionId(toAccid);
         notification.setSessionType(SessionTypeEnum.P2P);
 
         // 构建通知的具体内容。为了可扩展性，这里采用 json 格式
         JSONObject json = new JSONObject();
         try {
-            json.put("type", type);
+            json.put("type", MsgTypeEnum.PK);
             json.put("subtype", subtype);
+            json.put("fromName", fromName);
+            json.put("msg", msg);
         } catch (JSONException e) {
             e.printStackTrace();
         }

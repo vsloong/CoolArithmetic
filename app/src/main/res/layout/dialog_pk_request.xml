@@ -22,20 +22,21 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
-        android:text="等待中....."
+        android:text="等待对方应答中..."
         android:textColor="@color/text_exam_submit"
         android:textSize="20sp" />
 
     <Button
-        android:id="@+id/btn_know"
+        android:id="@+id/btn_cancel"
         android:layout_width="fill_parent"
         android:layout_height="44dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:background="@drawable/shape_blue"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/selector_btn_waiting_cancel"
+        android:enabled="false"
         android:gravity="center"
-        android:text="我知道啦"
+        android:text="取消请求"
         android:textColor="@color/white"
-        android:textSize="17sp"
-        android:visibility="gone" />
+        android:textSize="17sp" />
 </LinearLayout>
