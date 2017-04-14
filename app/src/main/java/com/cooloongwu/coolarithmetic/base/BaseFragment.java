@@ -10,6 +10,11 @@ import android.view.View;
 
 public class BaseFragment extends Fragment {
 
+    /**
+     * 建议在这里初始化视图
+     *
+     * @param view 视图
+     */
     protected void initViews(View view) {
 
     }

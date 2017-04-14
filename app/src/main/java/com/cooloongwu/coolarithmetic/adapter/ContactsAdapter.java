@@ -16,20 +16,27 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
- * 年级的适配器
+ * 联系人的适配器
  * Created by CooLoongWu on 2017-3-31 15:03.
  */
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
 
     private Context context;
-    private List<NimUserInfo> listData;
+    private List<NimUserInfo> listData; //联系人的列表数据
 
     public ContactsAdapter(Context context, List<NimUserInfo> listData) {
         this.context = context;
         this.listData = listData;
     }
 
+    /**
+     * 创建联系人每一条Item的布局
+     *
+     * @param parent   ViewGroup
+     * @param viewType 没有Type
+     * @return ViewHolder
+     */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_contact, parent, false);
@@ -41,6 +48,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         holder.text_name.setText(listData.get(position).getName());
 
         String avatar = TextUtils.isEmpty(listData.get(position).getAvatar()) ? "default" : listData.get(position).getAvatar();
+
+        //使用Picasso框架加载网络图片到图片视图上
         Picasso.with(context)
                 .load(avatar)
                 .placeholder(R.mipmap.avatar)

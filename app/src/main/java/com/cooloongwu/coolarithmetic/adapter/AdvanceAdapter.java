@@ -22,6 +22,7 @@ import com.cooloongwu.coolarithmetic.utils.StartActivityUtils;
 public class AdvanceAdapter extends RecyclerView.Adapter<AdvanceAdapter.ViewHolder> {
 
     private Context context;
+    //闯关的背景图
     private int[] ADVANCE_IMGS = {
             R.mipmap.img_advance_item_1,
             R.mipmap.img_advance_item_2,
@@ -45,10 +46,17 @@ public class AdvanceAdapter extends RecyclerView.Adapter<AdvanceAdapter.ViewHold
         this.context = context;
     }
 
+    //左 右 中间 三个属性的枚举类
     private enum ITEM_LOCATION {
         LEFT, CENTER, RIGHT
     }
 
+    /**
+     * 根据位置设置不同的布局类型
+     *
+     * @param position 位置
+     * @return 枚举类型
+     */
     @Override
     public int getItemViewType(int position) {
         position++;
@@ -62,6 +70,13 @@ public class AdvanceAdapter extends RecyclerView.Adapter<AdvanceAdapter.ViewHold
         }
     }
 
+    /**
+     * 根据不同的属性返回不同的布局文件，实现闯关的曲线
+     *
+     * @param parent   ViewGroup
+     * @param viewType viewType
+     * @return ViewHolder
+     */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
@@ -92,6 +107,7 @@ public class AdvanceAdapter extends RecyclerView.Adapter<AdvanceAdapter.ViewHold
         holder.text_advance_level.setText(String.valueOf(position + 1));
         holder.text_advance_level.setBackground(ContextCompat.getDrawable(context, R.mipmap.icon_advance_btn_on));
 
+        //每个关卡按钮的点击事件
         holder.text_advance_level.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
