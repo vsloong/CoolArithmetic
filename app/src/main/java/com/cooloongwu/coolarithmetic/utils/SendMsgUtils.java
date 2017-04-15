@@ -57,7 +57,7 @@ public class SendMsgUtils {
 
             @Override
             public void onException(Throwable exception) {
-                Log.e("自定义消息发送", "onException");
+                Log.e("自定义消息发送", "onException" + "" + exception.toString());
             }
         });
     }

@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private AlertDialog pkRequestDialog;
     TextView text_request_msg;
 
-    private String fromAccid;
+    public static String fromAccid;
     private int countdown = 10;
     private Button btn_waiting_cancel;
 
@@ -96,7 +96,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             case PK_AGREE:
                                 if (pkWaitingDialog != null && pkWaitingDialog.isShowing()) {
                                     text_request_msg.setText("对方接受了请求");
-                                    timeHandler.removeCallbacksAndMessages(null);
+                                    timeHandler.removeMessages(1);
                                     btn_waiting_cancel.setEnabled(false);
                                     pkWaitingDialog.dismiss();
                                 }
@@ -104,14 +104,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             case PK_REJECT:
                                 if (pkWaitingDialog != null && pkWaitingDialog.isShowing()) {
                                     text_request_msg.setText("对方拒绝了请求");
-                                    timeHandler.removeCallbacksAndMessages(null);
+                                    timeHandler.removeMessages(1);
                                     btn_waiting_cancel.setEnabled(true);
                                 }
                                 break;
                             case PK_BUSY:
                                 if (pkWaitingDialog != null && pkWaitingDialog.isShowing()) {
                                     text_request_msg.setText("对方正在挑战中");
-                                    timeHandler.removeCallbacksAndMessages(null);
+                                    timeHandler.removeMessages(1);
                                     btn_waiting_cancel.setEnabled(true);
                                 }
                                 break;
@@ -299,7 +299,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.btn_cancel:
                 if (pkWaitingDialog != null && pkWaitingDialog.isShowing()) {
                     pkWaitingDialog.dismiss();
+                    SendMsgUtils.sendPKMsg(fromAccid, AppConfig.getUserName(this), "", MsgTypeEnum.PK_CANCEL);
                 }
+                countdown = 10;
                 break;
             default:
                 break;
@@ -312,7 +314,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             switch (msg.what) {
                 case 1:
                     countdown--;
-                    text_request_msg.setText("等待对方应答中" + countdown + "...");
+                    text_request_msg.setText("等待对方应答中（" + countdown + "s）...");
 
                     if (countdown > 0) {
                         timeHandler.sendEmptyMessageDelayed(1, 1000);
@@ -321,7 +323,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         if (btn_waiting_cancel != null) {
                             btn_waiting_cancel.setEnabled(true);
                         }
-                        SendMsgUtils.sendPKMsg(fromAccid, AppConfig.getUserName(MainActivity.this), "", MsgTypeEnum.PK_CANCEL);
                     }
             }
             super.handleMessage(msg);

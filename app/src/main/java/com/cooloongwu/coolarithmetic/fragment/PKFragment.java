@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.cooloongwu.coolarithmetic.R;
+import com.cooloongwu.coolarithmetic.activity.MainActivity;
 import com.cooloongwu.coolarithmetic.base.AppConfig;
 import com.cooloongwu.coolarithmetic.base.BaseFragment;
 import com.cooloongwu.coolarithmetic.entity.MsgTypeEnum;
@@ -59,6 +60,7 @@ public class PKFragment extends BaseFragment implements View.OnClickListener {
 
     private void searchFriendToPK() {
         List<String> friends = NIMClient.getService(FriendService.class).getFriendAccounts();
+        MainActivity.fromAccid = friends.get(0);
         SendMsgUtils.sendPKMsg(friends.get(0), AppConfig.getUserName(getActivity()), "来PK啊，辣鸡", MsgTypeEnum.PK_REQUEST);
     }
 }
