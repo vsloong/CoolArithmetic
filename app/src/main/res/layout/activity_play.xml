@@ -1,59 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cooloongwu.coolarithmetic.activity.PlayActivity">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <!--<android.support.design.widget.AppBarLayout-->
+    <!--android:id="@+id/layout_appbar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:theme="@style/AppTheme.AppBarOverlay">-->
+
+    <!--<android.support.v7.widget.Toolbar-->
+    <!--android:id="@+id/toolbar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="?attr/actionBarSize"-->
+    <!--android:background="?attr/colorPrimary"-->
+    <!--app:navigationIcon="?attr/homeAsUpIndicator"-->
+    <!--app:popupTheme="@style/AppTheme.PopupOverlay" />-->
+
+    <!--</android.support.design.widget.AppBarLayout>-->
+
+    <include layout="@layout/layout_pk_head" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/layout_appbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:navigationIcon="?attr/homeAsUpIndicator"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-        </android.support.design.widget.AppBarLayout>
+        android:layout_height="match_parent">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:id="@+id/play_opt_panel"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true">
 
-            <RelativeLayout
-                android:id="@+id/play_opt_panel"
-                android:layout_width="fill_parent"
+            <TextView
+                android:id="@+id/block_scene_next"
+                android:layout_width="70dp"
                 android:layout_height="50dp"
-                android:layout_alignParentBottom="true">
-
-                <TextView
-                    android:id="@+id/block_scene_next"
-                    android:layout_width="70dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@drawable/selector_btn_next"
-                    android:gravity="center"
-                    android:text="下一题"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
-            </RelativeLayout>
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/selector_btn_next"
+                android:gravity="center"
+                android:text="下一题"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
         </RelativeLayout>
-    </LinearLayout>
-
-
-</android.support.constraint.ConstraintLayout>
+    </RelativeLayout>
+</LinearLayout>

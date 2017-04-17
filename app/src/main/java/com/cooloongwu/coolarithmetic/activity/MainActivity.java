@@ -54,6 +54,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private AlertDialog pkWaitingDialog;
     private AlertDialog pkRequestDialog;
+    private AlertDialog pkPrepareDialog;
     TextView text_request_msg;
 
     public static String fromAccid;
@@ -99,6 +100,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                     timeHandler.removeMessages(1);
                                     btn_waiting_cancel.setEnabled(false);
                                     pkWaitingDialog.dismiss();
+
+                                    showPKPrepareDialog();
                                 }
                                 break;
                             case PK_REJECT:
@@ -285,12 +288,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         timeHandler.sendEmptyMessageDelayed(1, 1000);
     }
 
+    /**
+     * 展示准备PK的对话框
+     */
+    public void showPKPrepareDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = View.inflate(this, R.layout.dialog_pk_prepare, null);
+
+        builder.setView(view);
+        builder.setCancelable(false);
+        //取消或确定按钮监听事件处理
+        pkPrepareDialog = builder.create();
+        pkPrepareDialog.show();
+
+        timeHandler.sendEmptyMessageDelayed(2, 2000);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_agree:
                 SendMsgUtils.sendPKMsg(fromAccid, AppConfig.getUserName(this), "", MsgTypeEnum.PK_AGREE);
                 pkRequestDialog.dismiss();
+
+                showPKPrepareDialog();
                 break;
             case R.id.btn_reject:
                 SendMsgUtils.sendPKMsg(fromAccid, AppConfig.getUserName(this), "", MsgTypeEnum.PK_REJECT);
@@ -324,6 +345,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             btn_waiting_cancel.setEnabled(true);
                         }
                     }
+                case 2:
+//                    if (pkPrepareDialog != null) {
+//                        pkPrepareDialog.dismiss();
+//                    }
+//                    StartActivityUtils.startPlayActivity(MainActivity.this);
+                    break;
+
             }
             super.handleMessage(msg);
         }

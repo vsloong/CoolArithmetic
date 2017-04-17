@@ -14,7 +14,7 @@ public class PlayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        initToolbar();
+        //initToolbar();
     }
 
     private void initToolbar() {

@@ -15,9 +15,10 @@
     <color name="color_black_333333">#ff333333</color>
     <color name="color_black_c1c1c1">#ffc1c1c1</color>
     <color name="color_90969e">#ff90969e</color>
-
+    <color name="color_trans">#00000000</color>
     <!-- TabLayout -->
     <color name="white">#FFFFFF</color>
+
     <color name="purple">#ff9f6fd7</color>
     <color name="tab_indicator">#FFFFFF</color>
     <color name="tab_text_normal">@color/text_default</color>
