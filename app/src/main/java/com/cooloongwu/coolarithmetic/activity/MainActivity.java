@@ -24,6 +24,7 @@ import com.cooloongwu.coolarithmetic.fragment.MeFragment;
 import com.cooloongwu.coolarithmetic.fragment.MsgFragment;
 import com.cooloongwu.coolarithmetic.fragment.PKFragment;
 import com.cooloongwu.coolarithmetic.utils.SendMsgUtils;
+import com.cooloongwu.coolarithmetic.utils.StartActivityUtils;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.friend.model.AddFriendNotify;
@@ -345,13 +346,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             btn_waiting_cancel.setEnabled(true);
                         }
                     }
-                case 2:
-//                    if (pkPrepareDialog != null) {
-//                        pkPrepareDialog.dismiss();
-//                    }
-//                    StartActivityUtils.startPlayActivity(MainActivity.this);
                     break;
-
+                case 2:
+                    if (pkPrepareDialog != null) {
+                        pkPrepareDialog.dismiss();
+                    }
+                    StartActivityUtils.startPlayActivity(MainActivity.this);
+                    break;
+                default:
+                    break;
             }
             super.handleMessage(msg);
         }
