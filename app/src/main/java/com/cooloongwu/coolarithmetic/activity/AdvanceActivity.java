@@ -11,22 +11,31 @@ import android.widget.TextView;
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.adapter.AdvanceAdapter;
 import com.cooloongwu.coolarithmetic.base.BaseActivity;
+import com.cooloongwu.coolarithmetic.entity.Advance;
+import com.cooloongwu.coolarithmetic.utils.GreenDAOUtils;
+import com.cooloongwu.greendao.gen.AdvanceDao;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * 闯关Activity
  */
 public class AdvanceActivity extends BaseActivity implements View.OnClickListener {
 
-    private int grade = 1;
+    private int grade = 0;
 
     private TextView text_grade;
     private TextView text_progress;
+
+    private Advance advance;
+    private AdvanceAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_advance);
-
+        EventBus.getDefault().register(this);
         getIntentData();
         initViews();
         setDataToViews();
@@ -48,7 +57,7 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
         view_recycler.setLayoutManager(layoutManager);
 
         //初始化闯关的适配器
-        AdvanceAdapter adapter = new AdvanceAdapter(AdvanceActivity.this);
+        adapter = new AdvanceAdapter(AdvanceActivity.this, advance);
         //给RecyclerView设置适配器
         view_recycler.setAdapter(adapter);
 
@@ -60,15 +69,28 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
      */
     private void getIntentData() {
         Intent intent = getIntent();
-        grade = intent.getIntExtra("grade", 1);
+        grade = intent.getIntExtra("grade", 0);
+
+        advance = GreenDAOUtils.getInstance(AdvanceActivity.this).getAdvanceDao()
+                .queryBuilder()
+                .where(AdvanceDao.Properties.Grade.eq(grade))
+                .build().unique();
+
+        if (advance == null) {
+            Advance temp = new Advance();
+            temp.setGrade(grade);
+            temp.setAdvance(0);
+            advance = temp;
+            GreenDAOUtils.getInstance(AdvanceActivity.this).getAdvanceDao().insert(temp);
+        }
     }
 
     /**
      * 将数据设置到视图控件上
      */
     private void setDataToViews() {
-        text_grade.setText(getResources().getStringArray(R.array.grade_name)[grade - 1]);
-        text_progress.setText(R.string.advance_num);
+        text_grade.setText(getResources().getStringArray(R.array.grade_name)[grade]);
+        text_progress.setText((advance.getAdvance() + 1) + "/20");
     }
 
     @Override
@@ -80,5 +102,16 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
             default:
                 break;
         }
+    }
+
+    @Subscribe
+    public void onEventMainThread(Advance advance) {
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

@@ -1,6 +1,7 @@
 package com.cooloongwu.coolarithmetic.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -12,11 +13,21 @@ import android.widget.ImageView;
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.adapter.GradeAdapter;
 import com.cooloongwu.coolarithmetic.base.BaseFragment;
+import com.cooloongwu.coolarithmetic.entity.Advance;
 import com.cooloongwu.coolarithmetic.utils.StartActivityUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public class FightFragment extends BaseFragment implements View.OnClickListener {
 
     private GradeAdapter adapter;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,5 +63,16 @@ public class FightFragment extends BaseFragment implements View.OnClickListener 
             default:
                 break;
         }
+    }
+
+    @Subscribe
+    public void onEventMainThread(Advance advance) {
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

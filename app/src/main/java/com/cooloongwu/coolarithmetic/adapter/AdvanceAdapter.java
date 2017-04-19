@@ -12,16 +12,22 @@ import android.widget.Toast;
 
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.activity.AdvanceActivity;
+import com.cooloongwu.coolarithmetic.entity.Advance;
+import com.cooloongwu.coolarithmetic.utils.GreenDAOUtils;
 import com.cooloongwu.coolarithmetic.utils.StartActivityUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
- * 年级的适配器
+ * 闯关的适配器
  * Created by CooLoongWu on 2017-3-31 15:03.
  */
 
 public class AdvanceAdapter extends RecyclerView.Adapter<AdvanceAdapter.ViewHolder> {
 
     private Context context;
+    private Advance advance;
+
     //闯关的背景图
     private int[] ADVANCE_IMGS = {
             R.mipmap.img_advance_item_1,
@@ -42,8 +48,9 @@ public class AdvanceAdapter extends RecyclerView.Adapter<AdvanceAdapter.ViewHold
             R.mipmap.img_advance_item_16
     };
 
-    public AdvanceAdapter(Context context) {
+    public AdvanceAdapter(Context context, Advance advance) {
         this.context = context;
+        this.advance = advance;
     }
 
     //左 右 中间 三个属性的枚举类
@@ -105,14 +112,33 @@ public class AdvanceAdapter extends RecyclerView.Adapter<AdvanceAdapter.ViewHold
         }
 
         holder.text_advance_level.setText(String.valueOf(position + 1));
-        holder.text_advance_level.setBackground(ContextCompat.getDrawable(context, R.mipmap.icon_advance_btn_on));
+
+
+        holder.text_advance_level.setBackground(
+                position <= advance.getAdvance() ?
+                        ContextCompat.getDrawable(context, R.mipmap.icon_advance_btn_on) :
+                        ContextCompat.getDrawable(context, R.mipmap.icon_advance_btn_disable)
+        );
 
         //每个关卡按钮的点击事件
         holder.text_advance_level.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StartActivityUtils.startPlayActivity((AdvanceActivity) context);
-                Toast.makeText(context, "点击了", Toast.LENGTH_SHORT).show();
+                if (position <= advance.getAdvance()) {
+                    StartActivityUtils.startPlayActivity((AdvanceActivity) context);
+                } else {
+                    Toast.makeText(context, "请您闯完前面关卡再来吧", Toast.LENGTH_SHORT).show();
+
+                    if (advance.getAdvance() < 20) {
+                        advance.setAdvance(advance.getAdvance() + 1);
+                    } else {
+                        advance.setAdvance(19);
+                    }
+                    GreenDAOUtils.getInstance(context).getAdvanceDao().update(advance);
+
+                    EventBus.getDefault().post(new Advance());
+                }
+
             }
         });
 

@@ -1,20 +1,13 @@
 apply plugin: 'com.android.application'
 
 //=========================GreenDao所需=========================
-//apply plugin: 'org.greenrobot.greendao'
-//buildscript {
-//    repositories {
-//        mavenCentral()
-//    }
-//    dependencies {
-//        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add plugin
-//    }
-//}
-//greendao {
-//    schemaVersion 2                             //数据库版本号
-//    daoPackage 'com.cooloongwu.greendao.gen'    //设置DaoMaster、DaoSession、Dao包名
-//    targetGenDir 'src/main/java'                //设置DaoMaster、DaoSession、Dao目录
-//}
+apply plugin: 'org.greenrobot.greendao'
+
+greendao {
+    schemaVersion 2                             //数据库版本号
+    daoPackage 'com.cooloongwu.greendao.gen'    //设置DaoMaster、DaoSession、Dao包名
+    targetGenDir 'src/main/java'                //设置DaoMaster、DaoSession、Dao目录
+}
 //=========================GreenDao所需=========================
 
 android {
@@ -63,6 +56,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'org.greenrobot:eventbus:3.0.0'
-//    compile 'org.greenrobot:greendao-generator:3.2.2'
-//    compile 'org.greenrobot:greendao:3.2.2'
+    compile 'org.greenrobot:greendao-generator:3.2.2'
+    compile 'org.greenrobot:greendao:3.2.2'
 }

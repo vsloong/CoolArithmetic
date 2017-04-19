@@ -37,6 +37,12 @@ public class AppConfig {
     private static final String defaultUserAccid = "";
 
     /**
+     * 存储修改用户年级，默认为一年级
+     */
+    private static final String USER_GRADE = "user_grade";
+    private static final int defaultUserGrade = 1;
+
+    /**
      * 存储修改用户昵称，默认为空
      */
     private static final String USER_NAME = "user_name";
@@ -75,8 +81,8 @@ public class AppConfig {
      */
     public static String getUserDB(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        int userId = preferences.getInt(USER_ID, defaultUserId);
-        return defaultDB + userId;
+        String accid = preferences.getString(USER_ACCID, defaultUserAccid);
+        return defaultDB + accid;
     }
 
     /**
@@ -110,6 +116,23 @@ public class AppConfig {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getString(USER_ACCID, defaultUserAccid);
     }
+
+    /**
+     * 存储获取用户的年级
+     *
+     * @param context   上下文
+     * @param userGrade userGrade
+     */
+    public static void setUserGrade(Context context, int userGrade) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences.edit().putInt(USER_GRADE, userGrade).apply();
+    }
+
+    public static int getUserGrade(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getInt(USER_GRADE, defaultUserGrade);
+    }
+
 
     /**
      * 存储获取用户的昵称
