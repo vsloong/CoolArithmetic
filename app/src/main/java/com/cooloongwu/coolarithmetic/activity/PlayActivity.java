@@ -21,7 +21,6 @@ public class PlayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play);
 
         //initToolbar();
-        initData();
     }
 
     private void initToolbar() {
@@ -36,19 +35,5 @@ public class PlayActivity extends AppCompatActivity {
         });
     }
 
-    private void initData() {
-        List<Question> questions = GreenDAOUtils.getQuestionInstance(this).getQuestionDao()
-                .queryBuilder()
-                .where(QuestionDao.Properties.Grade.eq(0), QuestionDao.Properties.Advance.eq(0))
-                .build().list();
 
-        if (questions.isEmpty()) {
-            Log.e("题目", "没有");
-        } else {
-            for (Question question : questions) {
-                Log.e("题目", question.getQuestion());
-            }
-        }
-
-    }
 }

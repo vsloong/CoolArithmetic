@@ -82,7 +82,7 @@ public class AppConfig {
     public static String getUserDB(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String accid = preferences.getString(USER_ACCID, defaultUserAccid);
-        return defaultDB + accid;
+        return defaultDB + accid + ".db";
     }
 
     /**

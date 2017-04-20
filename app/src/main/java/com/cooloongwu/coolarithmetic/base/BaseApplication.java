@@ -4,6 +4,7 @@ import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Environment;
+import android.util.Log;
 
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.activity.LauncherActivity;
@@ -16,6 +17,8 @@ import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 
+import java.io.IOException;
+
 /**
  * Application的基类，用来初始化网易云信，AsyncHttpClient等SDK
  * Created by CooLoongWu on 2017-3-31 14:32.
@@ -23,16 +26,27 @@ import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 
 public class BaseApplication extends Application {
 
+    /**
+     * 单例对象
+     */
+    private static BaseApplication instance;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        instance = this;
+
         NIMClient.init(this, null, options());
 
         AsyncHttpClientUtils.setClientGeneral(new AsyncHttpClient());
 
         //将题库数据库放到apk的数据库位置
-        CopyDBToApk.initFile(getApplicationContext());
+        CopyDBToApk.initFile(this);
+    }
+
+    public static BaseApplication getInstance() {
+        return instance;
     }
 
     // 如果返回值为 null，则全部使用默认参数。

@@ -21,12 +21,15 @@ import com.cooloongwu.coolarithmetic.adapter.TabViewPagerAdapter;
 import com.cooloongwu.coolarithmetic.base.AppConfig;
 import com.cooloongwu.coolarithmetic.base.BaseActivity;
 import com.cooloongwu.coolarithmetic.entity.MsgTypeEnum;
+import com.cooloongwu.coolarithmetic.entity.Question;
 import com.cooloongwu.coolarithmetic.fragment.FightFragment;
 import com.cooloongwu.coolarithmetic.fragment.MeFragment;
 import com.cooloongwu.coolarithmetic.fragment.MsgFragment;
 import com.cooloongwu.coolarithmetic.fragment.PKFragment;
+import com.cooloongwu.coolarithmetic.utils.GreenDAOUtils;
 import com.cooloongwu.coolarithmetic.utils.SendMsgUtils;
 import com.cooloongwu.coolarithmetic.utils.StartActivityUtils;
+import com.cooloongwu.greendao.gen.QuestionDao;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.friend.model.AddFriendNotify;
@@ -374,5 +377,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+        test();
+    }
+
+    private void test() {
+        List<Question> questions = GreenDAOUtils.getQuestionDaoSession(this).getQuestionDao()
+                .queryBuilder().list();
+
+        if (questions.isEmpty()) {
+            Log.e("题目", "没有");
+        } else {
+            for (Question question : questions) {
+                Log.e("题目", question.getQuestion());
+            }
+        }
+
     }
 }

@@ -4,11 +4,17 @@ import android.content.Context;
 import android.util.Log;
 
 import com.cooloongwu.coolarithmetic.R;
+import com.cooloongwu.coolarithmetic.base.BaseApplication;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * Created by CooLoongWu on 2017-4-20 17:38.
@@ -20,6 +26,7 @@ public class CopyDBToApk {
     public static String DB_NAME = "questions.db";
     //数据库的地址
     private static String DB_PATH = "/data/data/com.cooloongwu.coolarithmetic/databases/";
+//    private static String DB_PATH = "/data/user/0/com.cooloongwu.coolarithmetic/databases/";
 
     /**
      * 将数据库拷贝到相应目录
@@ -55,7 +62,7 @@ public class CopyDBToApk {
             Log.e("数据库", "转移成功");
         } catch (IOException e) {
             e.printStackTrace();
-            Log.e("数据库", "转移失败");
+            Log.e("数据库", "转移失败" + e.toString());
         }
 //        } else {
 //            Log.e("数据库", "已存在");
