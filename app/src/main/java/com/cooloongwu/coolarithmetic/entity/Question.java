@@ -29,16 +29,15 @@ public class Question {
     public String answer;
 
     //答案解析
-    public String explaination;
+    public String explanation;
 
     //用户选中的答案
     public int selectedAnswer;
 
-    @Generated(hash = 1686890386)
+    @Generated(hash = 246531344)
     public Question(Long id, String question, int grade, int advance,
                     int questionId, String answerA, String answerB, String answerC,
-                    String answerD, String answer, String explaination,
-                    int selectedAnswer) {
+                    String answerD, String answer, String explanation, int selectedAnswer) {
         this.id = id;
         this.question = question;
         this.grade = grade;
@@ -49,7 +48,7 @@ public class Question {
         this.answerC = answerC;
         this.answerD = answerD;
         this.answer = answer;
-        this.explaination = explaination;
+        this.explanation = explanation;
         this.selectedAnswer = selectedAnswer;
     }
 
@@ -137,12 +136,12 @@ public class Question {
         this.answer = answer;
     }
 
-    public String getExplaination() {
-        return this.explaination;
+    public String getExplanation() {
+        return this.explanation;
     }
 
-    public void setExplaination(String explaination) {
-        this.explaination = explaination;
+    public void setExplanation(String explanation) {
+        this.explanation = explanation;
     }
 
     public int getSelectedAnswer() {

@@ -1,5 +1,7 @@
 package com.cooloongwu.coolarithmetic.activity;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -176,6 +178,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         NIMClient.getService(MsgServiceObserve.class).observeReceiveMessage(incomingMessageObserver, true);
         NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotificationObserver, true);
         NIMClient.getService(SystemMessageObserver.class).observeReceiveSystemMsg(systemMessageObserver, true);
+
+        getAppInfo();
     }
 
     @Override
@@ -359,4 +363,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             super.handleMessage(msg);
         }
     };
+
+    private void getAppInfo() {
+        // 获取packageManager的实例
+        PackageManager packageManager = getPackageManager();
+        // getPackageName()是你当前类的包名，0代表是获取版本信息
+        try {
+            PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0);
+            Log.e("PackageInfo", packInfo.applicationInfo.dataDir);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }

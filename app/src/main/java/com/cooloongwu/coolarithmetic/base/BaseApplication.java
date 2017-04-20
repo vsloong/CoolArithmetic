@@ -4,18 +4,15 @@ import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Environment;
-import android.util.Log;
 
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.activity.LauncherActivity;
 import com.cooloongwu.coolarithmetic.utils.AsyncHttpClientUtils;
+import com.cooloongwu.coolarithmetic.utils.CopyDBToApk;
 import com.loopj.android.http.AsyncHttpClient;
 import com.netease.nimlib.sdk.NIMClient;
-import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
-import com.netease.nimlib.sdk.auth.AuthService;
-import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 
@@ -33,6 +30,9 @@ public class BaseApplication extends Application {
         NIMClient.init(this, null, options());
 
         AsyncHttpClientUtils.setClientGeneral(new AsyncHttpClient());
+
+        //将题库数据库放到apk的数据库位置
+        CopyDBToApk.initFile(getApplicationContext());
     }
 
     // 如果返回值为 null，则全部使用默认参数。

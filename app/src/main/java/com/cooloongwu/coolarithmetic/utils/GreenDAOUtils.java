@@ -17,17 +17,34 @@ import com.cooloongwu.greendao.gen.QuestionDao;
 public class GreenDAOUtils {
 
     private static GreenDAOUtils instance;
+    private static GreenDAOUtils questionInstance;
     private DaoMaster.DevOpenHelper devOpenHelper;
 
     public static GreenDAOUtils getInstance(Context context) {
         if (instance == null) {
-            instance = new GreenDAOUtils(context);
+            String dataBaseName = AppConfig.getUserDB(context);
+            Log.e("加载的用户的数据库", dataBaseName);
+            instance = new GreenDAOUtils(context, dataBaseName);
         }
         return instance;
     }
 
+    public static GreenDAOUtils getQuestionInstance(Context context) {
+        if (questionInstance == null) {
+            String dataBaseName = CopyDBToApk.DB_NAME;
+            Log.e("加载的用户的数据库", dataBaseName);
+            questionInstance = new GreenDAOUtils(context, dataBaseName);
+        }
+        return questionInstance;
+    }
+
     public GreenDAOUtils(Context context) {
         String dataBaseName = AppConfig.getUserDB(context);
+        Log.e("加载的用户的数据库", dataBaseName);
+        devOpenHelper = new DaoMaster.DevOpenHelper(context, dataBaseName, null);
+    }
+
+    public GreenDAOUtils(Context context, String dataBaseName) {
         Log.e("加载的用户的数据库", dataBaseName);
         devOpenHelper = new DaoMaster.DevOpenHelper(context, dataBaseName, null);
     }
