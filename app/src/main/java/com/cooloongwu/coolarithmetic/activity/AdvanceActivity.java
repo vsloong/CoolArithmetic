@@ -71,7 +71,7 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
         Intent intent = getIntent();
         grade = intent.getIntExtra("grade", 0);
 
-        advance = GreenDAOUtils.getInstance(AdvanceActivity.this).getAdvanceDao()
+        advance = GreenDAOUtils.getDefaultDaoSession(AdvanceActivity.this).getAdvanceDao()
                 .queryBuilder()
                 .where(AdvanceDao.Properties.Grade.eq(grade))
                 .build().unique();
@@ -81,7 +81,7 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
             temp.setGrade(grade);
             temp.setAdvance(0);
             advance = temp;
-            GreenDAOUtils.getInstance(AdvanceActivity.this).getAdvanceDao().insert(temp);
+            GreenDAOUtils.getDefaultDaoSession(AdvanceActivity.this).getAdvanceDao().insert(temp);
         }
     }
 

@@ -134,7 +134,7 @@ public class AdvanceAdapter extends RecyclerView.Adapter<AdvanceAdapter.ViewHold
                     } else {
                         advance.setAdvance(19);
                     }
-                    GreenDAOUtils.getInstance(context).getAdvanceDao().update(advance);
+                    GreenDAOUtils.getDefaultDaoSession(context).getAdvanceDao().update(advance);
 
                     EventBus.getDefault().post(new Advance());
                 }

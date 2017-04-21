@@ -2,6 +2,8 @@ package com.cooloongwu.coolarithmetic.activity;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,16 +22,18 @@ import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.adapter.TabViewPagerAdapter;
 import com.cooloongwu.coolarithmetic.base.AppConfig;
 import com.cooloongwu.coolarithmetic.base.BaseActivity;
+import com.cooloongwu.coolarithmetic.entity.Advance;
+import com.cooloongwu.coolarithmetic.entity.External;
 import com.cooloongwu.coolarithmetic.entity.MsgTypeEnum;
-import com.cooloongwu.coolarithmetic.entity.Question;
 import com.cooloongwu.coolarithmetic.fragment.FightFragment;
 import com.cooloongwu.coolarithmetic.fragment.MeFragment;
 import com.cooloongwu.coolarithmetic.fragment.MsgFragment;
 import com.cooloongwu.coolarithmetic.fragment.PKFragment;
+import com.cooloongwu.coolarithmetic.utils.AssetsDatabaseManager;
+import com.cooloongwu.coolarithmetic.utils.CopyDBToApk;
 import com.cooloongwu.coolarithmetic.utils.GreenDAOUtils;
 import com.cooloongwu.coolarithmetic.utils.SendMsgUtils;
 import com.cooloongwu.coolarithmetic.utils.StartActivityUtils;
-import com.cooloongwu.greendao.gen.QuestionDao;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.friend.model.AddFriendNotify;
@@ -381,16 +385,54 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void test() {
-        List<Question> questions = GreenDAOUtils.getQuestionDaoSession(this).getQuestionDao()
-                .queryBuilder().list();
 
-        if (questions.isEmpty()) {
-            Log.e("题目", "没有");
+        List<External> externals = GreenDAOUtils.getQuestionDaoSession(this).getExternalDao()
+                .queryBuilder()
+                .build()
+                .list();
+
+        if (externals.isEmpty()) {
+            Log.e("外部数据库", "没有");
         } else {
-            for (Question question : questions) {
-                Log.e("题目", question.getQuestion());
+            for (External external : externals) {
+                Log.e("外部数据库", external.getEmail());
             }
         }
 
+        List<Advance> advances = GreenDAOUtils.getDefaultDaoSession(this).getAdvanceDao()
+                .queryBuilder()
+                .build()
+                .list();
+
+        if (advances.isEmpty()) {
+            Log.e("闯关", "没有");
+        } else {
+            for (Advance advance : advances) {
+                Log.e("闯关", advance.getGrade() + "" + advance.getAdvance());
+            }
+        }
+
+
+//        SQLiteDatabase db = SQLiteDatabase.openDatabase(CopyDBToApk.DB_PATH + AppConfig.getUserDB(this), null, SQLiteDatabase.NO_LOCALIZED_COLLATORS);
+        SQLiteDatabase db = SQLiteDatabase.openDatabase(CopyDBToApk.DB_PATH + CopyDBToApk.DB_NAME, null, SQLiteDatabase.NO_LOCALIZED_COLLATORS);
+        Log.e("外部数据库", db.toString());
+        Cursor cursor = db.rawQuery("select * from blacklist", null);
+        while (cursor.moveToNext()) {
+            String temp = cursor.getString(1);
+            Log.e("外部数据库", temp);
+        }
+        cursor.close();
+        db.close();
+
+        AssetsDatabaseManager.initManager(this);
+        SQLiteDatabase db1 = AssetsDatabaseManager.getManager().getDatabase(CopyDBToApk.DB_NAME);
+        Log.e("外部数据库", db1.toString());
+        Cursor cursor1 = db1.rawQuery("select * from blacklist", null);
+        while (cursor1.moveToNext()) {
+            String temp = cursor1.getString(1);
+            Log.e("外部数据库", temp);
+        }
+        cursor1.close();
+        db1.close();
     }
 }

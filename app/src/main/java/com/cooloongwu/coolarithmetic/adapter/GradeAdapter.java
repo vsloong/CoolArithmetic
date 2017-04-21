@@ -50,7 +50,7 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder> 
 
         final int grade = AppConfig.getUserGrade(context);
 
-        Advance advance = GreenDAOUtils.getInstance(context).getAdvanceDao()
+        Advance advance = GreenDAOUtils.getDefaultDaoSession(context).getAdvanceDao()
                 .queryBuilder()
                 .where(AdvanceDao.Properties.Grade.eq(position))
                 .build()

@@ -4,12 +4,11 @@ import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Environment;
-import android.util.Log;
 
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.activity.LauncherActivity;
+import com.cooloongwu.coolarithmetic.utils.AssetsDatabaseManager;
 import com.cooloongwu.coolarithmetic.utils.AsyncHttpClientUtils;
-import com.cooloongwu.coolarithmetic.utils.CopyDBToApk;
 import com.loopj.android.http.AsyncHttpClient;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.SDKOptions;
@@ -17,7 +16,8 @@ import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Application的基类，用来初始化网易云信，AsyncHttpClient等SDK
@@ -42,7 +42,12 @@ public class BaseApplication extends Application {
         AsyncHttpClientUtils.setClientGeneral(new AsyncHttpClient());
 
         //将题库数据库放到apk的数据库位置
-        CopyDBToApk.initFile(this);
+        //CopyDBToApk.initFile(this);
+        AssetsDatabaseManager.initManager(this);
+        List<String> dbs = new ArrayList<>();
+        dbs.add("external.db");
+        dbs.add("questions.db");
+        AssetsDatabaseManager.getManager().initDataBase(dbs);
     }
 
     public static BaseApplication getInstance() {
