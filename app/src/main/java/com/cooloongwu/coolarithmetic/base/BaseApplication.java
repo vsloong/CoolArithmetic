@@ -4,10 +4,10 @@ import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Environment;
+import android.util.Log;
 
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.activity.LauncherActivity;
-import com.cooloongwu.coolarithmetic.utils.AssetsDatabaseManager;
 import com.cooloongwu.coolarithmetic.utils.AsyncHttpClientUtils;
 import com.loopj.android.http.AsyncHttpClient;
 import com.netease.nimlib.sdk.NIMClient;
@@ -16,8 +16,11 @@ import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Application的基类，用来初始化网易云信，AsyncHttpClient等SDK
@@ -41,17 +44,57 @@ public class BaseApplication extends Application {
 
         AsyncHttpClientUtils.setClientGeneral(new AsyncHttpClient());
 
-        //将题库数据库放到apk的数据库位置
-        //CopyDBToApk.initFile(this);
-        AssetsDatabaseManager.initManager(this);
-        List<String> dbs = new ArrayList<>();
-        dbs.add("external.db");
-        dbs.add("questions.db");
-        AssetsDatabaseManager.getManager().initDataBase(dbs);
+        initFile();
     }
 
     public static BaseApplication getInstance() {
         return instance;
+    }
+
+    /**
+     * 将数据库拷贝到相应目录
+     */
+    private void initFile() {
+
+        //数据库的路径
+        String DB_PATH = "/data/data/com.cooloongwu.coolarithmetic/databases/";
+
+        //判断数据库是否拷贝到相应的目录下
+        if (!new File(DB_PATH + AppConfig.questionsDB).exists()) {
+            File dir = new File(DB_PATH);
+            if (!dir.exists()) {
+                dir.mkdir();
+            }
+
+            //复制文件
+            try {
+                InputStream is = getBaseContext().getAssets().open(AppConfig.questionsDB);
+                OutputStream os = new FileOutputStream(DB_PATH + AppConfig.questionsDB);
+
+                //用来复制文件
+                byte[] buffer = new byte[1024];
+                //保存已经复制的长度
+                int length;
+
+                //开始复制
+                while ((length = is.read(buffer)) > 0) {
+                    os.write(buffer, 0, length);
+                }
+
+                //刷新
+                os.flush();
+                //关闭
+                os.close();
+                is.close();
+                Log.e("DataBase", "Copy Success");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e("DataBase", "Copy Error" + e.toString());
+            }
+        } else {
+            Log.e("DataBase", "Already Exist");
+        }
     }
 
     // 如果返回值为 null，则全部使用默认参数。

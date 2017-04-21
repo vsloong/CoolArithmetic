@@ -3,10 +3,8 @@ package com.cooloongwu.coolarithmetic.utils;
 import android.content.Context;
 
 import com.cooloongwu.coolarithmetic.base.AppConfig;
-import com.cooloongwu.greendao.gen.AdvanceDao;
 import com.cooloongwu.greendao.gen.DaoMaster;
 import com.cooloongwu.greendao.gen.DaoSession;
-import com.cooloongwu.greendao.gen.QuestionDao;
 
 /**
  * 操作GreenDAO的类
@@ -46,11 +44,6 @@ public class GreenDAOUtils {
         return questionDaoMaster;
     }
 
-    /**
-     * 取得DaoSession
-     *
-     * @return
-     */
     public static DaoSession getDefaultDaoSession(Context context) {
         if (defaultDaoSession == null) {
             defaultDaoSession = getDefaultDaoMaster(context, AppConfig.getUserDB(context)).newSession();
@@ -60,25 +53,9 @@ public class GreenDAOUtils {
 
     public static DaoSession getQuestionDaoSession(Context context) {
         if (questionDaoSession == null) {
-            questionDaoSession = getQuestionDaoMaster(context, CopyDBToApk.DB_NAME).newSession();
+            questionDaoSession = getQuestionDaoMaster(context, AppConfig.questionsDB).newSession();
         }
         return questionDaoSession;
     }
 
-    private DaoSession getDaoSession() {
-        return new DaoMaster(devOpenHelper.getWritableDb()).newSession();
-    }
-
-    public AdvanceDao getAdvanceDao() {
-        return getDaoSession().getAdvanceDao();
-    }
-
-    public QuestionDao getQuestionDao() {
-        return getDaoSession().getQuestionDao();
-    }
-
-    public void clearAllData() {
-        getAdvanceDao().deleteAll();
-        getQuestionDao().deleteAll();
-    }
 }

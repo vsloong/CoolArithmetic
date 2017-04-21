@@ -19,6 +19,7 @@ public class AppConfig {
             + "/CoolArithmetic/";
 
     private static final String defaultDB = "CoolArithmetic";
+    public static final String questionsDB = "questions.db";
 
     public static final String appKey = "2db673f68e572a2e14cc780871103773";
     public static final String appSecret = "85aac77482c1";

@@ -1,79 +1,52 @@
 package com.cooloongwu.coolarithmetic.entity;
 
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Generated;
-
 /**
- * 年级的实体类
- * Created by CooLoongWu on 2017-3-31 14:09.
+ * 问题的实体类
  */
-
-@Entity
 public class Question {
-    @Id
-    private Long id;
-    private String question;  //具体的问题
 
-    private int grade;          //年级
-    private int advance;        //关卡
-    private int questionId;     //每个关卡的ID
+    //编号
+    //@Property(nameInDb = "Field1")
+    private Long id;
+
+    //年级
+    private int grade;
+
+    //闯关
+    private int advance;
+
+    //闯关
+    private int questionId;
+
+    //问题
+    private String question;
 
     //四个选项
-    public String answerA;
-    public String answerB;
-    public String answerC;
-    public String answerD;
+    private String answerA;
+    private String answerB;
+    private String answerC;
+    private String answerD;
 
-    //正确答案
-    public String answer;
+    //答案
+    private int answer;
 
-    //答案解析
-    public String explanation;
+    //详情
+    private String explanation;
 
-    //用户选中的答案
-    public int selectedAnswer;
+    //详情
+    private String selectedAnswer;
 
-    @Generated(hash = 246531344)
-    public Question(Long id, String question, int grade, int advance,
-                    int questionId, String answerA, String answerB, String answerC,
-                    String answerD, String answer, String explanation, int selectedAnswer) {
-        this.id = id;
-        this.question = question;
-        this.grade = grade;
-        this.advance = advance;
-        this.questionId = questionId;
-        this.answerA = answerA;
-        this.answerB = answerB;
-        this.answerC = answerC;
-        this.answerD = answerD;
-        this.answer = answer;
-        this.explanation = explanation;
-        this.selectedAnswer = selectedAnswer;
-    }
-
-    @Generated(hash = 1868476517)
-    public Question() {
-    }
 
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getQuestion() {
-        return this.question;
-    }
-
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
     public int getGrade() {
-        return this.grade;
+        return grade;
     }
 
     public void setGrade(int grade) {
@@ -81,7 +54,7 @@ public class Question {
     }
 
     public int getAdvance() {
-        return this.advance;
+        return advance;
     }
 
     public void setAdvance(int advance) {
@@ -89,15 +62,23 @@ public class Question {
     }
 
     public int getQuestionId() {
-        return this.questionId;
+        return questionId;
     }
 
     public void setQuestionId(int questionId) {
         this.questionId = questionId;
     }
 
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
     public String getAnswerA() {
-        return this.answerA;
+        return answerA;
     }
 
     public void setAnswerA(String answerA) {
@@ -105,7 +86,7 @@ public class Question {
     }
 
     public String getAnswerB() {
-        return this.answerB;
+        return answerB;
     }
 
     public void setAnswerB(String answerB) {
@@ -113,7 +94,7 @@ public class Question {
     }
 
     public String getAnswerC() {
-        return this.answerC;
+        return answerC;
     }
 
     public void setAnswerC(String answerC) {
@@ -121,35 +102,34 @@ public class Question {
     }
 
     public String getAnswerD() {
-        return this.answerD;
+        return answerD;
     }
 
     public void setAnswerD(String answerD) {
         this.answerD = answerD;
     }
 
-    public String getAnswer() {
-        return this.answer;
+    public int getAnswer() {
+        return answer;
     }
 
-    public void setAnswer(String answer) {
+    public void setAnswer(int answer) {
         this.answer = answer;
     }
 
     public String getExplanation() {
-        return this.explanation;
+        return explanation;
     }
 
     public void setExplanation(String explanation) {
         this.explanation = explanation;
     }
 
-    public int getSelectedAnswer() {
-        return this.selectedAnswer;
+    public String getSelectedAnswer() {
+        return selectedAnswer;
     }
 
-    public void setSelectedAnswer(int selectedAnswer) {
+    public void setSelectedAnswer(String selectedAnswer) {
         this.selectedAnswer = selectedAnswer;
     }
-
 }

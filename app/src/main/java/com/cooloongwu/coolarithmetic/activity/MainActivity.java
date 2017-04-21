@@ -1,9 +1,5 @@
 package com.cooloongwu.coolarithmetic.activity;
 
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,16 +18,13 @@ import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.adapter.TabViewPagerAdapter;
 import com.cooloongwu.coolarithmetic.base.AppConfig;
 import com.cooloongwu.coolarithmetic.base.BaseActivity;
-import com.cooloongwu.coolarithmetic.entity.Advance;
-import com.cooloongwu.coolarithmetic.entity.External;
 import com.cooloongwu.coolarithmetic.entity.MsgTypeEnum;
+import com.cooloongwu.coolarithmetic.entity.Question;
 import com.cooloongwu.coolarithmetic.fragment.FightFragment;
 import com.cooloongwu.coolarithmetic.fragment.MeFragment;
 import com.cooloongwu.coolarithmetic.fragment.MsgFragment;
 import com.cooloongwu.coolarithmetic.fragment.PKFragment;
-import com.cooloongwu.coolarithmetic.utils.AssetsDatabaseManager;
-import com.cooloongwu.coolarithmetic.utils.CopyDBToApk;
-import com.cooloongwu.coolarithmetic.utils.GreenDAOUtils;
+import com.cooloongwu.coolarithmetic.utils.DBService;
 import com.cooloongwu.coolarithmetic.utils.SendMsgUtils;
 import com.cooloongwu.coolarithmetic.utils.StartActivityUtils;
 import com.netease.nimlib.sdk.NIMClient;
@@ -186,7 +179,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotificationObserver, true);
         NIMClient.getService(SystemMessageObserver.class).observeReceiveSystemMsg(systemMessageObserver, true);
 
-        getAppInfo();
+        test();
     }
 
     @Override
@@ -371,68 +364,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     };
 
-    private void getAppInfo() {
-        // 获取packageManager的实例
-        PackageManager packageManager = getPackageManager();
-        // getPackageName()是你当前类的包名，0代表是获取版本信息
-        try {
-            PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0);
-            Log.e("PackageInfo", packInfo.applicationInfo.dataDir);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        test();
-    }
-
     private void test() {
+        DBService dbService = new DBService();
+        final List<Question> list = dbService.getQuestion();
 
-        List<External> externals = GreenDAOUtils.getQuestionDaoSession(this).getExternalDao()
-                .queryBuilder()
-                .build()
-                .list();
-
-        if (externals.isEmpty()) {
-            Log.e("外部数据库", "没有");
-        } else {
-            for (External external : externals) {
-                Log.e("外部数据库", external.getEmail());
-            }
+        for (Question question : list) {
+            Log.e("DataBase", question.getQuestion());
         }
-
-        List<Advance> advances = GreenDAOUtils.getDefaultDaoSession(this).getAdvanceDao()
-                .queryBuilder()
-                .build()
-                .list();
-
-        if (advances.isEmpty()) {
-            Log.e("闯关", "没有");
-        } else {
-            for (Advance advance : advances) {
-                Log.e("闯关", advance.getGrade() + "" + advance.getAdvance());
-            }
-        }
-
-
-//        SQLiteDatabase db = SQLiteDatabase.openDatabase(CopyDBToApk.DB_PATH + AppConfig.getUserDB(this), null, SQLiteDatabase.NO_LOCALIZED_COLLATORS);
-        SQLiteDatabase db = SQLiteDatabase.openDatabase(CopyDBToApk.DB_PATH + CopyDBToApk.DB_NAME, null, SQLiteDatabase.NO_LOCALIZED_COLLATORS);
-        Log.e("外部数据库", db.toString());
-        Cursor cursor = db.rawQuery("select * from blacklist", null);
-        while (cursor.moveToNext()) {
-            String temp = cursor.getString(1);
-            Log.e("外部数据库", temp);
-        }
-        cursor.close();
-        db.close();
-
-        AssetsDatabaseManager.initManager(this);
-        SQLiteDatabase db1 = AssetsDatabaseManager.getManager().getDatabase(CopyDBToApk.DB_NAME);
-        Log.e("外部数据库", db1.toString());
-        Cursor cursor1 = db1.rawQuery("select * from blacklist", null);
-        while (cursor1.moveToNext()) {
-            String temp = cursor1.getString(1);
-            Log.e("外部数据库", temp);
-        }
-        cursor1.close();
-        db1.close();
     }
 }
