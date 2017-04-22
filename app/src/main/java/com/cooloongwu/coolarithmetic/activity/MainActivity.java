@@ -178,8 +178,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         NIMClient.getService(MsgServiceObserve.class).observeReceiveMessage(incomingMessageObserver, true);
         NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotificationObserver, true);
         NIMClient.getService(SystemMessageObserver.class).observeReceiveSystemMsg(systemMessageObserver, true);
-
-        test();
     }
 
     @Override
@@ -355,7 +353,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     if (pkPrepareDialog != null) {
                         pkPrepareDialog.dismiss();
                     }
-                    StartActivityUtils.startPlayActivity(MainActivity.this);
+                    StartActivityUtils.startPlayActivity(MainActivity.this, 0, 0);
                     break;
                 default:
                     break;
@@ -363,13 +361,4 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             super.handleMessage(msg);
         }
     };
-
-    private void test() {
-        DBService dbService = new DBService();
-        final List<Question> list = dbService.getQuestion(0, 5);
-
-        for (Question question : list) {
-            Log.e("DataBase", question.getQuestion());
-        }
-    }
 }

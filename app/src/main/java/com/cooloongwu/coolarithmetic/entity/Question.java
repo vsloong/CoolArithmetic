@@ -1,9 +1,11 @@
 package com.cooloongwu.coolarithmetic.entity;
 
+import java.io.Serializable;
+
 /**
  * 问题的实体类
  */
-public class Question {
+public class Question implements Serializable {
 
     //编号
     //@Property(nameInDb = "Field1")

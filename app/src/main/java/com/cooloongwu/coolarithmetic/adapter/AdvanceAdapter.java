@@ -125,7 +125,7 @@ public class AdvanceAdapter extends RecyclerView.Adapter<AdvanceAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 if (position <= advance.getAdvance()) {
-                    StartActivityUtils.startPlayActivity((AdvanceActivity) context);
+                    StartActivityUtils.startPlayActivity((AdvanceActivity) context, 0, position);
                 } else {
                     Toast.makeText(context, "请您闯完前面关卡再来吧", Toast.LENGTH_SHORT).show();
 
