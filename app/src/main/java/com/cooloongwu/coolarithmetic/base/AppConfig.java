@@ -233,6 +233,23 @@ public class AppConfig {
     }
 
     /**
+     * 得到程序数据库的存储路径
+     *
+     * @param context 上下文
+     * @return 正常情况下返回版本号，出错等情况返回空
+     */
+    public static String getDataDir(Context context) {
+        PackageManager packageManager = context.getPackageManager();
+        try {
+            PackageInfo packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.applicationInfo.dataDir;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    /**
      * 清空所有的用户信息
      *
      * @param context 上下文

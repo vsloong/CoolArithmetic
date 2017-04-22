@@ -27,10 +27,11 @@ public class DBService {
     }
 
     //获取数据库的数据
-    public List<Question> getQuestion() {
+    public List<Question> getQuestion(int grade, int advance) {
         List<Question> list = new ArrayList<>();
         //执行sql语句
-        Cursor cursor = db.rawQuery("select * from questions", null);
+        Cursor cursor = db.rawQuery("select * from questions where grade = ? and advance = ?",
+                new String[]{String.valueOf(grade), String.valueOf(advance)});
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             int count = cursor.getCount();

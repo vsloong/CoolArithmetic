@@ -60,7 +60,7 @@ public class BaseApplication extends Application {
         String DB_PATH = "/data/data/com.cooloongwu.coolarithmetic/databases/";
 
         //判断数据库是否拷贝到相应的目录下
-        if (!new File(DB_PATH + AppConfig.questionsDB).exists()) {
+//        if (!new File(DB_PATH + AppConfig.questionsDB).exists()) {
             File dir = new File(DB_PATH);
             if (!dir.exists()) {
                 dir.mkdir();
@@ -92,9 +92,9 @@ public class BaseApplication extends Application {
                 e.printStackTrace();
                 Log.e("DataBase", "Copy Error" + e.toString());
             }
-        } else {
-            Log.e("DataBase", "Already Exist");
-        }
+//        } else {
+//            Log.e("DataBase", "Already Exist");
+//        }
     }
 
     // 如果返回值为 null，则全部使用默认参数。

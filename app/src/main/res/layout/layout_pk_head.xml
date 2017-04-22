@@ -10,7 +10,7 @@
         android:background="@mipmap/bg_pk">
 
         <TextView
-            android:id="@+id/tv_play_pk_timer"
+            android:id="@+id/text_play_timer"
             android:layout_width="75dp"
             android:layout_height="30dp"
             android:layout_centerHorizontal="true"
@@ -22,7 +22,7 @@
             android:textSize="18sp" />
 
         <ImageView
-            android:id="@+id/img_pk_back"
+            android:id="@+id/img_play_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -31,26 +31,33 @@
 
     </RelativeLayout>
 
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="66dp"
-        android:layout_height="66dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="37dp"
+    <RelativeLayout
+        android:id="@+id/layout_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:padding="3dp"
-        android:src="@mipmap/avatar"
-        app:civ_border_color="@color/white"
-        app:civ_border_width="3dp" />
+        android:orientation="horizontal"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="66dp"
-        android:layout_height="66dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="37dp"
-        android:layout_marginTop="60dp"
-        android:padding="3dp"
-        android:src="@mipmap/avatar"
-        app:civ_border_color="@color/white"
-        app:civ_border_width="3dp" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_alignParentLeft="true"
+            android:padding="3dp"
+            android:src="@mipmap/avatar"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="3dp" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_alignParentRight="true"
+            android:padding="3dp"
+            android:src="@mipmap/avatar"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="3dp" />
+    </RelativeLayout>
+
+
 </RelativeLayout>

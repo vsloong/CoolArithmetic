@@ -366,7 +366,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void test() {
         DBService dbService = new DBService();
-        final List<Question> list = dbService.getQuestion();
+        final List<Question> list = dbService.getQuestion(0, 5);
 
         for (Question question : list) {
             Log.e("DataBase", question.getQuestion());
