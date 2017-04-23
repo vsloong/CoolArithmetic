@@ -19,6 +19,7 @@ import com.cooloongwu.coolarithmetic.base.BaseActivity;
 import com.cooloongwu.coolarithmetic.entity.Question;
 import com.cooloongwu.coolarithmetic.utils.DBService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,9 +32,21 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
     private int time = 40;      //默认每关40秒
     private List<Question> questions;
+    private MyCountDownTimer countDownTimer;
+
+    private List<Integer> answers = new ArrayList<>();
+    public static List<Integer> myAnswers = new ArrayList<>();
+
+    static {
+        //设置默认没有选择答案，所以为-1
+        for (int i = 0; i < 10; i++) {
+            PlayActivity.myAnswers.add(i, -1);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
@@ -50,7 +63,8 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         //开始倒计时
         time -= advance;
         Log.e("第几关呢", "" + advance + "；时间" + time);
-        new MyCountDownTimer(time * 1000, 1000).start();
+        countDownTimer = new MyCountDownTimer(time * 1000, 1000);
+        countDownTimer.start();
     }
 
     @Override
@@ -110,10 +124,10 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                 }
                 break;
             case R.id.btn_submit:
-                Toast.makeText(PlayActivity.this, "交卷", Toast.LENGTH_SHORT).show();
+                submit();
                 break;
             case R.id.btn_ok:
-                Toast.makeText(PlayActivity.this, "交卷", Toast.LENGTH_SHORT).show();
+                showResult();
                 if (playTimeOutDialog != null) {
                     playTimeOutDialog.dismiss();
                 }
@@ -143,10 +157,41 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         questions = dbService.getQuestion(grade, advance);
         if (questions != null && !questions.isEmpty()) {
             for (Question question : questions) {
-                Log.e("题目", question.getQuestion() + "");
+                answers.add(question.getAnswer());
+                Log.e("题目", question.getQuestion() + "的答案是" + question.getAnswer());
             }
         } else {
             Log.e("题目", "没有获取到题目数据");
+        }
+    }
+
+    private void submit() {
+        if (checkAllAnswerIsSelected()) {
+            countDownTimer.cancel();
+            showResult();
+        } else {
+            Toast.makeText(PlayActivity.this, "还有未完成的题目，确定交卷么", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean checkAllAnswerIsSelected() {
+        for (int i = 0; i < 10; i++) {
+            if (myAnswers.get(i) == -1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void showResult() {
+        for (int i = 0; i < questions.size(); i++) {
+            Log.e("交卷结果", "第" + i + "题：正确答案" + answers.get(i) + "；我的答案：" + myAnswers.get(i));
+
+            if (answers.get(i) == myAnswers.get(i)) {
+                Log.e("交卷结果", "第" + i + "题正确");
+            } else {
+                Log.e("交卷结果", "第" + i + "题错误");
+            }
         }
     }
 
@@ -168,4 +213,9 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        countDownTimer.cancel();
+    }
 }

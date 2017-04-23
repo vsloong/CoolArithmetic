@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -12,35 +13,41 @@
         android:layout_marginTop="4dp"
         android:text="题目"
         android:textColor="@color/text_black"
-        android:textSize="18sp" />
+        android:textSize="28sp" />
 
     <RadioGroup
+        android:id="@+id/radio_group"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp">
 
         <RadioButton
             android:id="@+id/radio_button_a"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="" />
+            android:textSize="24sp"
+            tools:text="A、哈哈哈" />
 
         <RadioButton
             android:id="@+id/radio_button_b"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="" />
+            android:textSize="24sp"
+            tools:text="B、哈哈哈" />
 
         <RadioButton
             android:id="@+id/radio_button_c"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="" />
+            android:textSize="24sp"
+            tools:text="C、哈哈哈" />
 
         <RadioButton
             android:id="@+id/radio_button_d"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="" />
+            android:textSize="24sp"
+            tools:text="D、哈哈哈" />
     </RadioGroup>
 
 </LinearLayout>
