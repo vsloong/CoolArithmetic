@@ -1,10 +1,10 @@
 package com.cooloongwu.coolarithmetic.activity;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
+import android.os.CountDownTimer;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,8 +27,9 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     private TextView text_play_timer;
     private ViewPager view_pager;
     private Button btn_submit;
+    private AlertDialog playTimeOutDialog;
 
-    private int time = 20;
+    private int time = 40;      //默认每关40秒
     private List<Question> questions;
 
     @Override
@@ -37,7 +38,6 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_play);
 
         getIntentData();
-        timeHandler.sendEmptyMessageDelayed(1, 1000);
         initViews();
     }
 
@@ -46,6 +46,11 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         int grade = intent.getIntExtra("grade", 0);
         int advance = intent.getIntExtra("advance", 0);
         getQuestions(grade, advance);
+
+        //开始倒计时
+        time -= advance;
+        Log.e("第几关呢", "" + advance + "；时间" + time);
+        new MyCountDownTimer(time * 1000, 1000).start();
     }
 
     @Override
@@ -107,9 +112,30 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
             case R.id.btn_submit:
                 Toast.makeText(PlayActivity.this, "交卷", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.btn_ok:
+                Toast.makeText(PlayActivity.this, "交卷", Toast.LENGTH_SHORT).show();
+                if (playTimeOutDialog != null) {
+                    playTimeOutDialog.dismiss();
+                }
+                break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 展示等待对方PK接受或者拒绝的对话框
+     */
+    public void showTimeOutDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = View.inflate(this, R.layout.dialog_play_time_out, null);
+        Button btn_ok = (Button) view.findViewById(R.id.btn_ok);
+        btn_ok.setOnClickListener(this);
+        builder.setView(view);
+        builder.setCancelable(false);
+        //取消或确定按钮监听事件处理
+        playTimeOutDialog = builder.create();
+        playTimeOutDialog.show();
     }
 
     private void getQuestions(int grade, int advance) {
@@ -124,24 +150,22 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    private Handler timeHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (time > 0) {
-                timeHandler.sendEmptyMessageDelayed(1, 1000);
-                text_play_timer.setText((time--) + "s");
-            } else {
-                text_play_timer.setText("0s");
-                Toast.makeText(PlayActivity.this, "时间到", Toast.LENGTH_SHORT).show();
-            }
+    private class MyCountDownTimer extends CountDownTimer {
 
+        public MyCountDownTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
         }
-    };
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        timeHandler.removeCallbacksAndMessages(null);
+        @Override
+        public void onTick(long millisUntilFinished) {
+            text_play_timer.setText(String.valueOf(time -= 1) + "s");
+        }
+
+        @Override
+        public void onFinish() {
+            text_play_timer.setText("0s");
+            showTimeOutDialog();
+        }
     }
+
 }

@@ -17,7 +17,7 @@
             android:layout_marginTop="17dp"
             android:background="@drawable/shape_white"
             android:gravity="center"
-            android:text="00:00"
+            android:text=""
             android:textColor="@color/text_default"
             android:textSize="18sp" />
 

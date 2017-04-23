@@ -235,6 +235,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        timeHandler.removeCallbacksAndMessages(null);
         EventBus.getDefault().unregister(this);
         NIMClient.getService(MsgServiceObserve.class).observeReceiveMessage(incomingMessageObserver, false);
         NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotificationObserver, false);
@@ -361,4 +362,5 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             super.handleMessage(msg);
         }
     };
+
 }
