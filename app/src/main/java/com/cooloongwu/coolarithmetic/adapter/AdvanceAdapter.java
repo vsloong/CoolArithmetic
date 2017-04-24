@@ -128,15 +128,6 @@ public class AdvanceAdapter extends RecyclerView.Adapter<AdvanceAdapter.ViewHold
                     StartActivityUtils.startPlayActivity((AdvanceActivity) context, 0, position, false);
                 } else {
                     Toast.makeText(context, "请您闯完前面关卡再来吧", Toast.LENGTH_SHORT).show();
-
-                    if (advance.getAdvance() < 20) {
-                        advance.setAdvance(advance.getAdvance() + 1);
-                    } else {
-                        advance.setAdvance(19);
-                    }
-                    GreenDAOUtils.getDefaultDaoSession(context).getAdvanceDao().update(advance);
-
-                    EventBus.getDefault().post(new Advance());
                 }
 
             }

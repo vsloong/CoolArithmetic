@@ -14,9 +14,9 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="50dp"
             android:src="@mipmap/ic_launcher" />
 
         <LinearLayout
@@ -86,12 +86,12 @@
                             android:layout_marginLeft="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_toEndOf="@+id/img_phone"
+                            android:layout_toLeftOf="@+id/layout_phone_function"
                             android:layout_toRightOf="@+id/img_phone"
                             android:layout_toStartOf="@+id/layout_phone_function"
-                            android:layout_toLeftOf="@+id/layout_phone_function"
                             android:background="@null"
-                            android:inputType="phone"
                             android:hint="请输入账号"
+                            android:inputType="phone"
                             android:lines="1"
                             android:textColor="@color/text_edit_hint"
                             android:textColorHint="#ffdadada"
@@ -155,14 +155,14 @@
                             android:layout_marginLeft="8dp"
                             android:layout_marginStart="8dp"
                             android:layout_toEndOf="@+id/img_password"
-                            android:layout_toRightOf="@+id/img_password"
                             android:layout_toLeftOf="@+id/layout_password_function"
+                            android:layout_toRightOf="@+id/img_password"
                             android:layout_toStartOf="@+id/layout_password_function"
                             android:background="@null"
-                            android:text="123456"
                             android:hint="请输入密码"
                             android:inputType="textPassword"
                             android:lines="1"
+                            android:text="123456"
                             android:textColor="@color/text_edit_hint"
                             android:textColorHint="#ffdadada"
                             android:textSize="14sp" />

@@ -107,6 +107,7 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
     @Subscribe
     public void onEventMainThread(Advance advance) {
         adapter.notifyDataSetChanged();
+        text_progress.setText((advance.getAdvance() + 1) + "/20");
     }
 
     @Override
