@@ -19,12 +19,11 @@ import com.cooloongwu.coolarithmetic.adapter.TabViewPagerAdapter;
 import com.cooloongwu.coolarithmetic.base.AppConfig;
 import com.cooloongwu.coolarithmetic.base.BaseActivity;
 import com.cooloongwu.coolarithmetic.entity.MsgTypeEnum;
-import com.cooloongwu.coolarithmetic.entity.Question;
 import com.cooloongwu.coolarithmetic.fragment.FightFragment;
 import com.cooloongwu.coolarithmetic.fragment.MeFragment;
 import com.cooloongwu.coolarithmetic.fragment.MsgFragment;
 import com.cooloongwu.coolarithmetic.fragment.PKFragment;
-import com.cooloongwu.coolarithmetic.utils.DBService;
+import com.cooloongwu.coolarithmetic.utils.AvatarUtils;
 import com.cooloongwu.coolarithmetic.utils.SendMsgUtils;
 import com.cooloongwu.coolarithmetic.utils.StartActivityUtils;
 import com.netease.nimlib.sdk.NIMClient;
@@ -36,6 +35,7 @@ import com.netease.nimlib.sdk.msg.constant.SystemMessageType;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.SystemMessage;
+import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -299,6 +299,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = View.inflate(this, R.layout.dialog_pk_prepare, null);
 
+        ImageView img_avatar_mine = (ImageView) view.findViewById(R.id.img_avatar_mine);
+        ImageView img_avatar_other = (ImageView) view.findViewById(R.id.img_avatar_other);
+
+        Picasso.with(this)
+                .load(AvatarUtils.getAvatar(AppConfig.getUserAccid(this)))
+                .into(img_avatar_mine);
+
+        Picasso.with(this)
+                .load(AvatarUtils.getAvatar(fromAccid))
+                .into(img_avatar_other);
+
         builder.setView(view);
         builder.setCancelable(false);
         //取消或确定按钮监听事件处理
@@ -354,7 +365,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     if (pkPrepareDialog != null) {
                         pkPrepareDialog.dismiss();
                     }
-                    StartActivityUtils.startPlayActivity(MainActivity.this, 0, 0);
+                    StartActivityUtils.startPlayActivity(MainActivity.this, 0, 5, true);
                     break;
                 default:
                     break;

@@ -43,10 +43,11 @@ public class StartActivityUtils {
         activity.startActivity(intent);
     }
 
-    public static void startPlayActivity(Activity activity, int grade, int advance) {
+    public static void startPlayActivity(Activity activity, int grade, int advance, boolean isPK) {
         Intent intent = new Intent(activity, PlayActivity.class);
         intent.putExtra("grade", grade);
         intent.putExtra("advance", advance);
+        intent.putExtra("isPK", isPK);
         activity.startActivity(intent);
     }
 

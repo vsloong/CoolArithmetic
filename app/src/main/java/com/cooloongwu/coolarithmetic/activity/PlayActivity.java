@@ -5,6 +5,7 @@ import android.os.CountDownTimer;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,9 +16,21 @@ import android.widget.Toast;
 
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.adapter.QuestionAdapter;
+import com.cooloongwu.coolarithmetic.base.AppConfig;
 import com.cooloongwu.coolarithmetic.base.BaseActivity;
+import com.cooloongwu.coolarithmetic.entity.MsgTypeEnum;
 import com.cooloongwu.coolarithmetic.entity.Question;
+import com.cooloongwu.coolarithmetic.utils.AvatarUtils;
 import com.cooloongwu.coolarithmetic.utils.DBService;
+import com.cooloongwu.coolarithmetic.utils.SendMsgUtils;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.msg.MsgServiceObserve;
+import com.netease.nimlib.sdk.msg.model.CustomNotification;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,13 +43,71 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     private Button btn_submit;
     private AlertDialog playTimeOutDialog;
 
-    private int time = 40;      //默认每关40秒
-    private int advance;      //默认每关40秒
+    private int time = 40;              //默认每关40秒
+    private int advance = 0;            //默认闯关是第一关
+    private boolean isPK = false;       //默认不是PK
     private List<Question> questions;
     private MyCountDownTimer countDownTimer;
 
     private List<Integer> answers = new ArrayList<>();
     public static List<Integer> myAnswers = new ArrayList<>();
+
+    private AlertDialog pkResultDialog;
+    private TextView text_rate_other;
+    private TextView text_time_other;
+    private ImageView img_result;
+    private String otherGrades = "";
+    private String otherTime = "";
+    private int grades = 0;
+
+
+    private Observer<CustomNotification> customNotificationObserver = new Observer<CustomNotification>() {
+        @Override
+        public void onEvent(CustomNotification message) {
+            // 在这里处理自定义通知。
+            Log.e("PlayActivity接收到的自定义消息", message.getContent());
+            try {
+                JSONObject jsonObject = new JSONObject(message.getContent());
+                MsgTypeEnum typeEnum = MsgTypeEnum.valueOf(jsonObject.getString("type"));
+                switch (typeEnum) {
+                    case PK:
+                        Log.e("接收到的自定义PK消息", message.getContent());
+                        MsgTypeEnum subtypeEnum = MsgTypeEnum.valueOf(jsonObject.getString("subtype"));
+                        switch (subtypeEnum) {
+                            case PK_RESULT:
+                                String str = jsonObject.getString("msg");
+                                String result[] = str.split("-");
+                                Log.e("对方的结果", "正确数：" + result[0] + "时间：" + result[1]);
+                                if (pkResultDialog != null && pkResultDialog.isShowing()) {
+                                    text_rate_other.setText(result[0] + "%");
+                                    text_time_other.setText(result[1] + "s");
+
+                                    if (grades < Integer.parseInt(result[0])) {
+                                        img_result.setImageResource(R.mipmap.pk_result_fail_hint);
+                                    } else if (grades == Integer.parseInt(result[0])) {
+                                        if ((40 - advance - time) > Integer.parseInt(result[1])) {
+                                            img_result.setImageResource(R.mipmap.pk_result_fail_hint);
+                                        }
+                                    }
+                                } else {
+                                    otherGrades = result[0];
+                                    otherTime = result[1];
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+
+                        break;
+                    default:
+                        break;
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
     static {
         //设置默认没有选择答案，所以为-1
@@ -47,9 +118,9 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+        NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotificationObserver, true);
 
         getIntentData();
         initViews();
@@ -59,6 +130,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         Intent intent = getIntent();
         int grade = intent.getIntExtra("grade", 0);
         advance = intent.getIntExtra("advance", 0);
+        isPK = intent.getBooleanExtra("isPK", false);
         getQuestions(grade, advance);
 
         //开始倒计时
@@ -74,7 +146,20 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         text_play_timer = (TextView) findViewById(R.id.text_play_timer);
 
         RelativeLayout layout_avatar = (RelativeLayout) findViewById(R.id.layout_avatar);
-        layout_avatar.setVisibility(View.GONE);
+        if (!isPK) {
+            layout_avatar.setVisibility(View.GONE);
+        } else {
+            ImageView img_avatar_mine = (ImageView) findViewById(R.id.img_avatar_mine);
+            ImageView img_avatar_other = (ImageView) findViewById(R.id.img_avatar_other);
+
+            Picasso.with(this)
+                    .load(AvatarUtils.getAvatar(AppConfig.getUserAccid(this)))
+                    .into(img_avatar_mine);
+
+            Picasso.with(this)
+                    .load(AvatarUtils.getAvatar(MainActivity.fromAccid))
+                    .into(img_avatar_other);
+        }
 
         view_pager = (ViewPager) findViewById(R.id.view_pager);
         view_pager.setAdapter(new QuestionAdapter(getSupportFragmentManager(), questions));
@@ -197,7 +282,13 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
             }
         }
 
-        showResultDialog(rightAnswer * 10);
+        grades = rightAnswer * 10;
+        if (isPK) {
+            showPKResultDialog(rightAnswer * 10);
+            SendMsgUtils.sendPKMsg(MainActivity.fromAccid, AppConfig.getUserAccid(this), (rightAnswer * 10) + "-" + (40 - advance - time), MsgTypeEnum.PK_RESULT);
+        } else {
+            showResultDialog(rightAnswer * 10);
+        }
     }
 
     private void showResultDialog(int grades) {
@@ -232,6 +323,63 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         });
     }
 
+    private void showPKResultDialog(int grades) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = View.inflate(this, R.layout.dialog_play_pk_result, null);
+        Button btn_ok = (Button) view.findViewById(R.id.btn_ok);
+
+        img_result = (ImageView) view.findViewById(R.id.img_result);
+
+        TextView text_points = (TextView) view.findViewById(R.id.text_points);
+        text_points.setText("+" + grades);
+
+        TextView text_rate_mine = (TextView) view.findViewById(R.id.text_rate_mine);
+        TextView text_time_mine = (TextView) view.findViewById(R.id.text_time_mine);
+        text_rate_other = (TextView) view.findViewById(R.id.text_rate_other);
+        text_time_other = (TextView) view.findViewById(R.id.text_time_other);
+
+        text_rate_mine.setText(grades + "%");
+        text_time_mine.setText((40 - advance - time) + "s");
+
+        text_rate_other.setText(TextUtils.isEmpty(otherGrades) ? "对方还未完成" : otherGrades + "%");
+        text_time_other.setText(TextUtils.isEmpty(otherTime) ? "对方还未完成" : otherTime + "s");
+
+        if (!TextUtils.isEmpty(otherGrades)) {
+            if (grades < Integer.parseInt(otherGrades)) {
+                img_result.setImageResource(R.mipmap.pk_result_fail_hint);
+            } else if (grades == Integer.parseInt(otherGrades)) {
+                if ((40 - advance - time) > Integer.parseInt(otherTime)) {
+                    img_result.setImageResource(R.mipmap.pk_result_fail_hint);
+                }
+            }
+        }
+
+
+        ImageView img_avatar_mine = (ImageView) view.findViewById(R.id.img_avatar_mine);
+        ImageView img_avatar_other = (ImageView) view.findViewById(R.id.img_avatar_other);
+
+        Picasso.with(this)
+                .load(AvatarUtils.getAvatar(AppConfig.getUserAccid(this)))
+                .into(img_avatar_mine);
+
+        Picasso.with(this)
+                .load(AvatarUtils.getAvatar(MainActivity.fromAccid))
+                .into(img_avatar_other);
+
+        builder.setView(view);
+        builder.setCancelable(false);
+        //取消或确定按钮监听事件处理
+        pkResultDialog = builder.create();
+        pkResultDialog.show();
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pkResultDialog.dismiss();
+                finish();
+            }
+        });
+    }
+
     private class MyCountDownTimer extends CountDownTimer {
 
         public MyCountDownTimer(long millisInFuture, long countDownInterval) {
@@ -253,6 +401,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotificationObserver, false);
         countDownTimer.cancel();
     }
 }

@@ -19,6 +19,8 @@
     <color name="color_787878">#ff787878</color>
     <color name="color_e6e6e6">#eae6e6e6</color>
     <color name="color_ff6666">#ffff6666</color>
+    <color name="color_03a1e1">#ff03a1e1</color>
+    <color name="color_right_rate_bg">#ff0799e1</color>
     <!-- TabLayout -->
     <color name="white">#FFFFFF</color>
 

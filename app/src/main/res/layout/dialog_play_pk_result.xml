@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/shape_white"
+    android:gravity="center"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:id="@+id/root_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/win_info_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:src="@mipmap/pk_result_success_hint"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/score_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="积分：" />
+
+                <TextView
+                    android:id="@+id/text_points"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+45"
+                    android:textSize="18dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/user_opponent_info"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+
+            <LinearLayout
+                android:id="@+id/user_info_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.0"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/user_crown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/arena_crown" />
+
+                <FrameLayout
+                    android:layout_width="61dp"
+                    android:layout_height="61dp"
+                    android:layout_marginTop="-5dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/img_avatar_mine"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerInParent="true"
+                        android:padding="3dp"
+                        tools:src="@mipmap/avatar"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="3dp" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:ellipsize="end"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="5dp"
+                    android:singleLine="true"
+                    android:text="我"
+                    android:textColor="@color/color_787878"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/user_school"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:ellipsize="end"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="5dp"
+                    android:singleLine="true"
+                    tools:text="剑桥麻省理工小学"
+                    android:textColor="@color/color_787878"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_rate_mine"
+                    android:layout_width="82dp"
+                    android:layout_height="19dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/bg_arena_right_rate"
+                    android:gravity="center"
+                    android:text="98%"
+                    android:textColor="@color/text_white"
+                    android:textSize="12.0sp" />
+
+                <TextView
+                    android:id="@+id/text_time_mine"
+                    android:layout_width="82dp"
+                    android:layout_height="19dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_arena_right_rate"
+                    android:gravity="center"
+                    android:text="20s"
+                    android:textColor="@color/text_white"
+                    android:textSize="12.0sp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0">
+
+                <ImageView
+                    android:id="@+id/vs_img"
+                    android:layout_width="52dp"
+                    android:layout_height="31dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="32dp"
+                    android:src="@mipmap/vs" />
+
+                <TextView
+                    android:id="@+id/right_rate_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/vs_img"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="64dp"
+                    android:text="正确率"
+                    android:textColor="@color/color_787878"
+                    android:textSize="14.0sp" />
+
+                <TextView
+                    android:id="@+id/time_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/right_rate_txt"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="6dp"
+                    android:text="用时"
+                    android:textColor="@color/color_787878" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/opponent_info_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_weight="2.0"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/opponent_crown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/arena_crown" />
+
+                <FrameLayout
+                    android:layout_width="61dp"
+                    android:layout_height="61dp"
+                    android:layout_marginTop="-5dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/img_avatar_other"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerInParent="true"
+                        android:padding="3dp"
+                        tools:src="@mipmap/avatar"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="3dp" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/opponent_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ellipsize="end"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:text="对方"
+                    android:textColor="@color/color_787878"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/opponent_school"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:ellipsize="end"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    tools:text="剑桥麻省理工小学"
+                    android:textColor="@color/color_787878"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_rate_other"
+                    android:layout_width="93dp"
+                    android:layout_height="21dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/bg_arena_right_rate"
+                    android:gravity="center"
+                    android:text="98%"
+                    android:textColor="@color/text_white"
+                    android:textSize="12.0sp" />
+
+                <TextView
+                    android:id="@+id/text_time_other"
+                    android:layout_width="93dp"
+                    android:layout_height="21dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_arena_right_rate"
+                    android:gravity="center"
+                    android:text="20s"
+                    android:textColor="@color/text_white"
+                    android:textSize="12.0sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="fill_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/selector_btn_waiting_cancel"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/white"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+</LinearLayout>

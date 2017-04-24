@@ -12,5 +12,6 @@ public enum MsgTypeEnum {
     PK_REJECT,  //接收到拒绝PK消息
     PK_BUSY,    //对方正在跟其他好友PK，忙碌中
     PK_CANCEL,  //接收到取消PK消息
+    PK_RESULT,  //接收到PK结果消息
 
 }

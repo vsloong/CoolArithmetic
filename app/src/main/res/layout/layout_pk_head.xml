@@ -41,6 +41,7 @@
         android:paddingRight="40dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_avatar_mine"
             android:layout_width="66dp"
             android:layout_height="66dp"
             android:layout_alignParentLeft="true"
@@ -50,6 +51,7 @@
             app:civ_border_width="3dp" />
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_avatar_other"
             android:layout_width="66dp"
             android:layout_height="66dp"
             android:layout_alignParentRight="true"
