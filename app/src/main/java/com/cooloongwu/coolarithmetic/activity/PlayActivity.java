@@ -31,6 +31,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     private AlertDialog playTimeOutDialog;
 
     private int time = 40;      //默认每关40秒
+    private int advance;      //默认每关40秒
     private List<Question> questions;
     private MyCountDownTimer countDownTimer;
 
@@ -57,7 +58,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     private void getIntentData() {
         Intent intent = getIntent();
         int grade = intent.getIntExtra("grade", 0);
-        int advance = intent.getIntExtra("advance", 0);
+        advance = intent.getIntExtra("advance", 0);
         getQuestions(grade, advance);
 
         //开始倒计时
@@ -184,15 +185,51 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void showResult() {
+        int rightAnswer = 0;
         for (int i = 0; i < questions.size(); i++) {
             Log.e("交卷结果", "第" + i + "题：正确答案" + answers.get(i) + "；我的答案：" + myAnswers.get(i));
 
             if (answers.get(i) == myAnswers.get(i)) {
                 Log.e("交卷结果", "第" + i + "题正确");
+                rightAnswer++;
             } else {
                 Log.e("交卷结果", "第" + i + "题错误");
             }
         }
+
+        showResultDialog(rightAnswer * 10);
+    }
+
+    private void showResultDialog(int grades) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = View.inflate(this, R.layout.dialog_play_result, null);
+        Button btn_ok = (Button) view.findViewById(R.id.btn_ok);
+
+        TextView text_title = (TextView) view.findViewById(R.id.text_title);
+        TextView text_grades = (TextView) view.findViewById(R.id.text_grades);
+        TextView text_correct_rate = (TextView) view.findViewById(R.id.text_correct_rate);
+        TextView text_time = (TextView) view.findViewById(R.id.text_time);
+        TextView text_fraction = (TextView) view.findViewById(R.id.text_fraction);
+
+        text_title.setText("限时：" + (40 - advance) + "秒      题数：10题");
+        text_grades.setText(String.valueOf(grades));
+        text_correct_rate.setText(grades + "%");
+        text_time.setText((40 - advance - time) + "s");
+        text_fraction.setText(String.valueOf(grades));
+
+        builder.setView(view);
+        builder.setCancelable(false);
+        //取消或确定按钮监听事件处理
+        final AlertDialog resultDialog = builder.create();
+        resultDialog.show();
+
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resultDialog.dismiss();
+                finish();
+            }
+        });
     }
 
     private class MyCountDownTimer extends CountDownTimer {

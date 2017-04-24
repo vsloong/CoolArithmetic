@@ -16,6 +16,9 @@
     <color name="color_black_c1c1c1">#ffc1c1c1</color>
     <color name="color_90969e">#ff90969e</color>
     <color name="color_trans">#00000000</color>
+    <color name="color_787878">#ff787878</color>
+    <color name="color_e6e6e6">#eae6e6e6</color>
+    <color name="color_ff6666">#ffff6666</color>
     <!-- TabLayout -->
     <color name="white">#FFFFFF</color>
 
