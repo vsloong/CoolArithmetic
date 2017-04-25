@@ -1,6 +1,10 @@
 package com.cooloongwu.coolarithmetic.base;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+
+import com.umeng.message.PushAgent;
 
 /**
  * Activity的基类
@@ -8,6 +12,12 @@ import android.support.v7.app.AppCompatActivity;
  */
 
 public class BaseActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        PushAgent.getInstance(this).onAppStart();
+    }
 
     /**
      * 建议在这里初始化视图

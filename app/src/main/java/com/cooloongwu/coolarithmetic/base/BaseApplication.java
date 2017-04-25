@@ -15,6 +15,8 @@ import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.PushAgent;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,10 +47,29 @@ public class BaseApplication extends Application {
         AsyncHttpClientUtils.setClientGeneral(new AsyncHttpClient());
 
         initFile();
+        initUPush();
     }
 
     public static BaseApplication getInstance() {
         return instance;
+    }
+
+    private void initUPush() {
+        PushAgent mPushAgent = PushAgent.getInstance(this);
+        //注册推送服务，每次调用register方法都会回调该接口
+        mPushAgent.register(new IUmengRegisterCallback() {
+
+            @Override
+            public void onSuccess(String deviceToken) {
+                //注册成功会返回device token
+                Log.e("友盟", "注册成功：" + deviceToken);
+            }
+
+            @Override
+            public void onFailure(String s, String s1) {
+                Log.e("友盟", "注册失败：" + s + "；" + s1);
+            }
+        });
     }
 
     /**
@@ -61,37 +82,37 @@ public class BaseApplication extends Application {
 
         //判断数据库是否拷贝到相应的目录下
 //        if (!new File(DB_PATH + AppConfig.questionsDB).exists()) {
-            File dir = new File(DB_PATH);
-            if (!dir.exists()) {
-                dir.mkdir();
+        File dir = new File(DB_PATH);
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+
+        //复制文件
+        try {
+            InputStream is = getBaseContext().getAssets().open(AppConfig.questionsDB);
+            OutputStream os = new FileOutputStream(DB_PATH + AppConfig.questionsDB);
+
+            //用来复制文件
+            byte[] buffer = new byte[1024];
+            //保存已经复制的长度
+            int length;
+
+            //开始复制
+            while ((length = is.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
             }
 
-            //复制文件
-            try {
-                InputStream is = getBaseContext().getAssets().open(AppConfig.questionsDB);
-                OutputStream os = new FileOutputStream(DB_PATH + AppConfig.questionsDB);
+            //刷新
+            os.flush();
+            //关闭
+            os.close();
+            is.close();
+            Log.e("DataBase", "Copy Success");
 
-                //用来复制文件
-                byte[] buffer = new byte[1024];
-                //保存已经复制的长度
-                int length;
-
-                //开始复制
-                while ((length = is.read(buffer)) > 0) {
-                    os.write(buffer, 0, length);
-                }
-
-                //刷新
-                os.flush();
-                //关闭
-                os.close();
-                is.close();
-                Log.e("DataBase", "Copy Success");
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.e("DataBase", "Copy Error" + e.toString());
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("DataBase", "Copy Error" + e.toString());
+        }
 //        } else {
 //            Log.e("DataBase", "Already Exist");
 //        }

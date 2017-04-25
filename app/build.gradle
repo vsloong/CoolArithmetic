@@ -23,7 +23,8 @@ android {
 
         ndk {
             //设置支持的SO库架构
-            abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+//            abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+            abiFilters "armeabi", "x86"
         }
     }
     buildTypes {
@@ -58,4 +59,5 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'org.greenrobot:greendao-generator:3.2.2'
     compile 'org.greenrobot:greendao:3.2.2'
+    compile project(':PushSDK')
 }

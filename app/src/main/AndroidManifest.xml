@@ -103,6 +103,18 @@
             android:name="com.netease.cosine.target.receiver"
             android:value="com.netease.nimlib.service.NimReceiver" />
 
+        <!--友盟推送开始-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="58ff115af29d986b82000cb7"></meta-data>
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="25384f7a6ded2f7bc25aaf5747af41c3"></meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="CooLoongWu"></meta-data>
+        <!--友盟推送结束-->
+
         <activity android:name=".activity.RegisterActivity"></activity>
     </application>
 
