@@ -41,7 +41,7 @@ public class AppConfig {
      * 存储修改用户年级，默认为一年级
      */
     private static final String USER_GRADE = "user_grade";
-    private static final int defaultUserGrade = 1;
+    private static final int defaultUserGrade = 0;
 
     /**
      * 存储修改用户昵称，默认为空

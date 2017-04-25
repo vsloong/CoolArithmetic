@@ -18,17 +18,21 @@ import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.adapter.QuestionAdapter;
 import com.cooloongwu.coolarithmetic.base.AppConfig;
 import com.cooloongwu.coolarithmetic.base.BaseActivity;
+import com.cooloongwu.coolarithmetic.entity.Advance;
 import com.cooloongwu.coolarithmetic.entity.MsgTypeEnum;
 import com.cooloongwu.coolarithmetic.entity.Question;
 import com.cooloongwu.coolarithmetic.utils.AvatarUtils;
 import com.cooloongwu.coolarithmetic.utils.DBService;
+import com.cooloongwu.coolarithmetic.utils.GreenDAOUtils;
 import com.cooloongwu.coolarithmetic.utils.SendMsgUtils;
+import com.cooloongwu.greendao.gen.AdvanceDao;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -58,7 +62,8 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     private ImageView img_result;
     private String otherGrades = "";
     private String otherTime = "";
-    private int grades = 0;
+    private int grades = 0;     //分数
+    private int grade = 0;      //年级
 
 
     private Observer<CustomNotification> customNotificationObserver = new Observer<CustomNotification>() {
@@ -128,7 +133,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
     private void getIntentData() {
         Intent intent = getIntent();
-        int grade = intent.getIntExtra("grade", 0);
+        grade = intent.getIntExtra("grade", 0);
         advance = intent.getIntExtra("advance", 0);
         isPK = intent.getBooleanExtra("isPK", false);
         getQuestions(grade, advance);
@@ -288,6 +293,22 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
             SendMsgUtils.sendPKMsg(MainActivity.fromAccid, AppConfig.getUserAccid(this), (rightAnswer * 10) + "-" + (40 - advance - time), MsgTypeEnum.PK_RESULT);
         } else {
             showResultDialog(rightAnswer * 10);
+
+            if (rightAnswer >= 8) {
+                if (advance < 20) {
+                    Advance advanceBean = GreenDAOUtils.getDefaultDaoSession(PlayActivity.this).getAdvanceDao()
+                            .queryBuilder()
+                            .where(AdvanceDao.Properties.Grade.eq(grade))
+                            .build().unique();
+                    if (advance == advanceBean.getAdvance()) {
+                        advanceBean.setAdvance(advance + 1);
+                        GreenDAOUtils.getDefaultDaoSession(PlayActivity.this).getAdvanceDao().update(advanceBean);
+                        EventBus.getDefault().post(advanceBean);
+                    }
+
+                }
+            }
+
         }
     }
 
