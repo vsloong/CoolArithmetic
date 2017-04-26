@@ -70,6 +70,16 @@ public class BaseApplication extends Application {
                 Log.e("友盟", "注册失败：" + s + "；" + s1);
             }
         });
+
+//        UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
+//            @Override
+//            public void handleMessage(Context context, UMessage uMessage) {
+//                //点击了通知后才有操作
+//                Log.e("友盟消息处理", "handleMessage");
+//                super.handleMessage(context, uMessage);
+//            }
+//        };
+//        mPushAgent.setNotificationClickHandler(notificationClickHandler);
     }
 
     /**

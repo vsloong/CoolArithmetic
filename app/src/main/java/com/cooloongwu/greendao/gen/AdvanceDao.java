@@ -43,16 +43,14 @@ public class AdvanceDao extends AbstractDao<Advance, Long> {
      * Creates the underlying database table.
      */
     public static void createTable(Database db, boolean ifNotExists) {
-        String constraint = ifNotExists ? "IF NOT EXISTS " : "";
+        String constraint = ifNotExists ? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"ADVANCE\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"GRADE\" INTEGER NOT NULL ," + // 1: grade
                 "\"ADVANCE\" INTEGER NOT NULL );"); // 2: advance
     }
 
-    /**
-     * Drops the underlying database table.
-     */
+    /** Drops the underlying database table. */
     public static void dropTable(Database db, boolean ifExists) {
         String sql = "DROP TABLE " + (ifExists ? "IF EXISTS " : "") + "\"ADVANCE\"";
         db.execSQL(sql);
@@ -61,7 +59,7 @@ public class AdvanceDao extends AbstractDao<Advance, Long> {
     @Override
     protected final void bindValues(DatabaseStatement stmt, Advance entity) {
         stmt.clearBindings();
-
+ 
         Long id = entity.getId();
         if (id != null) {
             stmt.bindLong(1, id);
@@ -73,7 +71,7 @@ public class AdvanceDao extends AbstractDao<Advance, Long> {
     @Override
     protected final void bindValues(SQLiteStatement stmt, Advance entity) {
         stmt.clearBindings();
-
+ 
         Long id = entity.getId();
         if (id != null) {
             stmt.bindLong(1, id);
@@ -85,7 +83,7 @@ public class AdvanceDao extends AbstractDao<Advance, Long> {
     @Override
     public Long readKey(Cursor cursor, int offset) {
         return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
-    }
+    }    
 
     @Override
     public Advance readEntity(Cursor cursor, int offset) {
@@ -96,20 +94,20 @@ public class AdvanceDao extends AbstractDao<Advance, Long> {
         );
         return entity;
     }
-
+     
     @Override
     public void readEntity(Cursor cursor, Advance entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setGrade(cursor.getInt(offset + 1));
         entity.setAdvance(cursor.getInt(offset + 2));
-    }
-
+     }
+    
     @Override
     protected final Long updateKeyAfterInsert(Advance entity, long rowId) {
         entity.setId(rowId);
         return rowId;
     }
-
+    
     @Override
     public Long getKey(Advance entity) {
         if (entity != null) {
@@ -128,5 +126,5 @@ public class AdvanceDao extends AbstractDao<Advance, Long> {
     protected final boolean isEntityUpdateable() {
         return true;
     }
-
+    
 }
