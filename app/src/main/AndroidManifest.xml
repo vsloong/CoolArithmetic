@@ -116,7 +116,9 @@
         <!-- 友盟推送结束 -->
 
         <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.WebViewActivity"></activity>
+        <activity
+            android:name=".activity.WebViewActivity"
+            android:launchMode="singleTask"></activity>
     </application>
 
 </manifest>

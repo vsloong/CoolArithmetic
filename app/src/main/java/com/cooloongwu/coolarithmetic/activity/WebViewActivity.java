@@ -1,7 +1,9 @@
 package com.cooloongwu.coolarithmetic.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -13,7 +15,7 @@ import com.cooloongwu.coolarithmetic.base.BaseActivity;
 
 public class WebViewActivity extends BaseActivity {
 
-    private WebView view_web;
+    private String url = "http://120.27.47.125/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +23,17 @@ public class WebViewActivity extends BaseActivity {
         setContentView(R.layout.activity_web_view);
 
         initToolbar();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Bundle bun = getIntent().getExtras();
+        if (bun != null) {
+            url = bun.getString("url");
+            Log.e("Web页面数据", url);
+        }
+
         initViews();
     }
 
@@ -36,10 +49,17 @@ public class WebViewActivity extends BaseActivity {
         });
     }
 
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
+
     @Override
     protected void initViews() {
         super.initViews();
-        view_web = (WebView) findViewById(R.id.view_web);
+        WebView view_web = (WebView) findViewById(R.id.view_web);
 
         //声明WebSettings子类
         WebSettings webSettings = view_web.getSettings();
@@ -66,7 +86,7 @@ public class WebViewActivity extends BaseActivity {
         webSettings.setLoadsImagesAutomatically(true); //支持自动加载图片
         webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
 
-        view_web.loadUrl("http://120.27.47.125/");
+        view_web.loadUrl(url);
         view_web.setWebViewClient(new MyWebViewClient());
     }
 

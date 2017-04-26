@@ -1,6 +1,8 @@
 package com.cooloongwu.coolarithmetic.base;
 
 import android.app.Application;
+import android.app.Notification;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Environment;
@@ -8,7 +10,9 @@ import android.util.Log;
 
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.activity.LauncherActivity;
+import com.cooloongwu.coolarithmetic.entity.Conversation;
 import com.cooloongwu.coolarithmetic.utils.AsyncHttpClientUtils;
+import com.cooloongwu.coolarithmetic.utils.GreenDAOUtils;
 import com.loopj.android.http.AsyncHttpClient;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.SDKOptions;
@@ -17,6 +21,8 @@ import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.uinfo.UserInfoProvider;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
+import com.umeng.message.UmengMessageHandler;
+import com.umeng.message.entity.UMessage;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -80,6 +86,30 @@ public class BaseApplication extends Application {
 //            }
 //        };
 //        mPushAgent.setNotificationClickHandler(notificationClickHandler);
+
+
+        UmengMessageHandler messageHandler = new UmengMessageHandler() {
+            @Override
+            public Notification getNotification(Context context, UMessage msg) {
+                Log.e("友盟消息处理", "getNotification" + msg.toString());
+                Log.e("友盟消息分析", "title：" + msg.title);
+                Log.e("友盟消息分析", "text：" + msg.text);
+                Log.e("友盟消息分析", "url：" + msg.extra.get("url"));
+
+                Conversation conversation = new Conversation();
+                conversation.setType("system");
+                conversation.setName("系统消息");
+                conversation.setUnReadNum(1);
+                conversation.setContent(msg.title);
+
+                GreenDAOUtils.getDefaultDaoSession(getApplicationContext())
+                        .getConversationDao()
+                        .insert(conversation);
+
+                return super.getNotification(context, msg);
+            }
+        };
+        mPushAgent.setMessageHandler(messageHandler);
     }
 
     /**
