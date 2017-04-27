@@ -47,7 +47,7 @@
                     android:layout_height="88dp"
                     android:layout_gravity="center_horizontal"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/img_fight_scholar"
+                    android:src="@mipmap/ic_launcher"
                     app:riv_border_color="#ffffff"
                     app:riv_border_width="2dp"
                     app:riv_oval="true" />
@@ -66,7 +66,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxWidth="200dp"
-                        android:text="名字啊"
+                        android:text="还未登陆哦"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -77,7 +77,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="4dp"
-                    android:text="这是你学校的名字"
+                    tools:text="这是你学校的名字"
                     android:textColor="@color/white"
                     android:textSize="10sp" />
 
@@ -106,7 +106,7 @@
                         android:src="@mipmap/level_1" />
 
                     <ProgressBar
-                        android:id="@+id/profile_score_pBar"
+                        android:id="@+id/progress_bar_score"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="fill_parent"
                         android:layout_height="12dp"
@@ -225,6 +225,17 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_sign"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/btn_logout"
+                android:layout_margin="16dp"
+                android:background="@drawable/selector_login_btn"
+                android:enabled="false"
+                android:text="签到"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btn_logout"

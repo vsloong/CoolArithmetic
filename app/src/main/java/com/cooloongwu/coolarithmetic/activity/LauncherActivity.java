@@ -8,6 +8,7 @@ import android.util.Log;
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.base.AppConfig;
 import com.cooloongwu.coolarithmetic.base.BaseActivity;
+import com.cooloongwu.coolarithmetic.utils.GoLoginUtils;
 import com.cooloongwu.coolarithmetic.utils.StartActivityUtils;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
@@ -20,7 +21,9 @@ public class LauncherActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
-        goNext();
+
+        goMain();
+        //goNext();
     }
 
     /**
@@ -53,33 +56,44 @@ public class LauncherActivity extends BaseActivity {
      * 自动登录，直接跳转到主页面
      */
     private void goMain() {
-        LoginInfo info = new LoginInfo(AppConfig.getUserAccid(LauncherActivity.this), AppConfig.getUserToken(LauncherActivity.this));
-        NIMClient.getService(AuthService.class).login(info).setCallback(new RequestCallback<LoginInfo>() {
-            @Override
-            public void onSuccess(LoginInfo param) {
-                Runnable runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        StartActivityUtils.startMainActivity(LauncherActivity.this);
-                        finish();
-                    }
-                };
-                Handler handler = new Handler();
-                handler.postDelayed(runnable, 1500);
-            }
 
-            @Override
-            public void onFailed(int code) {
-                goLogin();
-            }
+        if (GoLoginUtils.isLogin()) {
+            LoginInfo info = new LoginInfo(AppConfig.getUserAccid(LauncherActivity.this), AppConfig.getUserToken(LauncherActivity.this));
+            NIMClient.getService(AuthService.class).login(info).setCallback(new RequestCallback<LoginInfo>() {
+                @Override
+                public void onSuccess(LoginInfo param) {
+                    Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            StartActivityUtils.startMainActivity(LauncherActivity.this);
+                            finish();
+                        }
+                    };
+                    Handler handler = new Handler();
+                    handler.postDelayed(runnable, 1500);
+                }
 
-            @Override
-            public void onException(Throwable exception) {
-                Log.e("登录", "出错" + exception.toString());
-                goLogin();
-            }
-        });
+                @Override
+                public void onFailed(int code) {
+                    goLogin();
+                }
 
-
+                @Override
+                public void onException(Throwable exception) {
+                    Log.e("登录", "出错" + exception.toString());
+                    goLogin();
+                }
+            });
+        } else {
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    StartActivityUtils.startMainActivity(LauncherActivity.this);
+                    finish();
+                }
+            };
+            Handler handler = new Handler();
+            handler.postDelayed(runnable, 1500);
+        }
     }
 }

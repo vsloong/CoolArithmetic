@@ -52,7 +52,7 @@ public class MsgContactsFragment extends BaseFragment {
     private void getFriendsList() {
         List<String> friends = NIMClient.getService(FriendService.class).getFriendAccounts();
 
-        if (!friends.isEmpty()) {
+        if (friends != null && !friends.isEmpty()) {
             NIMClient.getService(UserService.class)
                     .fetchUserInfo(friends)
                     .setCallback(new RequestCallback<List<NimUserInfo>>() {

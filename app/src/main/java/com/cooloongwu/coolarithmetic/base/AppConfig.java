@@ -75,6 +75,12 @@ public class AppConfig {
 
 
     /**
+     * 存储修改用户签到时间
+     */
+    private static final String USER_SIGN_TIME = "user_sign_time";
+    private static final long defaultUserSignTime = 0;
+
+    /**
      * 获取用户的数据库（为每一个用户建立一个数据库）
      *
      * @param context 上下文
@@ -213,6 +219,22 @@ public class AppConfig {
     public static long getUserLoginTime(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getLong(USER_LOGIN_TIME, defaultUserLoginTime);
+    }
+
+    /**
+     * 存储获取用户的签到时间
+     *
+     * @param context 上下文
+     * @param time    token
+     */
+    public static void setUserSignTime(Context context, long time) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences.edit().putLong(USER_SIGN_TIME, time).apply();
+    }
+
+    public static long getUserSignTime(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getLong(USER_SIGN_TIME, defaultUserSignTime);
     }
 
     /**
