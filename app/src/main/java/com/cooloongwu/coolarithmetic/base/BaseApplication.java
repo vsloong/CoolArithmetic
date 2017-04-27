@@ -13,6 +13,7 @@ import com.cooloongwu.coolarithmetic.activity.LauncherActivity;
 import com.cooloongwu.coolarithmetic.entity.Conversation;
 import com.cooloongwu.coolarithmetic.utils.AsyncHttpClientUtils;
 import com.cooloongwu.coolarithmetic.utils.GreenDAOUtils;
+import com.cooloongwu.greendao.gen.ConversationDao;
 import com.loopj.android.http.AsyncHttpClient;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.SDKOptions;
@@ -23,6 +24,8 @@ import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.entity.UMessage;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -96,16 +99,37 @@ public class BaseApplication extends Application {
                 Log.e("友盟消息分析", "text：" + msg.text);
                 Log.e("友盟消息分析", "url：" + msg.extra.get("url"));
 
-                Conversation conversation = new Conversation();
-                conversation.setType("system");
-                conversation.setName("系统消息");
-                conversation.setUnReadNum(1);
-                conversation.setContent(msg.title);
 
-                GreenDAOUtils.getDefaultDaoSession(getApplicationContext())
+                Conversation localConversation = GreenDAOUtils.getDefaultDaoSession(getApplicationContext())
                         .getConversationDao()
-                        .insert(conversation);
+                        .queryBuilder()
+                        .where(ConversationDao.Properties.Type.eq("system"))
+                        .build()
+                        .unique();
 
+                if (localConversation == null) {
+                    Conversation conversation = new Conversation();
+                    conversation.setType("system");
+                    conversation.setName("系统消息");
+                    conversation.setUnReadNum(1);
+                    conversation.setContent(msg.title);
+                    conversation.setRemark(msg.extra.get("url"));
+                    conversation.setTime(System.currentTimeMillis());
+                    GreenDAOUtils.getDefaultDaoSession(getApplicationContext())
+                            .getConversationDao()
+                            .insert(conversation);
+                } else {
+//                    localConversation.setUnReadNum(localConversation.getUnReadNum() + 1);
+                    localConversation.setUnReadNum(1);//系统消息默认就是一条
+                    localConversation.setContent(msg.title);
+                    localConversation.setRemark(msg.extra.get("url"));
+                    localConversation.setTime(System.currentTimeMillis());
+                    GreenDAOUtils.getDefaultDaoSession(getApplicationContext())
+                            .getConversationDao()
+                            .update(localConversation);
+                }
+
+                EventBus.getDefault().post(new Conversation());
                 return super.getNotification(context, msg);
             }
         };

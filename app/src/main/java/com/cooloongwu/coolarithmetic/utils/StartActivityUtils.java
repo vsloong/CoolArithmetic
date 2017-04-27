@@ -9,6 +9,7 @@ import com.cooloongwu.coolarithmetic.activity.MainActivity;
 import com.cooloongwu.coolarithmetic.activity.PlayActivity;
 import com.cooloongwu.coolarithmetic.activity.RankActivity;
 import com.cooloongwu.coolarithmetic.activity.RegisterActivity;
+import com.cooloongwu.coolarithmetic.activity.WebViewActivity;
 
 /**
  * 跳转逻辑工具
@@ -48,6 +49,12 @@ public class StartActivityUtils {
         intent.putExtra("grade", grade);
         intent.putExtra("advance", advance);
         intent.putExtra("isPK", isPK);
+        activity.startActivity(intent);
+    }
+
+    public static void startWebViewActivity(Activity activity, String url) {
+        Intent intent = new Intent(activity, WebViewActivity.class);
+        intent.putExtra("url", url);
         activity.startActivity(intent);
     }
 
