@@ -81,6 +81,18 @@ public class AppConfig {
     private static final long defaultUserSignTime = 0;
 
     /**
+     * 存储修改用户经验值
+     */
+    private static final String USER_EXP = "user_EXP";
+    private static final int defaultUserEXP = 0;
+
+    /**
+     * 存储修改用户活力值
+     */
+    private static final String USER_EV = "user_EV";
+    private static final int defaultUserEV = 100;
+
+    /**
      * 获取用户的数据库（为每一个用户建立一个数据库）
      *
      * @param context 上下文
@@ -235,6 +247,51 @@ public class AppConfig {
     public static long getUserSignTime(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getLong(USER_SIGN_TIME, defaultUserSignTime);
+    }
+
+    /**
+     * 存储获取用户的经验值
+     *
+     * @param exp 经验值
+     */
+    public static void setUserEXP(int exp) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        preferences.edit().putInt(USER_EXP, exp).apply();
+    }
+
+    public static void increaseUserEXP(int exp) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        preferences.edit().putInt(USER_EXP, getUserEXP() + exp).apply();
+    }
+
+    public static int getUserEXP() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        return preferences.getInt(USER_EXP, defaultUserEXP);
+    }
+
+    /**
+     * 存储获取用户的活力值
+     *
+     * @param ev 活力值
+     */
+    public static void setUserEV(int ev) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        preferences.edit().putInt(USER_EV, ev).apply();
+    }
+
+    public static void increaseUserEV(int ev) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        preferences.edit().putInt(USER_EV, (getUserEV() + ev) > 100 ? 100 : getUserEV() + ev).apply();
+    }
+
+    public static void decreaseUserEV(int ev) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        preferences.edit().putInt(USER_EV, getUserEV() - ev).apply();
+    }
+
+    public static int getUserEV() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        return preferences.getInt(USER_EV, defaultUserEV);
     }
 
     /**

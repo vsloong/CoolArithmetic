@@ -6,10 +6,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.adapter.AdvanceAdapter;
+import com.cooloongwu.coolarithmetic.base.AppConfig;
 import com.cooloongwu.coolarithmetic.base.BaseActivity;
 import com.cooloongwu.coolarithmetic.entity.Advance;
 import com.cooloongwu.coolarithmetic.utils.GreenDAOUtils;
@@ -27,6 +29,8 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
 
     private TextView text_grade;
     private TextView text_progress;
+    private TextView text_ev_progress;
+    private ProgressBar progress_bar_ev;
 
     private Advance advance;
     private AdvanceAdapter adapter;
@@ -44,10 +48,14 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void initViews() {
         ImageView img_btn_back = (ImageView) findViewById(R.id.img_btn_back);
+        progress_bar_ev = (ProgressBar) findViewById(R.id.progress_bar_ev);
+        progress_bar_ev.setProgress(AppConfig.getUserEV());
 
         RecyclerView view_recycler = (RecyclerView) findViewById(R.id.view_recycler);
         text_grade = (TextView) findViewById(R.id.text_grade);
         text_progress = (TextView) findViewById(R.id.text_progress);
+        text_ev_progress = (TextView) findViewById(R.id.text_ev_progress);
+        text_ev_progress.setText(AppConfig.getUserEV() + "/100");
 
         //初始化线性布局管理器
         LinearLayoutManager layoutManager = new LinearLayoutManager(AdvanceActivity.this);
@@ -104,10 +112,19 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        progress_bar_ev.setProgress(AppConfig.getUserEV());
+        text_ev_progress.setText(AppConfig.getUserEV() + "/100");
+    }
+
     @Subscribe
     public void onEventMainThread(Advance advance) {
         adapter.notifyDataSetChanged();
         text_progress.setText((advance.getAdvance() + 1) + "/20");
+        progress_bar_ev.setProgress(AppConfig.getUserEV());
+        text_ev_progress.setText(AppConfig.getUserEV() + "/100");
     }
 
     @Override

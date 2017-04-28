@@ -118,7 +118,9 @@
         <activity android:name=".activity.RegisterActivity" />
         <activity
             android:name=".activity.WebViewActivity"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask" />
+        <activity android:name=".activity.SearchActivity" />
+        <activity android:name=".activity.WrongActivity"></activity>
     </application>
 
 </manifest>

@@ -23,6 +23,7 @@
     <color name="color_right_rate_bg">#ff0799e1</color>
     <!-- TabLayout -->
     <color name="white">#FFFFFF</color>
+    <color name="gray_dark">#ffcacaca</color>
 
     <color name="purple">#ff9f6fd7</color>
     <color name="tab_indicator">#FFFFFF</color>

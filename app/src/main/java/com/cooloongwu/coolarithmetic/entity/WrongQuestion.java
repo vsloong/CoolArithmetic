@@ -1,14 +1,17 @@
 package com.cooloongwu.coolarithmetic.entity;
 
-import java.io.Serializable;
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Generated;
 
 /**
- * 问题的实体类
+ * 错误问题的实体类
  */
-public class Question implements Serializable {
+@Entity
+public class WrongQuestion {
 
     //编号
-    //@Property(nameInDb = "Field1")
+    @Id
     private Long id;
 
     //年级
@@ -42,9 +45,32 @@ public class Question implements Serializable {
     //详情
     private String selectedAnswer;
 
+    @Generated(hash = 1503640707)
+    public WrongQuestion(Long id, int grade, int advance, int questionId,
+                         String question, String questionType, String answerA, String answerB,
+                         String answerC, String answerD, int answer, String explanation,
+                         String selectedAnswer) {
+        this.id = id;
+        this.grade = grade;
+        this.advance = advance;
+        this.questionId = questionId;
+        this.question = question;
+        this.questionType = questionType;
+        this.answerA = answerA;
+        this.answerB = answerB;
+        this.answerC = answerC;
+        this.answerD = answerD;
+        this.answer = answer;
+        this.explanation = explanation;
+        this.selectedAnswer = selectedAnswer;
+    }
+
+    @Generated(hash = 93514715)
+    public WrongQuestion() {
+    }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {
@@ -52,7 +78,7 @@ public class Question implements Serializable {
     }
 
     public int getGrade() {
-        return grade;
+        return this.grade;
     }
 
     public void setGrade(int grade) {
@@ -60,7 +86,7 @@ public class Question implements Serializable {
     }
 
     public int getAdvance() {
-        return advance;
+        return this.advance;
     }
 
     public void setAdvance(int advance) {
@@ -68,7 +94,7 @@ public class Question implements Serializable {
     }
 
     public int getQuestionId() {
-        return questionId;
+        return this.questionId;
     }
 
     public void setQuestionId(int questionId) {
@@ -76,15 +102,23 @@ public class Question implements Serializable {
     }
 
     public String getQuestion() {
-        return question;
+        return this.question;
     }
 
     public void setQuestion(String question) {
         this.question = question;
     }
 
+    public String getQuestionType() {
+        return this.questionType;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
+    }
+
     public String getAnswerA() {
-        return answerA;
+        return this.answerA;
     }
 
     public void setAnswerA(String answerA) {
@@ -92,7 +126,7 @@ public class Question implements Serializable {
     }
 
     public String getAnswerB() {
-        return answerB;
+        return this.answerB;
     }
 
     public void setAnswerB(String answerB) {
@@ -100,7 +134,7 @@ public class Question implements Serializable {
     }
 
     public String getAnswerC() {
-        return answerC;
+        return this.answerC;
     }
 
     public void setAnswerC(String answerC) {
@@ -108,7 +142,7 @@ public class Question implements Serializable {
     }
 
     public String getAnswerD() {
-        return answerD;
+        return this.answerD;
     }
 
     public void setAnswerD(String answerD) {
@@ -116,7 +150,7 @@ public class Question implements Serializable {
     }
 
     public int getAnswer() {
-        return answer;
+        return this.answer;
     }
 
     public void setAnswer(int answer) {
@@ -124,7 +158,7 @@ public class Question implements Serializable {
     }
 
     public String getExplanation() {
-        return explanation;
+        return this.explanation;
     }
 
     public void setExplanation(String explanation) {
@@ -132,10 +166,11 @@ public class Question implements Serializable {
     }
 
     public String getSelectedAnswer() {
-        return selectedAnswer;
+        return this.selectedAnswer;
     }
 
     public void setSelectedAnswer(String selectedAnswer) {
         this.selectedAnswer = selectedAnswer;
     }
+
 }

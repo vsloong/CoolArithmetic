@@ -14,8 +14,8 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:background="#fff9f7ea">
+            android:background="#fff9f7ea"
+            android:paddingBottom="20dp">
 
             <RelativeLayout
                 android:id="@+id/profile_header_top"
@@ -77,9 +77,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="4dp"
-                    tools:text="这是你学校的名字"
                     android:textColor="@color/white"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"
+                    tools:text="这是你学校的名字" />
 
                 <RelativeLayout
                     android:layout_width="fill_parent"
@@ -88,7 +88,7 @@
                     android:layout_marginRight="20dp">
 
                     <ImageView
-                        android:id="@+id/profile_level_curr"
+                        android:id="@+id/img_level_curr"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -97,34 +97,34 @@
                         android:src="@mipmap/level_1" />
 
                     <ImageView
-                        android:id="@+id/profile_level_next"
+                        android:id="@+id/img_level_next"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:scaleType="centerInside"
-                        android:src="@mipmap/level_1" />
+                        android:src="@mipmap/level_2" />
 
                     <ProgressBar
-                        android:id="@+id/progress_bar_score"
+                        android:id="@+id/progress_bar_exp"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="fill_parent"
                         android:layout_height="12dp"
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:layout_toLeftOf="@+id/profile_level_next"
-                        android:layout_toRightOf="@+id/profile_level_curr"
-                        android:progress="20"
+                        android:layout_toLeftOf="@+id/img_level_next"
+                        android:layout_toRightOf="@+id/img_level_curr"
+                        android:max="100"
                         android:progressDrawable="@drawable/profile_level_bg" />
 
                     <TextView
-                        android:id="@+id/profile_score_progress"
+                        android:id="@+id/text_exp_progress"
                         android:layout_width="wrap_content"
                         android:layout_height="12dp"
                         android:layout_centerInParent="true"
                         android:gravity="center"
-                        android:text="20/100"
+                        android:text="0/100"
                         android:textColor="#ff5e5e5e"
                         android:textSize="8sp" />
                 </RelativeLayout>
@@ -224,6 +224,80 @@
                             android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout_wrong"
+                    android:layout_width="fill_parent"
+                    android:layout_height="48.0dip"
+                    android:background="@drawable/list_row_bg1"
+                    android:paddingLeft="15.0dip"
+                    android:paddingRight="15.0dip">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="4.0dip"
+                        android:drawableLeft="@mipmap/icon_cartoon"
+                        android:drawablePadding="10.0dip"
+                        android:text="我的错题"
+                        android:textColor="#ff787878"
+                        android:textSize="15.0dip" />
+
+                    <ImageView
+                        android:id="@+id/profile_market_right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/icon_arrow" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.5px"
+                    android:layout_marginLeft="15.0dip"
+                    android:layout_marginRight="15.0dip"
+                    android:background="@color/color_profile_line_bg" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_add_friend"
+                    android:layout_width="fill_parent"
+                    android:layout_height="48.0dip"
+                    android:background="@drawable/list_row_bg1"
+                    android:paddingLeft="15.0dip"
+                    android:paddingRight="15.0dip">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="4.0dip"
+                        android:drawableLeft="@mipmap/icon_feedback"
+                        android:drawablePadding="10.0dip"
+                        android:text="添加好友"
+                        android:textColor="#ff787878"
+                        android:textSize="15.0dip" />
+
+                    <ImageView
+                        android:id="@+id/profile_cartoon_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/icon_arrow" />
+
+                    <TextView
+                        android:id="@+id/profile_cartoon_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5.0dip"
+                        android:layout_toLeftOf="@+id/profile_cartoon_img"
+                        android:drawablePadding="2.0dip"
+                        android:textColor="#ff999999"
+                        android:textSize="14.0dip" />
+                </RelativeLayout>
             </LinearLayout>
 
             <Button
@@ -231,7 +305,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/btn_logout"
-                android:layout_margin="16dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/selector_login_btn"
                 android:enabled="false"
                 android:text="签到"
@@ -242,7 +318,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_margin="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/selector_login_btn"
                 android:text="注销"
                 android:textColor="@color/white" />

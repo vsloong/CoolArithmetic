@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cooloongwu.coolarithmetic.activity.WrongActivity">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0.0dip"
+            android:layout_weight="3.0"
+            android:background="@color/color_main">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="20.0dip" />
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.0dip"
+                    android:layout_weight="1.0">
+
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/wrong_toolBar_id"
+                        android:layout_width="fill_parent"
+                        android:layout_height="50.0dip">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="错题本"
+                            android:textColor="#ffffffff"
+                            android:textSize="18.0sp" />
+                    </android.support.v7.widget.Toolbar>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.0dip"
+                    android:layout_weight="2.0">
+
+                    <ImageView
+                        android:id="@+id/wrong_image_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@mipmap/user_btn_worng" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="0.0dip"
+                            android:layout_weight="1.0" />
+
+                        <RelativeLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="0.0dip"
+                            android:layout_weight="2.0">
+
+                            <TextView
+                                android:id="@+id/tv_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:onClick="onStartSubject"
+                                android:text="20"
+                                android:textColor="#fff96922"
+                                android:textSize="36.0sp" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.0dip"
+                    android:layout_below="@+id/wrong_image_id"
+                    android:layout_weight="1.0">
+
+                    <TextView
+                        android:id="@+id/tv_count_clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:onClick="onStartSubject"
+                        android:text="已扫除错题0道"
+                        android:textColor="#ffffffff"
+                        android:textSize="15.0sp" />
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0.0dip"
+            android:layout_weight="2.0"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="0.0dip"
+                android:layout_weight="1.0">
+
+                <ImageView
+                    android:id="@+id/wrong_btn_start_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="44.0dip"
+                    android:background="@drawable/wrong_start_bg"
+                    android:onClick="onStartSubject" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="0.0dip"
+                android:layout_weight="1.0">
+
+                <RelativeLayout
+                    android:id="@+id/wrong_grade_id"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="48.0dip"
+                        android:layout_height="1.0dip"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="8.0dip"
+                        android:layout_toLeftOf="@+id/wrong_rule_id"
+                        android:background="#ffbada02" />
+
+                    <TextView
+                        android:id="@+id/wrong_rule_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="规则说明"
+                        android:textColor="#ffbada02"
+                        android:textSize="14.0sp" />
+
+                    <View
+                        android:layout_width="48.0dip"
+                        android:layout_height="1.0dip"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8.0dip"
+                        android:layout_toRightOf="@+id/wrong_rule_id"
+                        android:background="#ffbada02" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/wrong_suceesegrade_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/wrong_grade_id"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20.0dip"
+                    android:text="每次扫除5题"
+                    android:textColor="#ff7d7d7d"
+                    android:textSize="14.0sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/wrong_suceesegrade_id"
+                    android:layout_centerHorizontal="true"
+                    android:text="每成功扫除一题加1分"
+                    android:textColor="#ff7d7d7d"
+                    android:textSize="14.0sp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

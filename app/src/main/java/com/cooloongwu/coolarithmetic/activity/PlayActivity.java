@@ -288,6 +288,8 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         }
 
         grades = rightAnswer * 10;
+        //增加经验值
+        AppConfig.increaseUserEXP(grades);
         if (isPK) {
             showPKResultDialog(rightAnswer * 10);
             SendMsgUtils.sendPKMsg(MainActivity.fromAccid, AppConfig.getUserAccid(this), (rightAnswer * 10) + "-" + (40 - advance - time), MsgTypeEnum.PK_RESULT);

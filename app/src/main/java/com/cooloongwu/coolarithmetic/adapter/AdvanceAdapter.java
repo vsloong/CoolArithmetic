@@ -12,11 +12,9 @@ import android.widget.Toast;
 
 import com.cooloongwu.coolarithmetic.R;
 import com.cooloongwu.coolarithmetic.activity.AdvanceActivity;
+import com.cooloongwu.coolarithmetic.base.AppConfig;
 import com.cooloongwu.coolarithmetic.entity.Advance;
-import com.cooloongwu.coolarithmetic.utils.GreenDAOUtils;
 import com.cooloongwu.coolarithmetic.utils.StartActivityUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * 闯关的适配器
@@ -124,11 +122,17 @@ public class AdvanceAdapter extends RecyclerView.Adapter<AdvanceAdapter.ViewHold
         holder.text_advance_level.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (position <= advance.getAdvance()) {
-                    StartActivityUtils.startPlayActivity((AdvanceActivity) context, 0, position, false);
+                if (AppConfig.getUserEV() < 10) {
+                    Toast.makeText(context, "当前活力值不够，歇歇再来吧", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(context, "请您闯完前面关卡再来吧", Toast.LENGTH_SHORT).show();
+                    if (position <= advance.getAdvance()) {
+                        AppConfig.decreaseUserEV(10);
+                        StartActivityUtils.startPlayActivity((AdvanceActivity) context, 0, position, false);
+                    } else {
+                        Toast.makeText(context, "请您闯完前面关卡再来吧", Toast.LENGTH_SHORT).show();
+                    }
                 }
+
 
             }
         });

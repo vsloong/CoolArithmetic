@@ -9,7 +9,9 @@ import com.cooloongwu.coolarithmetic.activity.MainActivity;
 import com.cooloongwu.coolarithmetic.activity.PlayActivity;
 import com.cooloongwu.coolarithmetic.activity.RankActivity;
 import com.cooloongwu.coolarithmetic.activity.RegisterActivity;
+import com.cooloongwu.coolarithmetic.activity.SearchActivity;
 import com.cooloongwu.coolarithmetic.activity.WebViewActivity;
+import com.cooloongwu.coolarithmetic.activity.WrongActivity;
 
 /**
  * 跳转逻辑工具
@@ -55,6 +57,16 @@ public class StartActivityUtils {
     public static void startWebViewActivity(Activity activity, String url) {
         Intent intent = new Intent(activity, WebViewActivity.class);
         intent.putExtra("url", url);
+        activity.startActivity(intent);
+    }
+
+    public static void startWrongActivity(Activity activity) {
+        Intent intent = new Intent(activity, WrongActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public static void startSearchActivity(Activity activity) {
+        Intent intent = new Intent(activity, SearchActivity.class);
         activity.startActivity(intent);
     }
 

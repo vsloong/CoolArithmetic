@@ -73,22 +73,23 @@
                 android:layout_toRightOf="@+id/layout_grade">
 
                 <ProgressBar
-                    android:id="@+id/progress_bar_score"
+                    android:id="@+id/progress_bar_ev"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="12dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:progress="20"
+                    android:progress="0"
+                    android:max="100"
                     android:progressDrawable="@drawable/advance_ev_bg" />
 
                 <TextView
-                    android:id="@+id/profile_score_progress"
+                    android:id="@+id/text_ev_progress"
                     android:layout_width="wrap_content"
                     android:layout_height="12dp"
                     android:layout_centerInParent="true"
                     android:gravity="center"
-                    android:text="20/100"
+                    android:text="0/100"
                     android:textColor="@color/text_white"
                     android:textSize="8sp" />
             </RelativeLayout>

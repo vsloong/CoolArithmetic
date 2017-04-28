@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,38 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     private TextView text_profile_school;
     private ImageView img_avatar;
     private Button btn_sign;
+    private final int[] LEVEL_IMGS = {
+            R.mipmap.level_1,
+            R.mipmap.level_2,
+            R.mipmap.level_3,
+            R.mipmap.level_4,
+            R.mipmap.level_5,
+            R.mipmap.level_6,
+            R.mipmap.level_7,
+            R.mipmap.level_8,
+            R.mipmap.level_9,
+            R.mipmap.level_10,
+            R.mipmap.level_11,
+            R.mipmap.level_12,
+            R.mipmap.level_13,
+            R.mipmap.level_14,
+            R.mipmap.level_15,
+            R.mipmap.level_16,
+            R.mipmap.level_17,
+            R.mipmap.level_18,
+            R.mipmap.level_19,
+            R.mipmap.level_20,
+            R.mipmap.level_21,
+            R.mipmap.level_22,
+            R.mipmap.level_23,
+            R.mipmap.level_24,
+            R.mipmap.level_25,
+    };
+
+    ProgressBar progress_bar_exp;
+    ImageView img_level_curr;
+    ImageView img_level_next;
+    TextView text_exp_progress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +79,16 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void initViews(View view) {
+        progress_bar_exp = (ProgressBar) view.findViewById(R.id.progress_bar_exp);
+        img_level_curr = (ImageView) view.findViewById(R.id.img_level_curr);
+        img_level_next = (ImageView) view.findViewById(R.id.img_level_next);
+        text_exp_progress = (TextView) view.findViewById(R.id.text_exp_progress);
+
+        RelativeLayout layout_add_friend = (RelativeLayout) view.findViewById(R.id.layout_add_friend);
+        RelativeLayout layout_wrong = (RelativeLayout) view.findViewById(R.id.layout_wrong);
+        layout_add_friend.setOnClickListener(this);
+        layout_wrong.setOnClickListener(this);
+
         text_profile_username = (TextView) view.findViewById(R.id.text_profile_username);
         text_profile_school = (TextView) view.findViewById(R.id.text_profile_school);
 
@@ -67,6 +111,18 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
         btn_sign.setOnClickListener(this);
         btn_logout.setOnClickListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        int level = AppConfig.getUserEXP() / 100;
+        int exp = AppConfig.getUserEXP() % 100;
+
+        progress_bar_exp.setProgress(exp);
+        text_exp_progress.setText(exp + "/100");
+        img_level_curr.setImageResource(LEVEL_IMGS[level]);
+        img_level_next.setImageResource(LEVEL_IMGS[level + 1]);
     }
 
     private void initData() {
@@ -129,7 +185,12 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 } else {
                     showLoginDialog();
                 }
-
+                break;
+            case R.id.layout_wrong:
+                StartActivityUtils.startWrongActivity(getActivity());
+                break;
+            case R.id.layout_add_friend:
+                StartActivityUtils.startSearchActivity(getActivity());
                 break;
             default:
                 break;
