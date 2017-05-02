@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cooloongwu.coolarithmetic">
+    package="com.zxxxy.coolarithmetic">
 
     <!-- 权限声明 -->
     <!-- 访问网络状态 -->
@@ -20,7 +20,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name=".base.BaseApplication"
+        android:name="com.zxxxy.coolarithmetic.base.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -28,7 +28,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".activity.LauncherActivity"
+            android:name="com.zxxxy.coolarithmetic.activity.LauncherActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,11 +36,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.AdvanceActivity" />
-        <activity android:name=".activity.RankActivity" />
-        <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.PlayActivity" />
+        <activity android:name="com.zxxxy.coolarithmetic.activity.AdvanceActivity" />
+        <activity android:name="com.zxxxy.coolarithmetic.activity.RankActivity" />
+        <activity android:name="com.zxxxy.coolarithmetic.activity.LoginActivity" />
+        <activity android:name="com.zxxxy.coolarithmetic.activity.MainActivity" />
+        <activity android:name="com.zxxxy.coolarithmetic.activity.PlayActivity" />
         <!--
              APP key, 可以在这里设置，也可以在 SDKOptions 中提供。
             如果 SDKOptions 中提供了，取 SDKOptions 中的值。
@@ -115,12 +115,12 @@
             android:value="CooLoongWu" />
         <!-- 友盟推送结束 -->
 
-        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name="com.zxxxy.coolarithmetic.activity.RegisterActivity" />
         <activity
-            android:name=".activity.WebViewActivity"
+            android:name="com.zxxxy.coolarithmetic.activity.WebViewActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".activity.SearchActivity" />
-        <activity android:name=".activity.WrongActivity"></activity>
+        <activity android:name="com.zxxxy.coolarithmetic.activity.SearchActivity" />
+        <activity android:name="com.zxxxy.coolarithmetic.activity.WrongActivity"></activity>
     </application>
 
 </manifest>

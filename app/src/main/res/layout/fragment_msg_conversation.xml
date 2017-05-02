@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cooloongwu.coolarithmetic.fragment.FightFragment">
+    tools:context="com.zxxxy.coolarithmetic.fragment.FightFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/view_recycler"

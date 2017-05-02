@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cooloongwu.coolarithmetic.fragment.MsgFragment">
+    tools:context="com.zxxxy.coolarithmetic.fragment.MsgFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

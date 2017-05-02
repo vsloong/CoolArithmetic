@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cooloongwu.coolarithmetic.activity.MainActivity">
+    tools:context="com.zxxxy.coolarithmetic.activity.MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -5,7 +5,7 @@ apply plugin: 'org.greenrobot.greendao'
 
 greendao {
     schemaVersion 2                             //数据库版本号
-    daoPackage 'com.cooloongwu.greendao.gen'    //设置DaoMaster、DaoSession、Dao包名
+    daoPackage 'com.zxxxy.greendao.gen'    //设置DaoMaster、DaoSession、Dao包名
     targetGenDir 'src/main/java'                //设置DaoMaster、DaoSession、Dao目录
 }
 //=========================GreenDao所需=========================
@@ -14,7 +14,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "com.cooloongwu.coolarithmetic"
+        applicationId "com.zxxxy.coolarithmetic"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
