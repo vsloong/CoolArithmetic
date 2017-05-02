@@ -74,7 +74,7 @@
                             android:layout_weight="2.0">
 
                             <TextView
-                                android:id="@+id/tv_count"
+                                android:id="@+id/text_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
@@ -100,7 +100,8 @@
                         android:onClick="onStartSubject"
                         android:text="已扫除错题0道"
                         android:textColor="#ffffffff"
-                        android:textSize="15.0sp" />
+                        android:textSize="15.0sp"
+                        android:visibility="gone" />
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>
@@ -116,14 +117,13 @@
                 android:layout_height="0.0dip"
                 android:layout_weight="1.0">
 
-                <ImageView
-                    android:id="@+id/wrong_btn_start_id"
+                <Button
+                    android:id="@+id/btn_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="44.0dip"
-                    android:background="@drawable/wrong_start_bg"
-                    android:onClick="onStartSubject" />
+                    android:background="@drawable/wrong_start_bg" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -178,7 +178,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/wrong_suceesegrade_id"
                     android:layout_centerHorizontal="true"
-                    android:text="每成功扫除一题加1分"
+                    android:text="每成功扫除一题加10分"
                     android:textColor="#ff7d7d7d"
                     android:textSize="14.0sp" />
             </RelativeLayout>

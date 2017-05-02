@@ -142,7 +142,7 @@ public class BaseApplication extends Application {
     private void initFile() {
 
         //数据库的路径
-        String DB_PATH = "/data/data/com.cooloongwu.coolarithmetic/databases/";
+        String DB_PATH = "/data/data/com.zxxxy.coolarithmetic/databases/";
 
         //判断数据库是否拷贝到相应的目录下
 //        if (!new File(DB_PATH + AppConfig.questionsDB).exists()) {

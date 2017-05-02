@@ -48,7 +48,7 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
      * Creates the underlying database table.
      */
     public static void createTable(Database db, boolean ifNotExists) {
-        String constraint = ifNotExists ? "IF NOT EXISTS " : "";
+        String constraint = ifNotExists ? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"CONVERSATION\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"UN_READ_NUM\" INTEGER NOT NULL ," + // 1: unReadNum
@@ -60,9 +60,7 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
                 "\"TIME\" INTEGER NOT NULL );"); // 7: time
     }
 
-    /**
-     * Drops the underlying database table.
-     */
+    /** Drops the underlying database table. */
     public static void dropTable(Database db, boolean ifExists) {
         String sql = "DROP TABLE " + (ifExists ? "IF EXISTS " : "") + "\"CONVERSATION\"";
         db.execSQL(sql);
@@ -71,33 +69,33 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
     @Override
     protected final void bindValues(DatabaseStatement stmt, Conversation entity) {
         stmt.clearBindings();
-
+ 
         Long id = entity.getId();
         if (id != null) {
             stmt.bindLong(1, id);
         }
         stmt.bindLong(2, entity.getUnReadNum());
-
+ 
         String name = entity.getName();
         if (name != null) {
             stmt.bindString(3, name);
         }
-
+ 
         String content = entity.getContent();
         if (content != null) {
             stmt.bindString(4, content);
         }
-
+ 
         String type = entity.getType();
         if (type != null) {
             stmt.bindString(5, type);
         }
-
+ 
         String avatar = entity.getAvatar();
         if (avatar != null) {
             stmt.bindString(6, avatar);
         }
-
+ 
         String remark = entity.getRemark();
         if (remark != null) {
             stmt.bindString(7, remark);
@@ -108,33 +106,33 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
     @Override
     protected final void bindValues(SQLiteStatement stmt, Conversation entity) {
         stmt.clearBindings();
-
+ 
         Long id = entity.getId();
         if (id != null) {
             stmt.bindLong(1, id);
         }
         stmt.bindLong(2, entity.getUnReadNum());
-
+ 
         String name = entity.getName();
         if (name != null) {
             stmt.bindString(3, name);
         }
-
+ 
         String content = entity.getContent();
         if (content != null) {
             stmt.bindString(4, content);
         }
-
+ 
         String type = entity.getType();
         if (type != null) {
             stmt.bindString(5, type);
         }
-
+ 
         String avatar = entity.getAvatar();
         if (avatar != null) {
             stmt.bindString(6, avatar);
         }
-
+ 
         String remark = entity.getRemark();
         if (remark != null) {
             stmt.bindString(7, remark);
@@ -145,7 +143,7 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
     @Override
     public Long readKey(Cursor cursor, int offset) {
         return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
-    }
+    }    
 
     @Override
     public Conversation readEntity(Cursor cursor, int offset) {
@@ -161,7 +159,7 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
         );
         return entity;
     }
-
+     
     @Override
     public void readEntity(Cursor cursor, Conversation entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
@@ -172,14 +170,14 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
         entity.setAvatar(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setRemark(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setTime(cursor.getLong(offset + 7));
-    }
-
+     }
+    
     @Override
     protected final Long updateKeyAfterInsert(Conversation entity, long rowId) {
         entity.setId(rowId);
         return rowId;
     }
-
+    
     @Override
     public Long getKey(Conversation entity) {
         if (entity != null) {
@@ -198,5 +196,5 @@ public class ConversationDao extends AbstractDao<Conversation, Long> {
     protected final boolean isEntityUpdateable() {
         return true;
     }
-
+    
 }

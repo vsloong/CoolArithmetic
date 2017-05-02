@@ -1,11 +1,11 @@
 package com.zxxxy.coolarithmetic.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.zxxxy.coolarithmetic.R;
+import com.zxxxy.coolarithmetic.base.BaseActivity;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

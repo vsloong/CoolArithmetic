@@ -174,6 +174,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.btn_logout:
                 AppConfig.clearAllInfo(getActivity());
                 getActivity().finish();
+                StartActivityUtils.startLoginActivity(getActivity());
                 break;
             case R.id.btn_sign:
 
@@ -187,10 +188,18 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 }
                 break;
             case R.id.layout_wrong:
-                StartActivityUtils.startWrongActivity(getActivity());
+                if (GoLoginUtils.isLogin()) {
+                    StartActivityUtils.startWrongActivity(getActivity());
+                } else {
+                    showLoginDialog();
+                }
                 break;
             case R.id.layout_add_friend:
-                StartActivityUtils.startSearchActivity(getActivity());
+                if (GoLoginUtils.isLogin()) {
+                    StartActivityUtils.startSearchActivity(getActivity());
+                } else {
+                    showLoginDialog();
+                }
                 break;
             default:
                 break;

@@ -1,9 +1,9 @@
 package com.zxxxy.coolarithmetic.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,8 +12,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.msg.MsgServiceObserve;
+import com.netease.nimlib.sdk.msg.model.CustomNotification;
+import com.squareup.picasso.Picasso;
 import com.zxxxy.coolarithmetic.R;
 import com.zxxxy.coolarithmetic.adapter.QuestionAdapter;
 import com.zxxxy.coolarithmetic.base.AppConfig;
@@ -26,11 +30,6 @@ import com.zxxxy.coolarithmetic.utils.DBService;
 import com.zxxxy.coolarithmetic.utils.GreenDAOUtils;
 import com.zxxxy.coolarithmetic.utils.SendMsgUtils;
 import com.zxxxy.greendao.gen.AdvanceDao;
-import com.netease.nimlib.sdk.NIMClient;
-import com.netease.nimlib.sdk.Observer;
-import com.netease.nimlib.sdk.msg.MsgServiceObserve;
-import com.netease.nimlib.sdk.msg.model.CustomNotification;
-import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -50,10 +49,11 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     private int time = 40;              //默认每关40秒
     private int advance = 0;            //默认闯关是第一关
     private boolean isPK = false;       //默认不是PK
+    private boolean isCorrect = false;       //默认不是扫除错题
     private List<Question> questions;
     private MyCountDownTimer countDownTimer;
 
-    private List<Integer> answers = new ArrayList<>();
+    private static List<Integer> answers = new ArrayList<>();
     public static List<Integer> myAnswers = new ArrayList<>();
 
     private AlertDialog pkResultDialog;
@@ -119,6 +119,9 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         for (int i = 0; i < 10; i++) {
             PlayActivity.myAnswers.add(i, -1);
         }
+        for (int i = 0; i < 10; i++) {
+            answers.add(i, -1);
+        }
     }
 
     @Override
@@ -136,11 +139,20 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         grade = intent.getIntExtra("grade", 0);
         advance = intent.getIntExtra("advance", 0);
         isPK = intent.getBooleanExtra("isPK", false);
-        getQuestions(grade, advance);
+
+
+        //如果是改错，那么就去查询错题数据库。否则查询题目数据库
+        if (grade == -1 && advance == -1) {
+            isCorrect = true;
+            advance = 20;       //为了下面计算不出问题
+            time = 20;
+            getWrongQuestions();
+        } else {
+            time -= advance;
+            getQuestions(grade, advance);
+        }
 
         //开始倒计时
-        time -= advance;
-        Log.e("第几关呢", "" + advance + "；时间" + time);
         countDownTimer = new MyCountDownTimer(time * 1000, 1000);
         countDownTimer.start();
     }
@@ -171,21 +183,22 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         view_pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                Log.e("当前位置", position + "");
-                if (position == 9) {
+                Log.e("onPageScrolled", position + "");
+                if (position == questions.size() - 1 || questions.size() == 1) {
                     btn_submit.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
-
+            public void onPageSelected(int position) {
+                Log.e("onPageSelected", position + "");
             }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                Log.e("PageScrollStateChanged", state + "");
+            }
+
         });
 
         Button btn_next = (Button) findViewById(R.id.btn_next);
@@ -205,7 +218,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                 finish();
                 break;
             case R.id.btn_next:
-                if (view_pager.getCurrentItem() < 9) {
+                if (view_pager.getCurrentItem() < questions.size() - 1) {
                     view_pager.setCurrentItem(view_pager.getCurrentItem() + 1);
                 }
                 break;
@@ -248,7 +261,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         questions = dbService.getQuestion(grade, advance);
         if (questions != null && !questions.isEmpty()) {
             for (Question question : questions) {
-                answers.add(question.getAnswer());
+                answers.add(question.getQuestionId(), question.getAnswer());
                 Log.e("题目", question.getQuestion() + "的答案是" + question.getAnswer());
             }
         } else {
@@ -256,17 +269,33 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    private void submit() {
-        if (checkAllAnswerIsSelected()) {
-            countDownTimer.cancel();
-            showResult();
+    private void getWrongQuestions() {
+        questions = GreenDAOUtils.getDefaultDaoSession(PlayActivity.this).getQuestionDao()
+                .queryBuilder()
+                .limit(5)
+                .list();
+
+        if (questions != null && !questions.isEmpty()) {
+            for (Question question : questions) {
+                answers.add(question.getQuestionId(), question.getAnswer());
+                Log.e("错题本题目", question.getQuestion() + "的答案是" + question.getAnswer());
+            }
         } else {
-            Toast.makeText(PlayActivity.this, "还有未完成的题目，确定交卷么", Toast.LENGTH_SHORT).show();
+            Log.e("错题本题目", "没有获取到题目数据");
         }
     }
 
+    private void submit() {
+//        if (checkAllAnswerIsSelected()) {
+        countDownTimer.cancel();
+        showResult();
+//        } else {
+//            Toast.makeText(PlayActivity.this, "还有未完成的题目，确定交卷么", Toast.LENGTH_SHORT).show();
+//        }
+    }
+
     private boolean checkAllAnswerIsSelected() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < questions.size() - 1; i++) {
             if (myAnswers.get(i) == -1) {
                 return false;
             }
@@ -276,14 +305,51 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
     private void showResult() {
         int rightAnswer = 0;
-        for (int i = 0; i < questions.size(); i++) {
-            Log.e("交卷结果", "第" + i + "题：正确答案" + answers.get(i) + "；我的答案：" + myAnswers.get(i));
+//        for (int i = 0; i < questions.size(); i++) {
+//            if (answers.get(i) == myAnswers.get(i)) {
+//                Log.e("交卷结果", "第" + i + "题正确");
+//                rightAnswer++;
+//
+//                GreenDAOUtils.getDefaultDaoSession(PlayActivity.this).getQuestionDao()
+//                        .delete(questions.get(i));
+//            } else {
+//                questions.get(i).setSelectedAnswer(myAnswers.get(i));
+//                Log.e("交卷结果", "第" + i + "题错误，题目：" + questions.get(i).getQuestion()
+//                        + "，正确答案：第" + questions.get(i).getAnswer() + "个"
+//                        + "，我的答案：第" + questions.get(i).getSelectedAnswer() + "个");
+//
+//                //如果不是扫除错题那么就将这道错题录入数据库。否则不再重复录入。同时也是为了解决一个如下的问题（当然可以通过修改ID来解决）
+//                // android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: QUESTION._id(Sqlite code 1555),(OS error - 2:No such file or directory)
+//                if (!isCorrect) {
+//                    GreenDAOUtils.getDefaultDaoSession(PlayActivity.this).getQuestionDao()
+//                            .insert(questions.get(i));
+//                }
+//            }
+//        }
 
-            if (answers.get(i) == myAnswers.get(i)) {
-                Log.e("交卷结果", "第" + i + "题正确");
+        for (Question question : questions) {
+            if (answers.get(question.getQuestionId()) == myAnswers.get(question.getQuestionId())) {
+                Log.e("交卷结果", "第" + question.getQuestionId() + "题正确");
                 rightAnswer++;
+
+                GreenDAOUtils.getDefaultDaoSession(PlayActivity.this).getQuestionDao()
+                        .delete(question);
             } else {
-                Log.e("交卷结果", "第" + i + "题错误");
+                question.setSelectedAnswer(myAnswers.get(question.getQuestionId()));
+                Log.e("交卷结果", "第" + question.getQuestionId() + "题错误，题目：" + question.getQuestion()
+                        + "，A：" + question.getAnswerA()
+                        + "，B：" + question.getAnswerB()
+                        + "，C：" + question.getAnswerC()
+                        + "，D：" + question.getAnswerD()
+                        + "，正确答案：第" + (question.getAnswer() + 1) + "个"
+                        + "，我的答案：第" + (question.getSelectedAnswer() + 1) + "个");
+
+                //如果不是扫除错题那么就将这道错题录入数据库。否则不再重复录入。同时也是为了解决一个如下的问题（当然可以通过修改ID来解决）
+                // android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: QUESTION._id(Sqlite code 1555),(OS error - 2:No such file or directory)
+                if (!isCorrect) {
+                    GreenDAOUtils.getDefaultDaoSession(PlayActivity.this).getQuestionDao()
+                            .insert(question);
+                }
             }
         }
 
@@ -325,7 +391,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         TextView text_time = (TextView) view.findViewById(R.id.text_time);
         TextView text_fraction = (TextView) view.findViewById(R.id.text_fraction);
 
-        text_title.setText("限时：" + (40 - advance) + "秒      题数：10题");
+        text_title.setText("限时：" + (40 - advance) + "秒      题数：+" + questions.size() + "题");
         text_grades.setText(String.valueOf(grades));
         text_correct_rate.setText(grades + "%");
         text_time.setText((40 - advance - time) + "s");

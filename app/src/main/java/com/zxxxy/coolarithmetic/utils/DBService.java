@@ -20,7 +20,7 @@ public class DBService {
     //构造方法
     public DBService() {
         //连接数据库
-        db = SQLiteDatabase.openDatabase("/data/data/com.cooloongwu.coolarithmetic/databases/" + AppConfig.questionsDB,
+        db = SQLiteDatabase.openDatabase("/data/data/com.zxxxy.coolarithmetic/databases/" + AppConfig.questionsDB,
                 null,
                 SQLiteDatabase.OPEN_READWRITE
         );
