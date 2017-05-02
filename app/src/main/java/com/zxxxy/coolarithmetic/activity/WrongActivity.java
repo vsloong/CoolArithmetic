@@ -44,12 +44,17 @@ public class WrongActivity extends BaseActivity implements View.OnClickListener 
         text_count = (TextView) findViewById(R.id.text_count);
 
         btn_start = (Button) findViewById(R.id.btn_start);
+        Button btn_back = (Button) findViewById(R.id.btn_back);
+        btn_back.setOnClickListener(this);
         btn_start.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.btn_back:
+                finish();
+                break;
             case R.id.btn_start:
                 StartActivityUtils.startPlayActivity(WrongActivity.this, -1, -1, false);
                 break;

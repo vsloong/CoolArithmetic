@@ -180,6 +180,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
                 if (GoLoginUtils.isLogin()) {
                     AppConfig.setUserSignTime(getActivity(), System.currentTimeMillis());
+                    AppConfig.setUserEV(100);
                     btn_sign.setEnabled(false);
                     btn_sign.setText("今日已签到");
                     Toast.makeText(getActivity(), "今日已签到", Toast.LENGTH_SHORT).show();

@@ -54,7 +54,7 @@ public class QuestionDao extends AbstractDao<Question, Long> {
      * Creates the underlying database table.
      */
     public static void createTable(Database db, boolean ifNotExists) {
-        String constraint = ifNotExists ? "IF NOT EXISTS " : "";
+        String constraint = ifNotExists ? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"QUESTION\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"GRADE\" INTEGER NOT NULL ," + // 1: grade
@@ -99,7 +99,7 @@ public class QuestionDao extends AbstractDao<Question, Long> {
         if (questionType != null) {
             stmt.bindString(6, questionType);
         }
-
+ 
         String imageUrl = entity.getImageUrl();
         if (imageUrl != null) {
             stmt.bindString(7, imageUrl);
@@ -154,7 +154,7 @@ public class QuestionDao extends AbstractDao<Question, Long> {
         if (questionType != null) {
             stmt.bindString(6, questionType);
         }
-
+ 
         String imageUrl = entity.getImageUrl();
         if (imageUrl != null) {
             stmt.bindString(7, imageUrl);
@@ -191,7 +191,7 @@ public class QuestionDao extends AbstractDao<Question, Long> {
     @Override
     public Long readKey(Cursor cursor, int offset) {
         return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
-    }
+    }    
 
     @Override
     public Question readEntity(Cursor cursor, int offset) {
@@ -213,7 +213,7 @@ public class QuestionDao extends AbstractDao<Question, Long> {
         );
         return entity;
     }
-
+     
     @Override
     public void readEntity(Cursor cursor, Question entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
@@ -231,13 +231,13 @@ public class QuestionDao extends AbstractDao<Question, Long> {
         entity.setExplanation(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
         entity.setSelectedAnswer(cursor.getInt(offset + 13));
      }
-
+    
     @Override
     protected final Long updateKeyAfterInsert(Question entity, long rowId) {
         entity.setId(rowId);
         return rowId;
     }
-
+    
     @Override
     public Long getKey(Question entity) {
         if (entity != null) {
