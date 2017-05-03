@@ -17,6 +17,7 @@ import com.zxxxy.coolarithmetic.R;
 import com.zxxxy.coolarithmetic.base.AppConfig;
 import com.zxxxy.coolarithmetic.base.BaseFragment;
 import com.zxxxy.coolarithmetic.utils.AvatarUtils;
+import com.zxxxy.coolarithmetic.utils.DataUtils;
 import com.zxxxy.coolarithmetic.utils.GoLoginUtils;
 import com.zxxxy.coolarithmetic.utils.StartActivityUtils;
 import com.netease.nimlib.sdk.NIMClient;
@@ -103,7 +104,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         btn_sign = (Button) view.findViewById(R.id.btn_sign);
 
         //如果签到时间大于一天就可以签到
-        if (System.currentTimeMillis() - AppConfig.getUserSignTime(getActivity()) > 1000 * 60 * 60 * 24) {
+        if (!AppConfig.getUserSignTime().equals(DataUtils.getNowData())) {
             btn_sign.setEnabled(true);
         } else {
             btn_sign.setEnabled(false);
@@ -177,9 +178,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 StartActivityUtils.startLoginActivity(getActivity());
                 break;
             case R.id.btn_sign:
-
                 if (GoLoginUtils.isLogin()) {
-                    AppConfig.setUserSignTime(getActivity(), System.currentTimeMillis());
+                    AppConfig.setUserSignTime(DataUtils.getNowData());
                     AppConfig.setUserEV(100);
                     btn_sign.setEnabled(false);
                     btn_sign.setText("今日已签到");

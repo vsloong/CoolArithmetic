@@ -17,4 +17,12 @@ public class DataUtils {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.CHINA);
         return simpleDateFormat.format(date);
     }
+
+    public static String getNowData() {
+        Date date = new Date(System.currentTimeMillis());
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+        return simpleDateFormat.format(date);
+    }
+
 }

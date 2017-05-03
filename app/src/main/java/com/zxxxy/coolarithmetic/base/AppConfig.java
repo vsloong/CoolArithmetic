@@ -78,7 +78,7 @@ public class AppConfig {
      * 存储修改用户签到时间
      */
     private static final String USER_SIGN_TIME = "user_sign_time";
-    private static final long defaultUserSignTime = 0;
+    private static final String defaultUserSignTime = "";
 
     /**
      * 存储修改用户经验值
@@ -236,17 +236,16 @@ public class AppConfig {
     /**
      * 存储获取用户的签到时间
      *
-     * @param context 上下文
-     * @param time    token
+     * @param time token
      */
-    public static void setUserSignTime(Context context, long time) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().putLong(USER_SIGN_TIME, time).apply();
+    public static void setUserSignTime(String time) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        preferences.edit().putString(USER_SIGN_TIME, time).apply();
     }
 
-    public static long getUserSignTime(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getLong(USER_SIGN_TIME, defaultUserSignTime);
+    public static String getUserSignTime() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        return preferences.getString(USER_SIGN_TIME, defaultUserSignTime);
     }
 
     /**
