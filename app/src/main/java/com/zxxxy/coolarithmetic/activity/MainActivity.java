@@ -14,20 +14,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.zxxxy.coolarithmetic.R;
-import com.zxxxy.coolarithmetic.adapter.TabViewPagerAdapter;
-import com.zxxxy.coolarithmetic.base.AppConfig;
-import com.zxxxy.coolarithmetic.base.BaseActivity;
-import com.zxxxy.coolarithmetic.entity.MsgTypeEnum;
-import com.zxxxy.coolarithmetic.fragment.FightFragment;
-import com.zxxxy.coolarithmetic.fragment.MeFragment;
-import com.zxxxy.coolarithmetic.fragment.MsgFragment;
-import com.zxxxy.coolarithmetic.fragment.PKFragment;
-import com.zxxxy.coolarithmetic.utils.AvatarUtils;
-import com.zxxxy.coolarithmetic.utils.SendMsgUtils;
-import com.zxxxy.coolarithmetic.utils.StartActivityUtils;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.friend.FriendService;
 import com.netease.nimlib.sdk.friend.model.AddFriendNotify;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.SystemMessageObserver;
@@ -36,6 +25,20 @@ import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.SystemMessage;
 import com.squareup.picasso.Picasso;
+import com.zxxxy.coolarithmetic.R;
+import com.zxxxy.coolarithmetic.adapter.TabViewPagerAdapter;
+import com.zxxxy.coolarithmetic.base.AppConfig;
+import com.zxxxy.coolarithmetic.base.BaseActivity;
+import com.zxxxy.coolarithmetic.entity.Conversation;
+import com.zxxxy.coolarithmetic.entity.MsgTypeEnum;
+import com.zxxxy.coolarithmetic.fragment.FightFragment;
+import com.zxxxy.coolarithmetic.fragment.MeFragment;
+import com.zxxxy.coolarithmetic.fragment.MsgFragment;
+import com.zxxxy.coolarithmetic.fragment.PKFragment;
+import com.zxxxy.coolarithmetic.utils.AvatarUtils;
+import com.zxxxy.coolarithmetic.utils.GreenDAOUtils;
+import com.zxxxy.coolarithmetic.utils.SendMsgUtils;
+import com.zxxxy.coolarithmetic.utils.StartActivityUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -155,13 +158,36 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     } else if (attachData.getEvent() == AddFriendNotify.Event.RECV_AGREE_ADD_FRIEND) {
                         // 对方通过了你的好友验证请求
                         Log.e("接收到的添加好友消息", "对方通过了你的好友验证请求");
+                        Conversation conversation = new Conversation();
+                        conversation.setType("addFriend");
+                        conversation.setName("添加好友成功");
+                        conversation.setUnReadNum(0);
+                        conversation.setContent("对方【" + systemMessage.getFromAccount() + "】通过了你的好友验证请求");
+                        conversation.setRemark("");
+                        conversation.setTime(System.currentTimeMillis());
+                        GreenDAOUtils.getDefaultDaoSession(getApplicationContext())
+                                .getConversationDao()
+                                .insert(conversation);
+                        EventBus.getDefault().post(conversation);
                     } else if (attachData.getEvent() == AddFriendNotify.Event.RECV_REJECT_ADD_FRIEND) {
                         // 对方拒绝了你的好友验证请求
                         Log.e("接收到的添加好友消息", "对方拒绝了你的好友验证请求");
+                        Conversation conversation = new Conversation();
+                        conversation.setType("addFriend");
+                        conversation.setName("添加好友失败");
+                        conversation.setUnReadNum(0);
+                        conversation.setContent("对方【" + systemMessage.getFromAccount() + "】拒绝了你的好友验证请求");
+                        conversation.setRemark("");
+                        conversation.setTime(System.currentTimeMillis());
+                        GreenDAOUtils.getDefaultDaoSession(getApplicationContext())
+                                .getConversationDao()
+                                .insert(conversation);
+                        EventBus.getDefault().post(conversation);
                     } else if (attachData.getEvent() == AddFriendNotify.Event.RECV_ADD_FRIEND_VERIFY_REQUEST) {
                         // 对方请求添加好友，一般场景会让用户选择同意或拒绝对方的好友请求。
                         // 通过message.getContent()获取好友验证请求的附言
                         Log.e("接收到的添加好友消息", "对方请求添加好友");
+                        showAddFriendRequestDialog(systemMessage.getFromAccount(), systemMessage.getContent());
                     }
                 }
             }
@@ -290,6 +316,44 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         pkWaitingDialog.show();
 
         timeHandler.sendEmptyMessageDelayed(1, 1000);
+    }
+
+    /**
+     * 展示接收到的添加好友请求
+     *
+     * @param fromAccid 对方账户
+     * @param fromName  对方的名称
+     */
+    private void showAddFriendRequestDialog(final String fromAccid, String fromName) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = View.inflate(this, R.layout.dialog_add_friend_receive, null);
+        builder.setView(view);
+        builder.setCancelable(false);
+
+        final AlertDialog addRequestDialog = builder.create();
+        addRequestDialog.show();
+        TextView text_challenger_name = (TextView) view.findViewById(R.id.text_challenger_name);
+        Button btn_reject = (Button) view.findViewById(R.id.btn_reject);
+        Button btn_agree = (Button) view.findViewById(R.id.btn_agree);
+        btn_reject.setText("拒绝");
+        btn_agree.setText("同意");
+
+        text_challenger_name.setText(fromName);
+
+        btn_agree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NIMClient.getService(FriendService.class).ackAddFriendRequest(fromAccid, true);
+                addRequestDialog.dismiss();
+            }
+        });
+        btn_reject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NIMClient.getService(FriendService.class).ackAddFriendRequest(fromAccid, false);
+                addRequestDialog.dismiss();
+            }
+        });
     }
 
     /**

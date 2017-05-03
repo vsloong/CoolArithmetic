@@ -40,8 +40,13 @@ public class MsgConversationFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_msg_conversation, container, false);
         initViews(view);
-        getConversationsList();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getConversationsList();
     }
 
     @Override

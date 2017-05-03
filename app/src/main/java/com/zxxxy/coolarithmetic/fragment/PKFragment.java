@@ -2,28 +2,32 @@ package com.zxxxy.coolarithmetic.fragment;
 
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.friend.FriendService;
+import com.netease.nimlib.sdk.uinfo.UserService;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
 import com.zxxxy.coolarithmetic.R;
-import com.zxxxy.coolarithmetic.activity.MainActivity;
-import com.zxxxy.coolarithmetic.base.AppConfig;
+import com.zxxxy.coolarithmetic.adapter.PKFriendAdapter;
 import com.zxxxy.coolarithmetic.base.BaseFragment;
-import com.zxxxy.coolarithmetic.entity.MsgTypeEnum;
 import com.zxxxy.coolarithmetic.utils.GoLoginUtils;
-import com.zxxxy.coolarithmetic.utils.SendMsgUtils;
 import com.zxxxy.coolarithmetic.utils.StartActivityUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
 public class PKFragment extends BaseFragment implements View.OnClickListener {
+
+    private AlertDialog friendsDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,7 +58,6 @@ public class PKFragment extends BaseFragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_pk_friend:
                 if (GoLoginUtils.isLogin()) {
-                    EventBus.getDefault().post(MsgTypeEnum.PK_REQUEST);
                     searchFriendToPK();
                 } else {
                     showLoginDialog();
@@ -97,8 +100,52 @@ public class PKFragment extends BaseFragment implements View.OnClickListener {
     private void searchFriendToPK() {
         List<String> friends = NIMClient.getService(FriendService.class).getFriendAccounts();
         if (friends != null) {
-            MainActivity.fromAccid = friends.get(0);
-            SendMsgUtils.sendPKMsg(friends.get(0), AppConfig.getUserName(getActivity()), "来PK啊，辣鸡", MsgTypeEnum.PK_REQUEST);
+
+            NIMClient.getService(UserService.class)
+                    .fetchUserInfo(friends)
+                    .setCallback(new RequestCallback<List<NimUserInfo>>() {
+                        @Override
+                        public void onSuccess(List<NimUserInfo> param) {
+                            for (NimUserInfo userInfo : param) {
+                                Log.e("好友列表", userInfo.getName());
+                            }
+                            showFriendsDialog(param);
+                        }
+
+                        @Override
+                        public void onFailed(int code) {
+
+                        }
+
+                        @Override
+                        public void onException(Throwable exception) {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(getActivity(), "你还没有好友哦，先去添加好友吧", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void showFriendsDialog(List<NimUserInfo> param) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        View view = View.inflate(getActivity(), R.layout.dialog_pk_select_friend, null);
+        builder.setView(view);
+
+        friendsDialog = builder.create();
+        friendsDialog.show();
+
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.view_recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        PKFriendAdapter adapter = new PKFriendAdapter(getActivity(), param);
+        adapter.setOnDialogDismissListener(new PKFriendAdapter.OnDialogDismissListener() {
+            @Override
+            public void onDismiss() {
+                friendsDialog.dismiss();
+            }
+        });
+        recyclerView.setAdapter(adapter);
+    }
+
 }

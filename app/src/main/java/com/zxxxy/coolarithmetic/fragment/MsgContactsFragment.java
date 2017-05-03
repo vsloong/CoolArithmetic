@@ -32,9 +32,14 @@ public class MsgContactsFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_msg_contacts, container, false);
-        getFriendsList();
         initViews(view);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getFriendsList();
     }
 
     @Override
@@ -84,6 +89,8 @@ public class MsgContactsFragment extends BaseFragment {
                     });
         } else {
             Log.e("好友列表", "没有好友");
+            listData.clear();
+            adapter.notifyDataSetChanged();
         }
     }
 }

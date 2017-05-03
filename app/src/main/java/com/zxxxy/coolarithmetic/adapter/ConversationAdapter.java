@@ -86,6 +86,10 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     GreenDAOUtils.getDefaultDaoSession(context).getConversationDao().update(conversation);
                     notifyDataSetChanged();
                     StartActivityUtils.startWebViewActivity((Activity) context, listData.get(position).getRemark());
+                } else if ("addFriend".equals(listData.get(position).getType())) {
+
+                } else {
+
                 }
             }
         });
