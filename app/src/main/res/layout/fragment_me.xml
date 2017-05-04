@@ -31,10 +31,12 @@
                     android:layout_alignParentTop="true"
                     android:background="@drawable/list_row_bg"
                     android:padding="15dp"
-                    android:src="@mipmap/icon_setting" />
+                    android:src="@mipmap/icon_setting"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <LinearLayout
+                android:paddingTop="20dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/profile_header_top"

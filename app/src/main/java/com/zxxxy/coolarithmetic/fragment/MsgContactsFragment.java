@@ -1,6 +1,7 @@
 package com.zxxxy.coolarithmetic.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,9 +34,14 @@ public class MsgContactsFragment extends BaseFragment {
     private LinearLayout layout_no_contact;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        EventBus.getDefault().register(this);
         View view = inflater.inflate(R.layout.fragment_msg_contacts, container, false);
         initViews(view);
         return view;

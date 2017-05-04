@@ -19,6 +19,7 @@ public class AppConfig {
             + "/CoolArithmetic/";
 
     private static final String defaultDB = "CoolArithmetic";
+    private static final String defaultSP = "SP";
     public static final String questionsDB = "questions.db";
 
     public static final String appKey = "2db673f68e572a2e14cc780871103773";
@@ -101,13 +102,10 @@ public class AppConfig {
     /**
      * 获取用户的数据库（为每一个用户建立一个数据库）
      *
-     * @param context 上下文
      * @return 数据库名
      */
-    public static String getUserDB(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String accid = preferences.getString(USER_ACCID, defaultUserAccid);
-        return defaultDB + accid + ".db";
+    public static String getUserDB() {
+        return defaultDB + getUserAccid() + ".db";
     }
 
     /**
@@ -117,28 +115,28 @@ public class AppConfig {
      * @param userId  userId
      */
     public static void setUserId(Context context, int userId) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         preferences.edit().putInt(USER_ID, userId).apply();
     }
 
     public static int getUserId(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         return preferences.getInt(USER_ID, defaultUserId);
     }
 
     /**
-     * 存储获取用户的ACCID
+     * 存储获取用户的ACCID，存储在默认的位置，其他都是存储在各个用户的SP中
      *
      * @param context   上下文
      * @param userAccid userAccid
      */
     public static void setUserAccid(Context context, String userAccid) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
         preferences.edit().putString(USER_ACCID, userAccid).apply();
     }
 
-    public static String getUserAccid(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+    public static String getUserAccid() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
         return preferences.getString(USER_ACCID, defaultUserAccid);
     }
 
@@ -149,12 +147,12 @@ public class AppConfig {
      * @param userGrade userGrade
      */
     public static void setUserGrade(Context context, int userGrade) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         preferences.edit().putInt(USER_GRADE, userGrade).apply();
     }
 
     public static int getUserGrade(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         return preferences.getInt(USER_GRADE, defaultUserGrade);
     }
 
@@ -166,12 +164,12 @@ public class AppConfig {
      * @param userName 昵称
      */
     public static void setUserName(Context context, String userName) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         preferences.edit().putString(USER_NAME, userName).apply();
     }
 
     public static String getUserName(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         return preferences.getString(USER_NAME, defaultUserName);
     }
 
@@ -182,12 +180,12 @@ public class AppConfig {
      * @param sex     性别
      */
     public static void setUserSex(Context context, String sex) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         preferences.edit().putString(USER_SEX, sex).apply();
     }
 
     public static String getUserSex(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         return preferences.getString(USER_SEX, defaultUserSex);
     }
 
@@ -198,12 +196,12 @@ public class AppConfig {
      * @param url     图片地址
      */
     public static void setUserAvatar(Context context, String url) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         preferences.edit().putString(USER_AVATAR, url).apply();
     }
 
     public static String getUserAvatar(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         return preferences.getString(USER_AVATAR, defaultUserAvatar);
     }
 
@@ -214,12 +212,12 @@ public class AppConfig {
      * @param token   token
      */
     public static void setUserToken(Context context, String token) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         preferences.edit().putString(USER_TOKEN, token).apply();
     }
 
     public static String getUserToken(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         return preferences.getString(USER_TOKEN, defaultUserToken);
     }
 
@@ -230,12 +228,12 @@ public class AppConfig {
      * @param time    token
      */
     public static void setUserLoginTime(Context context, long time) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         preferences.edit().putLong(USER_LOGIN_TIME, time).apply();
     }
 
     public static long getUserLoginTime(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         return preferences.getLong(USER_LOGIN_TIME, defaultUserLoginTime);
     }
 
@@ -245,12 +243,12 @@ public class AppConfig {
      * @param time token
      */
     public static void setUserSignTime(String time) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         preferences.edit().putString(USER_SIGN_TIME, time).apply();
     }
 
     public static String getUserSignTime() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         return preferences.getString(USER_SIGN_TIME, defaultUserSignTime);
     }
 
@@ -260,17 +258,17 @@ public class AppConfig {
      * @param exp 经验值
      */
     public static void setUserEXP(int exp) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         preferences.edit().putInt(USER_EXP, exp).apply();
     }
 
     public static void increaseUserEXP(int exp) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         preferences.edit().putInt(USER_EXP, getUserEXP() + exp).apply();
     }
 
     public static int getUserEXP() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         return preferences.getInt(USER_EXP, defaultUserEXP);
     }
 
@@ -280,22 +278,22 @@ public class AppConfig {
      * @param ev 活力值
      */
     public static void setUserEV(int ev) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         preferences.edit().putInt(USER_EV, ev).apply();
     }
 
     public static void increaseUserEV(int ev) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         preferences.edit().putInt(USER_EV, (getUserEV() + ev) > 100 ? 100 : getUserEV() + ev).apply();
     }
 
     public static void decreaseUserEV(int ev) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         preferences.edit().putInt(USER_EV, getUserEV() - ev).apply();
     }
 
     public static int getUserEV() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         return preferences.getInt(USER_EV, defaultUserEV);
     }
 
@@ -349,12 +347,11 @@ public class AppConfig {
     }
 
     /**
-     * 清空所有的用户信息
-     *
-     * @param context 上下文
+     * 清空所有的用户登录信息，其他数据保留
      */
-    public static void clearAllInfo(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        preferences.edit().clear().apply();
+    public static void clearAllInfo() {
+//        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
+//        preferences.edit().clear().apply();
+        setUserAccid(BaseApplication.getInstance(), defaultUserAccid);
     }
 }

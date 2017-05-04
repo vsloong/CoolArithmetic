@@ -13,6 +13,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.auth.AuthService;
+import com.netease.nimlib.sdk.uinfo.UserService;
+import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
+import com.squareup.picasso.Picasso;
 import com.zxxxy.coolarithmetic.R;
 import com.zxxxy.coolarithmetic.base.AppConfig;
 import com.zxxxy.coolarithmetic.base.BaseFragment;
@@ -20,11 +26,6 @@ import com.zxxxy.coolarithmetic.utils.AvatarUtils;
 import com.zxxxy.coolarithmetic.utils.DataUtils;
 import com.zxxxy.coolarithmetic.utils.GoLoginUtils;
 import com.zxxxy.coolarithmetic.utils.StartActivityUtils;
-import com.netease.nimlib.sdk.NIMClient;
-import com.netease.nimlib.sdk.RequestCallback;
-import com.netease.nimlib.sdk.uinfo.UserService;
-import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +96,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
         img_avatar = (ImageView) view.findViewById(R.id.img_avatar);
         Picasso.with(getActivity())
-                .load(AvatarUtils.getAvatar(AppConfig.getUserAccid(getActivity())))
+                .load(AvatarUtils.getAvatar(AppConfig.getUserAccid()))
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(img_avatar);
@@ -128,7 +129,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     private void initData() {
         List<String> friends = new ArrayList<>();
-        friends.add(AppConfig.getUserAccid(getActivity()));
+        friends.add(AppConfig.getUserAccid());
 
         NIMClient.getService(UserService.class)
                 .fetchUserInfo(friends)
@@ -173,7 +174,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_logout:
-                AppConfig.clearAllInfo(getActivity());
+                NIMClient.getService(AuthService.class).logout();
+                AppConfig.clearAllInfo();
                 getActivity().finish();
                 StartActivityUtils.startLoginActivity(getActivity());
                 break;

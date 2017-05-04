@@ -68,9 +68,8 @@ public class LauncherActivity extends BaseActivity {
      * 自动登录，直接跳转到主页面
      */
     private void goMain() {
-
         if (GoLoginUtils.isLogin()) {
-            LoginInfo info = new LoginInfo(AppConfig.getUserAccid(LauncherActivity.this), AppConfig.getUserToken(LauncherActivity.this));
+            LoginInfo info = new LoginInfo(AppConfig.getUserAccid(), AppConfig.getUserToken(LauncherActivity.this));
             NIMClient.getService(AuthService.class).login(info).setCallback(new RequestCallback<LoginInfo>() {
                 @Override
                 public void onSuccess(LoginInfo param) {
@@ -87,12 +86,13 @@ public class LauncherActivity extends BaseActivity {
 
                 @Override
                 public void onFailed(int code) {
+                    Log.e("网易云信登录", "出错" + code);
                     goLogin();
                 }
 
                 @Override
                 public void onException(Throwable exception) {
-                    Log.e("登录", "出错" + exception.toString());
+                    Log.e("网易云信登录", "出错" + exception.toString());
                     goLogin();
                 }
             });

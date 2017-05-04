@@ -141,9 +141,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         NIMClient.getService(AuthService.class).login(info).setCallback(new RequestCallback<LoginInfo>() {
                     @Override
                     public void onSuccess(LoginInfo param) {
-                        Log.e("登录", "成功");
-                        AppConfig.setUserToken(LoginActivity.this, MD5Utils.getMD5(password));
+                        Log.e("网易云信登录", "成功");
                         AppConfig.setUserAccid(LoginActivity.this, accid);
+                        AppConfig.setUserToken(LoginActivity.this, MD5Utils.getMD5(password));
                         StartActivityUtils.startMainActivity(LoginActivity.this);
                         finish();
                     }

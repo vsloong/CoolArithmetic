@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.zxxxy.coolarithmetic.R;
@@ -14,7 +15,7 @@ import com.zxxxy.coolarithmetic.utils.StartActivityUtils;
 
 import java.util.ArrayList;
 
-public class GuideActivity extends BaseActivity {
+public class GuideActivity extends BaseActivity implements View.OnClickListener {
 
     // 定义ViewPager对象
     private ViewPager viewPager;
@@ -70,13 +71,11 @@ public class GuideActivity extends BaseActivity {
         pointImage3 = (ImageView) findViewById(R.id.page3);
         pointImage4 = (ImageView) findViewById(R.id.page4);
 
-        findViewById(R.id.btn_start).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StartActivityUtils.startMainActivity(GuideActivity.this);
-                finish();
-            }
-        });
+        Button btn_go = (Button) view4.findViewById(R.id.btn_go);
+        Button btn_start = (Button) findViewById(R.id.btn_start);
+
+        btn_go.setOnClickListener(this);
+        btn_start.setOnClickListener(this);
     }
 
     @Override
@@ -85,6 +84,19 @@ public class GuideActivity extends BaseActivity {
         viewPager.addOnPageChangeListener(new MyOnPageChangeListener());
         // 设置适配器数据
         viewPager.setAdapter(vpAdapter);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_go:
+            case R.id.btn_start:
+                StartActivityUtils.startMainActivity(GuideActivity.this);
+                finish();
+                break;
+            default:
+                break;
+        }
     }
 
     public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {

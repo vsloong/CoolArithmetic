@@ -7,11 +7,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
@@ -170,7 +172,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
             ImageView img_avatar_other = (ImageView) findViewById(R.id.img_avatar_other);
 
             Picasso.with(this)
-                    .load(AvatarUtils.getAvatar(AppConfig.getUserAccid(this)))
+                    .load(AvatarUtils.getAvatar(AppConfig.getUserAccid()))
                     .into(img_avatar_mine);
 
             Picasso.with(this)
@@ -215,7 +217,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img_play_back:
-                finish();
+                Toast.makeText(PlayActivity.this, "答题中不可退出", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_next:
                 if (view_pager.getCurrentItem() < questions.size() - 1) {
@@ -347,6 +349,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                 //如果不是扫除错题那么就将这道错题录入数据库。否则不再重复录入。同时也是为了解决一个如下的问题（当然可以通过修改ID来解决）
                 // android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: QUESTION._id(Sqlite code 1555),(OS error - 2:No such file or directory)
                 if (!isCorrect) {
+                    question.setId(null);
                     GreenDAOUtils.getDefaultDaoSession(PlayActivity.this).getQuestionDao()
                             .insert(question);
                 }
@@ -358,7 +361,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         AppConfig.increaseUserEXP(grades);
         if (isPK) {
             showPKResultDialog(rightAnswer * 10);
-            SendMsgUtils.sendPKMsg(MainActivity.fromAccid, AppConfig.getUserAccid(this), (rightAnswer * 10) + "-" + (40 - advance - time), MsgTypeEnum.PK_RESULT);
+            SendMsgUtils.sendPKMsg(MainActivity.fromAccid, AppConfig.getUserAccid(), (rightAnswer * 10) + "-" + (40 - advance - time), MsgTypeEnum.PK_RESULT);
         } else {
             showResultDialog(rightAnswer * 10);
 
@@ -448,7 +451,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         ImageView img_avatar_other = (ImageView) view.findViewById(R.id.img_avatar_other);
 
         Picasso.with(this)
-                .load(AvatarUtils.getAvatar(AppConfig.getUserAccid(this)))
+                .load(AvatarUtils.getAvatar(AppConfig.getUserAccid()))
                 .into(img_avatar_mine);
 
         Picasso.with(this)
@@ -492,5 +495,15 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         super.onDestroy();
         NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(customNotificationObserver, false);
         countDownTimer.cancel();
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Toast.makeText(PlayActivity.this, "答题中不可退出", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

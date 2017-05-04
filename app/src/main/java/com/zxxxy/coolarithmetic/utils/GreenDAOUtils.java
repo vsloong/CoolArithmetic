@@ -3,6 +3,7 @@ package com.zxxxy.coolarithmetic.utils;
 import android.content.Context;
 
 import com.zxxxy.coolarithmetic.base.AppConfig;
+import com.zxxxy.coolarithmetic.base.BaseApplication;
 import com.zxxxy.greendao.gen.DaoMaster;
 import com.zxxxy.greendao.gen.DaoSession;
 
@@ -24,17 +25,20 @@ public class GreenDAOUtils {
     private static DaoMaster getDefaultDaoMaster(Context context, String dbName) {
         if (dbName == null)
             return null;
-        if (defaultDaoMaster == null) {
-            defaultDaoMaster = obtainMaster(context, dbName);
-        }
+//        if (defaultDaoMaster == null) {
+        defaultDaoMaster = obtainMaster(context, dbName);
+//        }
         return defaultDaoMaster;
     }
 
     public static DaoSession getDefaultDaoSession(Context context) {
-        if (defaultDaoSession == null) {
-            defaultDaoSession = getDefaultDaoMaster(context, AppConfig.getUserDB(context)).newSession();
-        }
-        return defaultDaoSession;
+//        if (defaultDaoSession == null) {
+//            Log.e("加载用户的数据库", AppConfig.getUserDB());
+//            defaultDaoSession = getDefaultDaoMaster(context, AppConfig.getUserDB()).newSession();
+//        }
+//        return defaultDaoSession;
+
+        return new DaoMaster(new DaoMaster.DevOpenHelper(BaseApplication.getInstance(), AppConfig.getUserDB(), null).getWritableDatabase()).newSession();
     }
 
 }

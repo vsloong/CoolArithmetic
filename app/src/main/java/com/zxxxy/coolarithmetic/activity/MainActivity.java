@@ -372,7 +372,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ImageView img_avatar_other = (ImageView) view.findViewById(R.id.img_avatar_other);
 
         Picasso.with(this)
-                .load(AvatarUtils.getAvatar(AppConfig.getUserAccid(this)))
+                .load(AvatarUtils.getAvatar(AppConfig.getUserAccid()))
                 .into(img_avatar_mine);
 
         Picasso.with(this)

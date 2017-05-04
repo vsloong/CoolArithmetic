@@ -27,7 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="17dp"
-            android:background="@mipmap/icon_pk_back" />
+            android:background="@mipmap/icon_pk_back"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

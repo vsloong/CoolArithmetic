@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.zxxxy.coolarithmetic.activity.GuideActivity">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
