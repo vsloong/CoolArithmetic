@@ -22,8 +22,20 @@ public class LauncherActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
 
-        goMain();
-        //goNext();
+        if (AppConfig.getUserIsFirst()) {
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    StartActivityUtils.startGuideActivity(LauncherActivity.this);
+                    finish();
+                }
+            };
+            Handler handler = new Handler();
+            handler.postDelayed(runnable, 1500);
+        } else {
+            goMain();
+            //goNext();
+        }
     }
 
     /**

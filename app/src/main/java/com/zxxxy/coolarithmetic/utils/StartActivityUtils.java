@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.zxxxy.coolarithmetic.activity.AdvanceActivity;
+import com.zxxxy.coolarithmetic.activity.GuideActivity;
 import com.zxxxy.coolarithmetic.activity.LoginActivity;
 import com.zxxxy.coolarithmetic.activity.MainActivity;
 import com.zxxxy.coolarithmetic.activity.PlayActivity;
@@ -67,6 +68,11 @@ public class StartActivityUtils {
 
     public static void startSearchActivity(Activity activity) {
         Intent intent = new Intent(activity, SearchActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public static void startGuideActivity(Activity activity) {
+        Intent intent = new Intent(activity, GuideActivity.class);
         activity.startActivity(intent);
     }
 

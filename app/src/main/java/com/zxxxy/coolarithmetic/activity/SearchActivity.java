@@ -77,7 +77,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                         @Override
                         public void onFailed(int code) {
                             Log.e("添加好友请求", "失败！" + code);
-                            text_result.setText("该用户不存在！");
+                            text_result.setText("添加好友失败！");
                         }
 
                         @Override

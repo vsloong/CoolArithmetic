@@ -93,6 +93,12 @@ public class AppConfig {
     private static final int defaultUserEV = 100;
 
     /**
+     * 存储修改用户打开App次数
+     */
+    private static final String USER_IS_FIRST = "user_is_first";
+    private static final boolean defaultUserIsFirst = true;
+
+    /**
      * 获取用户的数据库（为每一个用户建立一个数据库）
      *
      * @param context 上下文
@@ -291,6 +297,21 @@ public class AppConfig {
     public static int getUserEV() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
         return preferences.getInt(USER_EV, defaultUserEV);
+    }
+
+    /**
+     * 存储获取用户是否第一次打开应用
+     *
+     * @param isFirst 是否第一次
+     */
+    public static void setUserIsFirst(boolean isFirst) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        preferences.edit().putBoolean(USER_IS_FIRST, isFirst).apply();
+    }
+
+    public static boolean getUserIsFirst() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BaseApplication.getInstance());
+        return preferences.getBoolean(USER_IS_FIRST, defaultUserIsFirst);
     }
 
     /**

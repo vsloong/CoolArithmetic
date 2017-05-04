@@ -29,6 +29,7 @@ import com.zxxxy.coolarithmetic.R;
 import com.zxxxy.coolarithmetic.adapter.TabViewPagerAdapter;
 import com.zxxxy.coolarithmetic.base.AppConfig;
 import com.zxxxy.coolarithmetic.base.BaseActivity;
+import com.zxxxy.coolarithmetic.entity.Contacts;
 import com.zxxxy.coolarithmetic.entity.Conversation;
 import com.zxxxy.coolarithmetic.entity.MsgTypeEnum;
 import com.zxxxy.coolarithmetic.fragment.FightFragment;
@@ -169,6 +170,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                 .getConversationDao()
                                 .insert(conversation);
                         EventBus.getDefault().post(conversation);
+                        EventBus.getDefault().post(new Contacts());
                     } else if (attachData.getEvent() == AddFriendNotify.Event.RECV_REJECT_ADD_FRIEND) {
                         // 对方拒绝了你的好友验证请求
                         Log.e("接收到的添加好友消息", "对方拒绝了你的好友验证请求");
@@ -183,6 +185,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                 .getConversationDao()
                                 .insert(conversation);
                         EventBus.getDefault().post(conversation);
+                        EventBus.getDefault().post(new Contacts());
                     } else if (attachData.getEvent() == AddFriendNotify.Event.RECV_ADD_FRIEND_VERIFY_REQUEST) {
                         // 对方请求添加好友，一般场景会让用户选择同意或拒绝对方的好友请求。
                         // 通过message.getContent()获取好友验证请求的附言
@@ -345,6 +348,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             public void onClick(View v) {
                 NIMClient.getService(FriendService.class).ackAddFriendRequest(fromAccid, true);
                 addRequestDialog.dismiss();
+                EventBus.getDefault().post(new Contacts());
             }
         });
         btn_reject.setOnClickListener(new View.OnClickListener() {
@@ -352,6 +356,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             public void onClick(View v) {
                 NIMClient.getService(FriendService.class).ackAddFriendRequest(fromAccid, false);
                 addRequestDialog.dismiss();
+                EventBus.getDefault().post(new Contacts());
             }
         });
     }

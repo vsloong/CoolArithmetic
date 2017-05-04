@@ -9,14 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.zxxxy.coolarithmetic.R;
-import com.zxxxy.coolarithmetic.adapter.ContactsAdapter;
-import com.zxxxy.coolarithmetic.base.BaseFragment;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.friend.FriendService;
 import com.netease.nimlib.sdk.uinfo.UserService;
 import com.netease.nimlib.sdk.uinfo.model.NimUserInfo;
+import com.zxxxy.coolarithmetic.R;
+import com.zxxxy.coolarithmetic.adapter.ContactsAdapter;
+import com.zxxxy.coolarithmetic.base.BaseFragment;
+import com.zxxxy.coolarithmetic.entity.Contacts;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +35,7 @@ public class MsgContactsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         View view = inflater.inflate(R.layout.fragment_msg_contacts, container, false);
         initViews(view);
         return view;
@@ -52,6 +57,11 @@ public class MsgContactsFragment extends BaseFragment {
         view_recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         view_recycler.setAdapter(adapter);
 
+    }
+
+    @Subscribe
+    public void onEventMainThread(Contacts contacts) {
+        getFriendsList();
     }
 
     private void getFriendsList() {
@@ -92,5 +102,11 @@ public class MsgContactsFragment extends BaseFragment {
             listData.clear();
             adapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
