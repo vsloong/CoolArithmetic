@@ -144,6 +144,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         Log.e("网易云信登录", "成功");
                         AppConfig.setUserAccid(LoginActivity.this, accid);
                         AppConfig.setUserToken(LoginActivity.this, MD5Utils.getMD5(password));
+
                         StartActivityUtils.startMainActivity(LoginActivity.this);
                         finish();
                     }

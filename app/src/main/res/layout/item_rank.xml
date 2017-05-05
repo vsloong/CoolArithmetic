@@ -23,7 +23,7 @@
             android:layout_marginLeft="8dp"
             android:background="@mipmap/icon_rank_medal_1"
             android:gravity="center"
-            android:text="11"
+            tools:text="11"
             android:textColor="@color/text_yellow"
             android:textSize="20sp" />
 
@@ -33,7 +33,7 @@
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/img_fight_scholar"
+            tools:src="@mipmap/ic_launcher"
             app:riv_border_color="#00000000"
             app:riv_border_width="0dip"
             app:riv_corner_radius="8dip"
@@ -61,12 +61,12 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/text_rate"
+                android:id="@+id/text_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_black_light"
                 android:textSize="14sp"
-                tools:text="100%正确" />
+                tools:text="100" />
 
             <TextView
                 android:id="@+id/text_time"
@@ -74,7 +74,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_gray"
                 android:textSize="12sp"
-                tools:text="用时：00’00”00" />
+                tools:text="用时：00’00”00"
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

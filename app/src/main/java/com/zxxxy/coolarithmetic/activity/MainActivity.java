@@ -98,7 +98,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                     fromAccid = fromAcc;
                                     showPKRequestDialog(jsonObject.getString("fromName"), jsonObject.getString("msg"));
                                 } else {
-                                    SendMsgUtils.sendPKMsg(fromAccid, AppConfig.getUserName(MainActivity.this), "", MsgTypeEnum.PK_AGREE);
+                                    SendMsgUtils.sendPKMsg(fromAccid, AppConfig.getUserName(), "", MsgTypeEnum.PK_AGREE);
                                 }
                                 break;
                             case PK_AGREE:
@@ -392,19 +392,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_agree:
-                SendMsgUtils.sendPKMsg(fromAccid, AppConfig.getUserName(this), "", MsgTypeEnum.PK_AGREE);
+                SendMsgUtils.sendPKMsg(fromAccid, AppConfig.getUserName(), "", MsgTypeEnum.PK_AGREE);
                 pkRequestDialog.dismiss();
 
                 showPKPrepareDialog();
                 break;
             case R.id.btn_reject:
-                SendMsgUtils.sendPKMsg(fromAccid, AppConfig.getUserName(this), "", MsgTypeEnum.PK_REJECT);
+                SendMsgUtils.sendPKMsg(fromAccid, AppConfig.getUserName(), "", MsgTypeEnum.PK_REJECT);
                 pkRequestDialog.dismiss();
                 break;
             case R.id.btn_cancel:
                 if (pkWaitingDialog != null && pkWaitingDialog.isShowing()) {
                     pkWaitingDialog.dismiss();
-                    SendMsgUtils.sendPKMsg(fromAccid, AppConfig.getUserName(this), "", MsgTypeEnum.PK_CANCEL);
+                    SendMsgUtils.sendPKMsg(fromAccid, AppConfig.getUserName(), "", MsgTypeEnum.PK_CANCEL);
                 }
                 countdown = 10;
                 break;

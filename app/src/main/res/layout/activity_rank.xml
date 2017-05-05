@@ -34,7 +34,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="100dp"
-            android:background="#ffffb554">
+            android:background="@color/color_main">
 
             <LinearLayout
                 android:id="@+id/relative_head_image_id"
@@ -54,8 +54,7 @@
                     app:riv_border_width="0dp"
                     app:riv_corner_radius="8dp"
                     app:riv_mutate_background="true"
-                    app:riv_oval="true"
-                    app:riv_tile_mode="repeat" />
+                    app:riv_oval="true" />
             </LinearLayout>
 
             <LinearLayout
@@ -68,7 +67,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/pk_rank_name_id"
+                    android:id="@+id/text_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="张小龙"
@@ -90,7 +89,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/pk_rank_num_id"
+                        android:id="@+id/text_rank"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="3"
@@ -122,7 +121,7 @@
                     android:layout_gravity="end">
 
                     <TextView
-                        android:id="@+id/rank_score_id"
+                        android:id="@+id/text_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="2000"
@@ -140,7 +139,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="距离前一名只差21分快去赚积分吧！"
+                    android:text="加油！快去赚积分吧！"
                     android:textColor="@color/white"
                     android:textSize="11dp" />
             </LinearLayout>
@@ -151,6 +150,7 @@
             android:layout_height="match_parent">
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/view_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </android.support.v4.widget.SwipeRefreshLayout>

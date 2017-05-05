@@ -17,8 +17,11 @@ import android.widget.Toast;
 
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.RequestCallbackWrapper;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
+import com.netease.nimlib.sdk.uinfo.UserService;
+import com.netease.nimlib.sdk.uinfo.constant.UserInfoFieldEnum;
 import com.squareup.picasso.Picasso;
 import com.zxxxy.coolarithmetic.R;
 import com.zxxxy.coolarithmetic.adapter.QuestionAdapter;
@@ -38,7 +41,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class PlayActivity extends BaseActivity implements View.OnClickListener {
@@ -359,6 +364,21 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         grades = rightAnswer * 10;
         //增加经验值
         AppConfig.increaseUserEXP(grades);
+        //增加做题数目
+        AppConfig.increaseUserPlayNum(10);
+
+        //更新用户数据
+        Map<UserInfoFieldEnum, Object> fields = new HashMap<>(1);
+
+        fields.put(UserInfoFieldEnum.EXTEND, String.valueOf(AppConfig.getUserEXP()));
+        NIMClient.getService(UserService.class).updateUserInfo(fields)
+                .setCallback(new RequestCallbackWrapper<Void>() {
+                    @Override
+                    public void onResult(int code, Void result, Throwable exception) {
+                        Log.e("更新用户数据结果", "" + code);
+                    }
+                });
+
         if (isPK) {
             showPKResultDialog(rightAnswer * 10);
             SendMsgUtils.sendPKMsg(MainActivity.fromAccid, AppConfig.getUserAccid(), (rightAnswer * 10) + "-" + (40 - advance - time), MsgTypeEnum.PK_RESULT);
@@ -443,6 +463,8 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                 if ((40 - advance - time) > Integer.parseInt(otherTime)) {
                     img_result.setImageResource(R.mipmap.pk_result_fail_hint);
                 }
+            } else {
+                AppConfig.increaseUserPKWinNum(1);
             }
         }
 

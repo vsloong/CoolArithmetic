@@ -144,7 +144,8 @@
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:scaleType="centerInside"
-                                android:src="@drawable/selector_login_eye" />
+                                android:src="@drawable/selector_login_eye"
+                                android:visibility="gone" />
                         </LinearLayout>
 
                         <EditText
@@ -162,7 +163,7 @@
                             android:hint="请输入密码"
                             android:inputType="textPassword"
                             android:lines="1"
-                            android:text="123456"
+                            android:text=""
                             android:textColor="@color/text_edit_hint"
                             android:textColorHint="#ffdadada"
                             android:textSize="14sp" />

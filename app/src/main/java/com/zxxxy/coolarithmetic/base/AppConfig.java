@@ -60,7 +60,7 @@ public class AppConfig {
      * 存储修改用户头像，默认为空
      */
     private static final String USER_AVATAR = "user_avatar";
-    private static final String defaultUserAvatar = "";
+    private static final String defaultUserAvatar = "default";
 
     /**
      * 存储修改用户Token，默认为空
@@ -98,6 +98,18 @@ public class AppConfig {
      */
     private static final String USER_IS_FIRST = "user_is_first";
     private static final boolean defaultUserIsFirst = true;
+
+    /**
+     * 存储修改用户做题数目
+     */
+    private static final String USER_NUM_PLAY = "user_num_play";
+    private static final int defaultUserPlayNum = 0;
+
+    /**
+     * 存储修改用户做题数目
+     */
+    private static final String USER_NUM_PK_WIN = "user_num_pk_win";
+    private static final int defaultUserPKWinNum = 0;
 
     /**
      * 获取用户的数据库（为每一个用户建立一个数据库）
@@ -168,7 +180,7 @@ public class AppConfig {
         preferences.edit().putString(USER_NAME, userName).apply();
     }
 
-    public static String getUserName(Context context) {
+    public static String getUserName() {
         SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         return preferences.getString(USER_NAME, defaultUserName);
     }
@@ -200,7 +212,7 @@ public class AppConfig {
         preferences.edit().putString(USER_AVATAR, url).apply();
     }
 
-    public static String getUserAvatar(Context context) {
+    public static String getUserAvatar() {
         SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         return preferences.getString(USER_AVATAR, defaultUserAvatar);
     }
@@ -295,6 +307,36 @@ public class AppConfig {
     public static int getUserEV() {
         SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
         return preferences.getInt(USER_EV, defaultUserEV);
+    }
+
+    /**
+     * 添加、获取用户做题数目
+     *
+     * @param num 数目
+     */
+    public static void increaseUserPlayNum(int num) {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
+        preferences.edit().putInt(USER_NUM_PLAY, getUserPlayNum() + num).apply();
+    }
+
+    public static int getUserPlayNum() {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
+        return preferences.getInt(USER_NUM_PLAY, defaultUserPlayNum);
+    }
+
+    /**
+     * 添加、获取用户PK胜利数目
+     *
+     * @param num 数目
+     */
+    public static void increaseUserPKWinNum(int num) {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
+        preferences.edit().putInt(USER_NUM_PK_WIN, getUserPKWinNum() + num).apply();
+    }
+
+    public static int getUserPKWinNum() {
+        SharedPreferences preferences = BaseApplication.getInstance().getSharedPreferences(defaultSP + getUserAccid(), Context.MODE_PRIVATE);
+        return preferences.getInt(USER_NUM_PK_WIN, defaultUserPKWinNum);
     }
 
     /**

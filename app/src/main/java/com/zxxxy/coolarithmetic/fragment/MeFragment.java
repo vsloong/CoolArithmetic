@@ -91,6 +91,12 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         layout_add_friend.setOnClickListener(this);
         layout_wrong.setOnClickListener(this);
 
+        TextView text_num_play = (TextView) view.findViewById(R.id.text_num_play);
+        TextView text_num_pk_win = (TextView) view.findViewById(R.id.text_num_pk_win);
+
+        text_num_play.setText(String.valueOf(AppConfig.getUserPlayNum()));
+        text_num_pk_win.setText(String.valueOf(AppConfig.getUserPKWinNum()));
+
         text_profile_username = (TextView) view.findViewById(R.id.text_profile_username);
         text_profile_school = (TextView) view.findViewById(R.id.text_profile_school);
 
@@ -142,6 +148,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                         if (!param.isEmpty()) {
                             text_profile_username.setText(param.get(0).getName());
                             AppConfig.setUserName(getActivity(), param.get(0).getName());
+                            AppConfig.setUserAvatar(getActivity(), param.get(0).getAvatar());
                             text_profile_school.setText(param.get(0).getAccount());
                         }
 

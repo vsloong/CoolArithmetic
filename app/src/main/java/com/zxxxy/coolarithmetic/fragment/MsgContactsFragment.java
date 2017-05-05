@@ -81,6 +81,14 @@ public class MsgContactsFragment extends BaseFragment {
                         public void onSuccess(List<NimUserInfo> param) {
                             for (NimUserInfo userInfo : param) {
                                 Log.e("好友列表", userInfo.getName());
+
+                                //Log.e("该好友的扩展字段", String.valueOf(userInfo.getExtensionMap().containsKey("EXP")));
+                                if (userInfo.getExtensionMap() != null) {
+                                    Log.e("好友列表其他参数", String.valueOf(userInfo.getExtensionMap().values()));
+                                    Log.e("好友列表其他参数", userInfo.getExtensionMap().toString());
+                                } else {
+                                    Log.e("好友列表其他参数", "没有参数");
+                                }
                             }
                             listData.clear();
                             listData.addAll(param);

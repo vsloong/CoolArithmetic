@@ -65,7 +65,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             Toast.makeText(SearchActivity.this, "请输入对方账户", Toast.LENGTH_SHORT).show();
         } else {
             final VerifyType verifyType = VerifyType.VERIFY_REQUEST; // 发起好友验证请求
-            String msg = AppConfig.getUserName(SearchActivity.this);
+            String msg = AppConfig.getUserName();
             NIMClient.getService(FriendService.class).addFriend(new AddFriendData(accid, verifyType, msg))
                     .setCallback(new RequestCallback<Void>() {
                         @Override
