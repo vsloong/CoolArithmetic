@@ -121,10 +121,11 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
 
     @Subscribe
     public void onEventMainThread(Advance advance) {
-        adapter.notifyDataSetChanged();
         text_progress.setText((advance.getAdvance() + 1) + "/20");
         progress_bar_ev.setProgress(AppConfig.getUserEV());
         text_ev_progress.setText(AppConfig.getUserEV() + "/100");
+        this.advance = advance;
+        adapter.notifyDataSetChanged();
     }
 
     @Override

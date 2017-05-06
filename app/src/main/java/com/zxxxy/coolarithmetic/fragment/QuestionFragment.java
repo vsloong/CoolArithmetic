@@ -18,12 +18,14 @@ import com.zxxxy.coolarithmetic.entity.Question;
 public class QuestionFragment extends BaseFragment {
 
     private Question question;
+    private int position;
     private View view;
 
-    public static QuestionFragment newInstance(Question question) {
+    public static QuestionFragment newInstance(Question question, int position) {
         QuestionFragment questionFragment = new QuestionFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("question", question);
+        bundle.putInt("position", position);
         //fragment保存参数，传入一个Bundle对象
         questionFragment.setArguments(bundle);
         return questionFragment;
@@ -35,6 +37,7 @@ public class QuestionFragment extends BaseFragment {
         if (getArguments() != null) {
             //取出保存的值
             question = (Question) getArguments().getSerializable("question");
+            position = getArguments().getInt("position");
         }
 
         view = inflater.inflate(R.layout.layout_play_question, container, false);
@@ -53,7 +56,7 @@ public class QuestionFragment extends BaseFragment {
         RadioButton radio_button_c = (RadioButton) view.findViewById(R.id.radio_button_c);
         RadioButton radio_button_d = (RadioButton) view.findViewById(R.id.radio_button_d);
 
-        text_question_title.setText(String.valueOf(question.getQuestionId() + 1) + "、" + String.valueOf(question.getQuestion()));
+        text_question_title.setText(String.valueOf(position + 1) + "、" + String.valueOf(question.getQuestion()));
 
         radio_button_a.setText("A、" + String.valueOf(question.getAnswerA()));
         radio_button_b.setText("B、" + String.valueOf(question.getAnswerB()));
@@ -65,7 +68,8 @@ public class QuestionFragment extends BaseFragment {
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 int myAnswer = group.indexOfChild(view.findViewById(checkedId));
                 Log.e("答案选择", "选择了第" + myAnswer + "个答案");
-                PlayActivity.myAnswers.add(question.getQuestionId(), myAnswer);
+//                PlayActivity.myAnswers.add(question.getQuestionId(), myAnswer);
+                PlayActivity.myAnswers.add(position, myAnswer);
             }
         });
     }

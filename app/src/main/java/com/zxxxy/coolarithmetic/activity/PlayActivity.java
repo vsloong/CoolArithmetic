@@ -72,7 +72,6 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     private int grades = 0;     //分数
     private int grade = 0;      //年级
 
-
     private Observer<CustomNotification> customNotificationObserver = new Observer<CustomNotification>() {
         @Override
         public void onEvent(CustomNotification message) {
@@ -100,6 +99,8 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                                         if ((40 - advance - time) > Integer.parseInt(result[1])) {
                                             img_result.setImageResource(R.mipmap.pk_result_fail_hint);
                                         }
+                                    } else {
+                                        AppConfig.increaseUserPKWinNum(1);
                                     }
                                 } else {
                                     otherGrades = result[0];
@@ -121,16 +122,6 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         }
     };
 
-    static {
-        //设置默认没有选择答案，所以为-1
-        for (int i = 0; i < 10; i++) {
-            PlayActivity.myAnswers.add(i, -1);
-        }
-        for (int i = 0; i < 10; i++) {
-            answers.add(i, -1);
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,7 +137,6 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
         grade = intent.getIntExtra("grade", 0);
         advance = intent.getIntExtra("advance", 0);
         isPK = intent.getBooleanExtra("isPK", false);
-
 
         //如果是改错，那么就去查询错题数据库。否则查询题目数据库
         if (grade == -1 && advance == -1) {
@@ -266,13 +256,21 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
     private void getQuestions(int grade, int advance) {
         DBService dbService = new DBService();
         questions = dbService.getQuestion(grade, advance);
+
         if (questions != null && !questions.isEmpty()) {
+            int i = 0;
             for (Question question : questions) {
-                answers.add(question.getQuestionId(), question.getAnswer());
-                Log.e("题目", question.getQuestion() + "的答案是" + question.getAnswer());
+                answers.add(i, question.getAnswer());
+                i++;
+                Log.e("题目", i + "的答案是" + question.getAnswer());
+            }
+
+            //初始化我的答题结果默认为都没有作答
+            for (int x = 0; x < i; x++) {
+                PlayActivity.myAnswers.add(x, -1);
             }
         } else {
-            Log.e("题目", "没有获取到题目数据");
+            Log.e("题目", "没有获取到题目数据！！！！！！！！！！");
         }
     }
 
@@ -283,9 +281,15 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                 .list();
 
         if (questions != null && !questions.isEmpty()) {
+            int i = 0;
             for (Question question : questions) {
-                answers.add(question.getQuestionId(), question.getAnswer());
+                answers.add(i, question.getAnswer());
+                i++;
                 Log.e("错题本题目", question.getQuestion() + "的答案是" + question.getAnswer());
+            }
+            //初始化我的答题结果默认为都没有作答
+            for (int x = 0; x < i; x++) {
+                PlayActivity.myAnswers.add(x, -1);
             }
         } else {
             Log.e("错题本题目", "没有获取到题目数据");
@@ -312,60 +316,71 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
 
     private void showResult() {
         int rightAnswer = 0;
-//        for (int i = 0; i < questions.size(); i++) {
-//            if (answers.get(i) == myAnswers.get(i)) {
-//                Log.e("交卷结果", "第" + i + "题正确");
-//                rightAnswer++;
-//
-//                GreenDAOUtils.getDefaultDaoSession(PlayActivity.this).getQuestionDao()
-//                        .delete(questions.get(i));
-//            } else {
-//                questions.get(i).setSelectedAnswer(myAnswers.get(i));
-//                Log.e("交卷结果", "第" + i + "题错误，题目：" + questions.get(i).getQuestion()
-//                        + "，正确答案：第" + questions.get(i).getAnswer() + "个"
-//                        + "，我的答案：第" + questions.get(i).getSelectedAnswer() + "个");
-//
-//                //如果不是扫除错题那么就将这道错题录入数据库。否则不再重复录入。同时也是为了解决一个如下的问题（当然可以通过修改ID来解决）
-//                // android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: QUESTION._id(Sqlite code 1555),(OS error - 2:No such file or directory)
-//                if (!isCorrect) {
-//                    GreenDAOUtils.getDefaultDaoSession(PlayActivity.this).getQuestionDao()
-//                            .insert(questions.get(i));
-//                }
-//            }
-//        }
-
-        for (Question question : questions) {
-            if (answers.get(question.getQuestionId()) == myAnswers.get(question.getQuestionId())) {
-                Log.e("交卷结果", "第" + question.getQuestionId() + "题正确");
+        int notAnswer = 0;
+        for (int i = 0; i < questions.size(); i++) {
+            if (answers.get(i) == myAnswers.get(i)) {
+                Log.e("交卷结果", "第" + i + "题正确");
                 rightAnswer++;
 
                 GreenDAOUtils.getDefaultDaoSession(PlayActivity.this).getQuestionDao()
-                        .delete(question);
+                        .delete(questions.get(i));
             } else {
-                question.setSelectedAnswer(myAnswers.get(question.getQuestionId()));
-                Log.e("交卷结果", "第" + question.getQuestionId() + "题错误，题目：" + question.getQuestion()
-                        + "，A：" + question.getAnswerA()
-                        + "，B：" + question.getAnswerB()
-                        + "，C：" + question.getAnswerC()
-                        + "，D：" + question.getAnswerD()
-                        + "，正确答案：第" + (question.getAnswer() + 1) + "个"
-                        + "，我的答案：第" + (question.getSelectedAnswer() + 1) + "个");
+                questions.get(i).setSelectedAnswer(myAnswers.get(i));
+                Log.e("交卷结果", "第" + i + "题错误，题目：" + questions.get(i).getQuestion()
+                        + "，正确答案：第" + questions.get(i).getAnswer() + "个"
+                        + "，我的答案：第" + questions.get(i).getSelectedAnswer() + "个");
 
                 //如果不是扫除错题那么就将这道错题录入数据库。否则不再重复录入。同时也是为了解决一个如下的问题（当然可以通过修改ID来解决）
                 // android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: QUESTION._id(Sqlite code 1555),(OS error - 2:No such file or directory)
                 if (!isCorrect) {
-                    question.setId(null);
+                    questions.get(i).setId(null);
                     GreenDAOUtils.getDefaultDaoSession(PlayActivity.this).getQuestionDao()
-                            .insert(question);
+                            .insert(questions.get(i));
+                }
+
+                if (myAnswers.get(i) == -1) {
+                    notAnswer++;
                 }
             }
         }
+
+//        int notAnswer = 0;
+//        for (Question question : questions) {
+//            if (answers.get(question.getQuestionId()) == myAnswers.get(question.getQuestionId())) {
+//                Log.e("交卷结果", "第" + question.getQuestionId() + "题正确");
+//                rightAnswer++;
+//
+//                GreenDAOUtils.getDefaultDaoSession(PlayActivity.this).getQuestionDao()
+//                        .delete(question);
+//            } else {
+//                question.setSelectedAnswer(myAnswers.get(question.getQuestionId()));
+//                Log.e("交卷结果", "第" + question.getQuestionId() + "题错误，题目：" + question.getQuestion()
+//                        + "，A：" + question.getAnswerA()
+//                        + "，B：" + question.getAnswerB()
+//                        + "，C：" + question.getAnswerC()
+//                        + "，D：" + question.getAnswerD()
+//                        + "，正确答案：第" + (question.getAnswer() + 1) + "个"
+//                        + "，我的答案：第" + (question.getSelectedAnswer() + 1) + "个");
+//
+//                //如果不是扫除错题那么就将这道错题录入数据库。否则不再重复录入。同时也是为了解决一个如下的问题（当然可以通过修改ID来解决）
+//                // android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: QUESTION._id(Sqlite code 1555),(OS error - 2:No such file or directory)
+//                if (!isCorrect) {
+//                    question.setId(null);
+//                    GreenDAOUtils.getDefaultDaoSession(PlayActivity.this).getQuestionDao()
+//                            .insert(question);
+//                }
+//            }
+//
+//            if (myAnswers.get(question.getQuestionId()) == -1) {
+//                notAnswer++;
+//            }
+//        }
 
         grades = rightAnswer * 10;
         //增加经验值
         AppConfig.increaseUserEXP(grades);
         //增加做题数目
-        AppConfig.increaseUserPlayNum(10);
+        AppConfig.increaseUserPlayNum(questions.size() - notAnswer);
 
         //更新用户数据
         Map<UserInfoFieldEnum, Object> fields = new HashMap<>(1);

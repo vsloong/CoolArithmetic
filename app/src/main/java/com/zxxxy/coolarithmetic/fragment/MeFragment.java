@@ -34,6 +34,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     private TextView text_profile_username;
     private TextView text_profile_school;
+    private TextView text_num_play;
+    private TextView text_num_pk_win;
     private ImageView img_avatar;
     private Button btn_sign;
     private final int[] LEVEL_IMGS = {
@@ -91,11 +93,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         layout_add_friend.setOnClickListener(this);
         layout_wrong.setOnClickListener(this);
 
-        TextView text_num_play = (TextView) view.findViewById(R.id.text_num_play);
-        TextView text_num_pk_win = (TextView) view.findViewById(R.id.text_num_pk_win);
-
-        text_num_play.setText(String.valueOf(AppConfig.getUserPlayNum()));
-        text_num_pk_win.setText(String.valueOf(AppConfig.getUserPKWinNum()));
+        text_num_play = (TextView) view.findViewById(R.id.text_num_play);
+        text_num_pk_win = (TextView) view.findViewById(R.id.text_num_pk_win);
 
         text_profile_username = (TextView) view.findViewById(R.id.text_profile_username);
         text_profile_school = (TextView) view.findViewById(R.id.text_profile_school);
@@ -131,6 +130,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         text_exp_progress.setText(exp + "/100");
         img_level_curr.setImageResource(LEVEL_IMGS[level]);
         img_level_next.setImageResource(LEVEL_IMGS[level + 1]);
+
+        text_num_play.setText(String.valueOf(AppConfig.getUserPlayNum()));
+        text_num_pk_win.setText(String.valueOf(AppConfig.getUserPKWinNum()));
     }
 
     private void initData() {
