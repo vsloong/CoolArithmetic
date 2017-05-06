@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.zxxxy.coolarithmetic.R;
 import com.zxxxy.coolarithmetic.adapter.GradeAdapter;
@@ -48,6 +49,9 @@ public class FightFragment extends BaseFragment implements View.OnClickListener 
         ImageView img_btn_rank = (ImageView) view.findViewById(R.id.img_btn_rank);
         RecyclerView view_recycler = (RecyclerView) view.findViewById(R.id.view_recycler);
 
+        LinearLayout layout_plan = (LinearLayout) view.findViewById(R.id.layout_plan);
+        layout_plan.setOnClickListener(this);
+
         adapter = new GradeAdapter(getActivity());
         view_recycler.setAdapter(adapter);
         view_recycler.setLayoutManager(new GridLayoutManager(getActivity(), 2));
@@ -59,6 +63,9 @@ public class FightFragment extends BaseFragment implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.img_btn_rank:
                 StartActivityUtils.startRankActivity(getActivity());
+                break;
+            case R.id.layout_plan:
+                StartActivityUtils.startPlanActivity(getActivity());
                 break;
             default:
                 break;

@@ -52,6 +52,7 @@
                 app:riv_tile_mode="repeat" />
 
             <LinearLayout
+                android:id="@+id/layout_plan"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
@@ -81,7 +82,7 @@
                     android:drawablePadding="4dp"
                     android:drawableRight="@mipmap/ic_fight_arrow_right"
                     android:gravity="center_vertical"
-                    android:text="1000人（为什么我要写1000呢）已加入"
+                    android:text="1023人已加入"
                     android:textColor="@color/text_white" />
             </LinearLayout>
 

@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RankActivity extends BaseActivity {
 
@@ -95,9 +97,15 @@ public class RankActivity extends BaseActivity {
                                 rank.setName(userInfo.getName());
                                 //Log.e("该好友的扩展字段", String.valueOf(userInfo.getExtensionMap().containsKey("EXP")));
                                 if (userInfo.getExtensionMap() != null) {
-                                    Log.e("好友列表其他参数", String.valueOf(userInfo.getExtensionMap().values()));
+                                    String temp = String.valueOf(userInfo.getExtensionMap().values());
+
+                                    Log.e("好友列表其他参数", temp);//[810]
                                     Log.e("好友列表其他参数", userInfo.getExtensionMap().toString());
-                                    rank.setExp(Integer.parseInt(String.valueOf(userInfo.getExtensionMap().values())));
+                                    String regEx = "[^0-9]";
+                                    Pattern p = Pattern.compile(regEx);
+                                    Matcher m = p.matcher(temp);
+                                    int exp = Integer.parseInt(m.replaceAll("").trim());
+                                    rank.setExp(exp);
                                 } else {
                                     rank.setExp(0);
                                     Log.e("好友列表其他参数", "没有参数");

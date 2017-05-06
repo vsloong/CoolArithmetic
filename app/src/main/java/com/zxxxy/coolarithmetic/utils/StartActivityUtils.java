@@ -7,6 +7,7 @@ import com.zxxxy.coolarithmetic.activity.AdvanceActivity;
 import com.zxxxy.coolarithmetic.activity.GuideActivity;
 import com.zxxxy.coolarithmetic.activity.LoginActivity;
 import com.zxxxy.coolarithmetic.activity.MainActivity;
+import com.zxxxy.coolarithmetic.activity.PlanActivity;
 import com.zxxxy.coolarithmetic.activity.PlayActivity;
 import com.zxxxy.coolarithmetic.activity.RankActivity;
 import com.zxxxy.coolarithmetic.activity.RegisterActivity;
@@ -73,6 +74,11 @@ public class StartActivityUtils {
 
     public static void startGuideActivity(Activity activity) {
         Intent intent = new Intent(activity, GuideActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public static void startPlanActivity(Activity activity) {
+        Intent intent = new Intent(activity, PlanActivity.class);
         activity.startActivity(intent);
     }
 
