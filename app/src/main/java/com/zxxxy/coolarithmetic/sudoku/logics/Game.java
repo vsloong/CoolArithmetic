@@ -19,7 +19,7 @@ public class Game {
     private String str = "";
 
     private int sudoku[] = new int[9 * 9];
-    private int use[][][] = new int[9][9][];//用于存储每个单元格已经不可用你的数据
+    private int use[][][] = new int[9][9][];//用于存储每个单元格已经不可用的数据
 
     //难度设定 简单 30 中等 50 困难70
     public static int count = 0;
