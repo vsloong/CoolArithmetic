@@ -15,11 +15,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallbackWrapper;
+import com.netease.nimlib.sdk.uinfo.UserService;
+import com.netease.nimlib.sdk.uinfo.constant.UserInfoFieldEnum;
 import com.zxxxy.coolarithmetic.R;
 import com.zxxxy.coolarithmetic.activity.PlanActivity;
+import com.zxxxy.coolarithmetic.base.AppConfig;
 import com.zxxxy.coolarithmetic.sudoku.logics.Game;
 import com.zxxxy.coolarithmetic.sudoku.utils.MyContant;
 import com.zxxxy.coolarithmetic.sudoku.utils.SharedPreferencesUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Author:ZengYinan zengyinanos@qq.com
@@ -177,7 +185,19 @@ public class SudokuView extends View {
         invalidate();
         if (Game.count == 0) {
             //胜利
-            showDialog(true, "恭喜您以全部填写正确！");
+            showDialog(true, "恭喜您全部填写正确！");
+            AppConfig.increaseUserEXP(1000 / PlanActivity.time);
+
+            //更新用户数据
+            Map<UserInfoFieldEnum, Object> fields = new HashMap<>(1);
+            fields.put(UserInfoFieldEnum.EXTEND, String.valueOf(AppConfig.getUserEXP()));
+            NIMClient.getService(UserService.class).updateUserInfo(fields)
+                    .setCallback(new RequestCallbackWrapper<Void>() {
+                        @Override
+                        public void onResult(int code, Void result, Throwable exception) {
+                            Log.e("更新用户数据结果", "" + code);
+                        }
+                    });
         }
     }
 

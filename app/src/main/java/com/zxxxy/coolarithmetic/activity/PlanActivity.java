@@ -24,7 +24,7 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
 
     private Handler handler = new Handler();
     private TextView text_timer;
-    private int time = 0;
+    public static int time = 0;
 
     @Override
     public void finishActivity(int requestCode) {
