@@ -2,10 +2,10 @@ package com.zxxxy.coolarithmetic.sudoku.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallbackWrapper;
@@ -26,7 +25,9 @@ import com.zxxxy.coolarithmetic.sudoku.logics.Game;
 import com.zxxxy.coolarithmetic.sudoku.utils.MyContant;
 import com.zxxxy.coolarithmetic.sudoku.utils.SharedPreferencesUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,13 +45,20 @@ public class SudokuView extends View {
     private Context context;
     private int selectedX;
     private int selectedY;
+    private String selectedNumber = "";//默认没有选中的数字
     private String continueGame = "";
+
+    public List<Integer> getUnusableNumber() {
+        return unusableNumber;
+    }
+
+    private List<Integer> unusableNumber = new ArrayList<>();
 
     Paint numberPaint = new Paint();
     Paint lightPaint = new Paint();
     Paint hilitePaint = new Paint();
     Paint darkPaint = new Paint();
-    Paint highlightPaint = new Paint();
+    Paint highlightBackgroundPaint = new Paint();
 
     public SudokuView(Context context) {
         this(context, null);
@@ -64,6 +72,9 @@ public class SudokuView extends View {
         this(context, attrs);
         this.context = context;
         this.continueGame = continueGame;
+
+        selectedNumber = "";
+        unusableNumber.clear();
     }
 
     @Override
@@ -95,14 +106,13 @@ public class SudokuView extends View {
 
         //绘制当前要高亮显示的区域
         if (PlanActivity.canInput) {
-            highlightPaint.setColor(ContextCompat.getColor(context, R.color.shudu_light));
+            highlightBackgroundPaint.setColor(ContextCompat.getColor(context, R.color.shudu_light));
             Rect rect = new Rect((int) (selectedX * width), (int) (selectedY * height), (int) ((selectedX + 1) * width), (int) ((selectedY + 1) * height));
-            Log.e("高亮显示", "" + (int) (selectedX * width) + "；" + (int) (selectedY * height) + "；" + (int) ((selectedX + 1) * width) + "；" + (int) ((selectedY + 1) * height));
-            canvas.drawRect(rect, highlightPaint);
+            //Log.e("高亮显示", "" + (int) (selectedX * width) + "；" + (int) (selectedY * height) + "；" + (int) ((selectedX + 1) * width) + "；" + (int) ((selectedY + 1) * height));
+            canvas.drawRect(rect, highlightBackgroundPaint);
         }
 
 
-        numberPaint.setColor(Color.BLACK);
         numberPaint.setStyle(Paint.Style.STROKE);
         numberPaint.setTextSize(height * 0.75f);
         numberPaint.setTextAlign(Paint.Align.CENTER);
@@ -116,9 +126,15 @@ public class SudokuView extends View {
         }
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                //Log.d("SudokuView", "tile:" + game.getTilesString(i, j));
-                numberPaint.setColor(ContextCompat.getColor(context, R.color.text_white));
-                canvas.drawText(game.getTilesString(i, j), i * width + x, j * height - y, numberPaint);
+                //Log.e("SudokuView", "tile:" + game.getTilesString(i, j));
+                if (!TextUtils.isEmpty(selectedNumber) && game.getTilesString(i, j).equals(selectedNumber)) {
+                    numberPaint.setColor(ContextCompat.getColor(context, R.color.text_selected));
+                    canvas.drawText(game.getTilesString(i, j), i * width + x, j * height - y, numberPaint);
+                } else {
+                    numberPaint.setColor(ContextCompat.getColor(context, R.color.text_white));
+                    canvas.drawText(game.getTilesString(i, j), i * width + x, j * height - y, numberPaint);
+                }
+
             }
         }
 
@@ -133,49 +149,34 @@ public class SudokuView extends View {
         selectedX = (int) (event.getX() / width);
         selectedY = (int) (event.getY() / height);
 
-        Log.e("点击的位置", "X" + selectedX + "；Y" + selectedY);
+        //Log.e("点击的位置", "X" + selectedX + "；Y" + selectedY);
 
         if (game.isSet(selectedX, selectedY)) {
-            Toast.makeText(context, "此位置上已经有数字了", Toast.LENGTH_SHORT).show();
-            return super.onTouchEvent(event);
-        }
-
-        int used[] = game.calculateUsedTiles(selectedX, selectedY);//已经使用过的数据
-
-        if (used.length == 9) {
-            showDialog(false, "已经没有可以填入的数字了!");
+            //Toast.makeText(context, "此位置上已经有数字了", Toast.LENGTH_SHORT).show();
+            selectedNumber = game.getTilesString(selectedX, selectedY);
+            PlanActivity.canInput = false;
         } else {
-            //设置该位置高亮显示
-            PlanActivity.canInput = true;
+            int test[] = game.calculateUsedTiles(selectedX, selectedY);
+            String temp = "";
 
-            Paint highlightPaint = new Paint();
-            highlightPaint.setColor(ContextCompat.getColor(context, R.color.shudu_light));
+            unusableNumber.clear();
+            for (int x : test) {
+                temp = temp + String.valueOf(x) + "，";
+                unusableNumber.add(x);
+            }
+            Log.e("该位置不可用的数据为", String.valueOf(temp));
 
-            Rect rect = new Rect((int) (selectedX * width), (int) (selectedY * height), (int) ((selectedX + 1) * width), (int) ((selectedY + 1) * height));
-            Log.e("高亮显示", "" + (int) (selectedX * width) + "；" + (int) (selectedY * height) + "；" + (int) ((selectedX + 1) * width) + "；" + (int) ((selectedY + 1) * height));
-            Canvas canvas = new Canvas();
-            canvas.drawRect(rect, highlightPaint);
-            invalidate();
-
-            //生成一个Dialog
-//            KeyDialog dialog = new KeyDialog(context, used);
-//            dialog.setTitle("请选择要填入的数字");
-//            dialog.setOnSelectedListener(new KeyDialog.OnSelectedListener() {
-//                @Override
-//                public void selected(int tile) {
-//                    //将剩余空格进行减1操作
-//                    Game.count--;
-//                    game.setTile(selectedX, selectedY, tile);
-//                    invalidate();
-//                    if (Game.count == 0) {
-//                        //胜利
-//                        showDialog("胜利啦", "恭喜您以全部填写正确");
-//                    }
-//                }
-//            });
-//            dialog.show();
+            selectedNumber = "";
+            int used[] = game.calculateUsedTiles(selectedX, selectedY);//已经使用过的数据
+            if (used.length == 9) {
+                showDialog(false, "已经没有可以填入的数字了!");
+            } else {
+                //设置该位置高亮显示
+                PlanActivity.canInput = true;
+            }
         }
 
+        invalidate();
         return true;
     }
 
@@ -233,6 +234,7 @@ public class SudokuView extends View {
             public void onClick(View v) {
                 game.reStart();
                 invalidate();
+                PlanActivity.time = 0;
                 resultDialog.dismiss();
             }
         });

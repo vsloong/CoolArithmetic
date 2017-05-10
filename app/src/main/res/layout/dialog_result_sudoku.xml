@@ -47,7 +47,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/selector_btn_pk_refuse"
                 android:gravity="center"
-                android:text="退出学霸计划"
+                android:text="退出挑战"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
@@ -59,7 +59,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/selector_btn_pk_accept"
                 android:gravity="center"
-                android:text="重新开始挑战"
+                android:text="重新开始"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
         </LinearLayout>

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,9 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
     private Handler handler = new Handler();
     private TextView text_timer;
     public static int time = 0;
+    private int errorNum = 0;
+
+    private RatingBar bar_rating;
 
     @Override
     public void finishActivity(int requestCode) {
@@ -45,6 +49,8 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
         super.initViews();
         String gameData = getIntent().getStringExtra(MyContant.CONTINUEGAME);
         sudokuView = new SudokuView(this, null, gameData);
+
+        bar_rating = (RatingBar) findViewById(R.id.bar_rating);
 
         LinearLayout layout_sudoku = (LinearLayout) findViewById(R.id.layout_sudoku);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) layout_sudoku.getLayoutParams();
@@ -136,10 +142,19 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
 
     private void setNumber(int number) {
         if (canInput) {
-            sudokuView.setNumber(number);
-            canInput = false;
+            if (sudokuView.getUnusableNumber().contains(number)) {
+                //Toast.makeText(PlanActivity.this, "不可以填这个数字", Toast.LENGTH_SHORT).show();
+                errorNum++;
+                bar_rating.setRating(errorNum);
+                if (errorNum == 3) {
+                    showDialog(false, "答错次数已达到上限");
+                }
+            } else {
+                sudokuView.setNumber(number);
+                canInput = false;
+            }
         } else {
-            Toast.makeText(PlanActivity.this, "请选择一个位置", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PlanActivity.this, "请选择一个空位置", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -161,4 +176,45 @@ public class PlanActivity extends BaseActivity implements View.OnClickListener {
             handler.postDelayed(this, 1000);
         }
     };
+
+    public void showDialog(boolean isSuccess, String msg) {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        View view = View.inflate(this, R.layout.dialog_result_sudoku, null);
+        builder.setView(view);
+        builder.setCancelable(false);
+
+        final android.support.v7.app.AlertDialog resultDialog = builder.create();
+        resultDialog.show();
+
+        ImageView img_result = (ImageView) view.findViewById(R.id.img_result);
+        if (isSuccess) {
+            img_result.setImageResource(R.mipmap.pk_result_success_hint);
+        }
+        TextView text_msg = (TextView) view.findViewById(R.id.text_msg);
+        Button btn_finish = (Button) view.findViewById(R.id.btn_finish);
+        Button btn_restart = (Button) view.findViewById(R.id.btn_restart);
+
+        text_msg.setText(msg);
+
+        btn_finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                resultDialog.dismiss();
+            }
+        });
+        btn_restart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                time = 0;
+                canInput = false;
+                errorNum = 0;
+                bar_rating.setRating(errorNum);
+                sudokuView.game.reStart();
+                sudokuView.invalidate();
+
+                resultDialog.dismiss();
+            }
+        });
+    }
 }

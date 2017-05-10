@@ -21,6 +21,12 @@
         <item name="android:textSize">12sp</item>
         <item name="android:layout_marginTop">2dp</item>
     </style>
+
+    <style name="myRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/rating_bar</item>
+        <item name="android:minHeight">25dp</item>
+        <item name="android:maxHeight">25dp</item>
+    </style>
     <!--
     1.tabIndicatorColor：TabLayout指示器的颜色
     2.tabTextColor: tab默认字体的颜色
