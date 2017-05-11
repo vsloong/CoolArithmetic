@@ -42,7 +42,7 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
         EventBus.getDefault().register(this);
         getIntentData();
         initViews();
-        setDataToViews();
+
     }
 
     @Override
@@ -99,6 +99,8 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
     private void setDataToViews() {
         text_grade.setText(getResources().getStringArray(R.array.grade_name)[grade]);
         text_progress.setText((advance.getAdvance() + 1) + "/20");
+        progress_bar_ev.setProgress(AppConfig.getUserEV());
+        text_ev_progress.setText(AppConfig.getUserEV() + "/100");
     }
 
     @Override
@@ -115,8 +117,23 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onResume() {
         super.onResume();
-        progress_bar_ev.setProgress(AppConfig.getUserEV());
-        text_ev_progress.setText(AppConfig.getUserEV() + "/100");
+
+        advance = GreenDAOUtils.getDefaultDaoSession(AdvanceActivity.this).getAdvanceDao()
+                .queryBuilder()
+                .where(AdvanceDao.Properties.Grade.eq(grade))
+                .build().unique();
+
+        if (advance == null) {
+            Advance temp = new Advance();
+            temp.setGrade(grade);
+            temp.setAdvance(0);
+            advance = temp;
+            GreenDAOUtils.getDefaultDaoSession(AdvanceActivity.this).getAdvanceDao().insert(temp);
+        }
+        adapter = new AdvanceAdapter(this, advance);
+        adapter.notifyDataSetChanged();
+
+        setDataToViews();
     }
 
     @Subscribe
@@ -125,6 +142,7 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
         progress_bar_ev.setProgress(AppConfig.getUserEV());
         text_ev_progress.setText(AppConfig.getUserEV() + "/100");
         this.advance = advance;
+        adapter = new AdvanceAdapter(this, advance);
         adapter.notifyDataSetChanged();
     }
 
