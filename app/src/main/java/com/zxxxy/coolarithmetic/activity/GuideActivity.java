@@ -2,15 +2,21 @@ package com.zxxxy.coolarithmetic.activity;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.auth.AuthService;
+import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.zxxxy.coolarithmetic.R;
 import com.zxxxy.coolarithmetic.adapter.ViewPagerAdapter;
 import com.zxxxy.coolarithmetic.base.AppConfig;
 import com.zxxxy.coolarithmetic.base.BaseActivity;
+import com.zxxxy.coolarithmetic.utils.GoLoginUtils;
 import com.zxxxy.coolarithmetic.utils.StartActivityUtils;
 
 import java.util.ArrayList;
@@ -91,8 +97,8 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.btn_go:
             case R.id.btn_start:
-                StartActivityUtils.startMainActivity(GuideActivity.this);
-                finish();
+                goMain();
+
                 break;
             default:
                 break;
@@ -150,8 +156,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                     break;
                 case ViewPager.SCROLL_STATE_IDLE:
                     if (viewPager.getCurrentItem() == viewPager.getAdapter().getCount() - 1 && !isScrolled) {
-                        StartActivityUtils.startMainActivity(GuideActivity.this);
-                        finish();
+                        goMain();
                     }
                     isScrolled = true;
                     break;
@@ -161,5 +166,44 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
         }
+    }
+
+    /**
+     * 自动登录，直接跳转到主页面
+     */
+    private void goMain() {
+        if (GoLoginUtils.isLogin()) {
+            LoginInfo info = new LoginInfo(AppConfig.getUserAccid(), AppConfig.getUserToken(GuideActivity.this));
+            NIMClient.getService(AuthService.class).login(info).setCallback(new RequestCallback<LoginInfo>() {
+                @Override
+                public void onSuccess(LoginInfo param) {
+                    StartActivityUtils.startMainActivity(GuideActivity.this);
+                    finish();
+                }
+
+                @Override
+                public void onFailed(int code) {
+                    Log.e("网易云信登录", "出错" + code);
+                    goLogin();
+                }
+
+                @Override
+                public void onException(Throwable exception) {
+                    Log.e("网易云信登录", "出错" + exception.toString());
+                    goLogin();
+                }
+            });
+        } else {
+            StartActivityUtils.startMainActivity(GuideActivity.this);
+            finish();
+        }
+    }
+
+    /**
+     * 延迟1.5秒后，去登录页面手动登录
+     */
+    private void goLogin() {
+        StartActivityUtils.startLoginActivity(GuideActivity.this);
+        finish();
     }
 }

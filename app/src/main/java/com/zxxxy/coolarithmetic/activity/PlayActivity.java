@@ -406,6 +406,7 @@ public class PlayActivity extends BaseActivity implements View.OnClickListener {
                             .queryBuilder()
                             .where(AdvanceDao.Properties.Grade.eq(grade))
                             .build().unique();
+                    Log.e("当前关卡", "" + advance + "；" + advanceBean.getAdvance());
                     if (advance == advanceBean.getAdvance()) {
                         advanceBean.setAdvance(advance + 1);
                         GreenDAOUtils.getDefaultDaoSession(PlayActivity.this).getAdvanceDao().update(advanceBean);

@@ -3,6 +3,7 @@ package com.zxxxy.coolarithmetic.adapter;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,8 @@ public class AdvanceAdapter extends RecyclerView.Adapter<AdvanceAdapter.ViewHold
     public AdvanceAdapter(Context context, Advance advance) {
         this.context = context;
         this.advance = advance;
+        Log.e("AdvanceAdapter", "到这里了啊" + advance.getAdvance());
+        Log.e("AdvanceAdapter", "到这里了啊" + this.advance.getAdvance());
     }
 
     //左 右 中间 三个属性的枚举类
@@ -125,6 +128,7 @@ public class AdvanceAdapter extends RecyclerView.Adapter<AdvanceAdapter.ViewHold
                 if (AppConfig.getUserEV() < 10) {
                     Toast.makeText(context, "当前活力值不够，歇歇再来吧", Toast.LENGTH_SHORT).show();
                 } else {
+                    Log.e("什么鬼", "当前位置：" + position + "；当前关卡：" + advance.getAdvance());
                     if (position <= advance.getAdvance()) {
                         AppConfig.decreaseUserEV(10);
                         StartActivityUtils.startPlayActivity((AdvanceActivity) context, 0, position, false);

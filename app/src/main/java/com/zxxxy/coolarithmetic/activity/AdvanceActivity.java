@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -40,9 +41,10 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_advance);
         EventBus.getDefault().register(this);
+
         getIntentData();
         initViews();
-
+        setDataToViews();
     }
 
     @Override
@@ -55,7 +57,6 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
         text_grade = (TextView) findViewById(R.id.text_grade);
         text_progress = (TextView) findViewById(R.id.text_progress);
         text_ev_progress = (TextView) findViewById(R.id.text_ev_progress);
-        text_ev_progress.setText(AppConfig.getUserEV() + "/100");
 
         //初始化线性布局管理器
         LinearLayoutManager layoutManager = new LinearLayoutManager(AdvanceActivity.this);
@@ -114,36 +115,14 @@ public class AdvanceActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    @Subscribe
+    public void onEventMainThread(Advance advance) {
+        Log.e("Advance", "收到了啊");
 
-        advance = GreenDAOUtils.getDefaultDaoSession(AdvanceActivity.this).getAdvanceDao()
-                .queryBuilder()
-                .where(AdvanceDao.Properties.Grade.eq(grade))
-                .build().unique();
-
-        if (advance == null) {
-            Advance temp = new Advance();
-            temp.setGrade(grade);
-            temp.setAdvance(0);
-            advance = temp;
-            GreenDAOUtils.getDefaultDaoSession(AdvanceActivity.this).getAdvanceDao().insert(temp);
-        }
-        adapter = new AdvanceAdapter(this, advance);
+        this.advance.setAdvance(advance.getAdvance());
         adapter.notifyDataSetChanged();
 
         setDataToViews();
-    }
-
-    @Subscribe
-    public void onEventMainThread(Advance advance) {
-        text_progress.setText((advance.getAdvance() + 1) + "/20");
-        progress_bar_ev.setProgress(AppConfig.getUserEV());
-        text_ev_progress.setText(AppConfig.getUserEV() + "/100");
-        this.advance = advance;
-        adapter = new AdvanceAdapter(this, advance);
-        adapter.notifyDataSetChanged();
     }
 
     @Override
