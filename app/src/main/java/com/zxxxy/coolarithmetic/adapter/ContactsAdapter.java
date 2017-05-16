@@ -62,6 +62,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             }
         });
 
+
     }
 
     @Override
