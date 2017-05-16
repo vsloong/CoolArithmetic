@@ -52,8 +52,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         //使用Picasso框架加载网络图片到图片视图上
         Picasso.with(context)
                 .load(avatar)
-                .placeholder(R.mipmap.avatar)
-                .error(R.mipmap.avatar)
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher)
                 .into(holder.img_avatar);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
